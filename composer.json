@@ -1,0 +1,30 @@
+{
+  "name": "spacedmonkey/wp-rest-blocks",
+  "type": "wordpress-plugin",
+  "description": "Add blocks in the REST API as json.",
+  "homepage": "http://wp-api.org/",
+  "license": "GPL2+",
+  "authors": [
+    {
+      "name": "Jonny Harris",
+      "homepage": "https://www.spacedmonkey.com/"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/spacedmonkey/wp-user-roles/issues"
+  },
+  "require": {
+    "composer/installers": "~1.0"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.3.1",
+    "wp-coding-standards/wpcs": "^2.1.1",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+    "phpcompatibility/phpcompatibility-wp": "^2.0",
+    "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
+  },
+  "scripts": {
+    "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs",
+    "post-update-cmd" : "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs"
+  }
+}
