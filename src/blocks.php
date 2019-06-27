@@ -152,12 +152,14 @@ function get_block_defaults( $name ) {
 }
 
 /**
- * @param $block
- * @param $data
+ * Process block data with attributes.
+ *
+ * @param array $block Block data.
+ * @param array $data Attribute data.
  *
  * @return mixed
  */
-function exact_attrs( $block, $data  ) {
+function exact_attrs( $block, $data ) {
 	$attrs = [];
 	$html  = $block['rendered'];
 
@@ -171,7 +173,7 @@ function exact_attrs( $block, $data  ) {
 			preg_match( '/<' . $datum['selector'] . '.*?>(.*)<\/' . $datum['selector'] . '>/i', $html, $array );
 		}
 		if ( $array ) {
-			$attrs[ $key ] = array_pop($array);
+			$attrs[ $key ] = array_pop( $array );
 		}
 	}
 

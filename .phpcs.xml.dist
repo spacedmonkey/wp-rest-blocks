@@ -28,6 +28,14 @@
 		<exclude-pattern>test</exclude-pattern>
 	</rule>
 
+	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
+		<exclude-pattern>test</exclude-pattern>
+    </rule>
+
+    <rule ref="WordPress.WhiteSpace.PrecisionAlignment.Found">
+		<exclude-pattern>test</exclude-pattern>
+    </rule>
+
 	<rule ref="Generic.Commenting.DocComment">
 		<exclude-pattern>test</exclude-pattern>
 	</rule>

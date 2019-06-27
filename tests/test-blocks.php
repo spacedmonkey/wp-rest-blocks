@@ -39,15 +39,15 @@ class BlocksTest extends WP_UnitTestCase {
 		);
 
 		$mixed_post_content = 'before' .
-		                      '<!-- wp:core/fake --><!-- /wp:core/fake -->' .
-		                      '<!-- wp:core/fake_atts {"value":"b1"} --><!-- /wp:core/fake_atts -->' .
-		                      '<!-- wp:core/fake-child -->
-								<p>testing the test</p>
-								<!-- /wp:core/fake-child -->' .
-		                      'between' .
-		                      '<!-- wp:core/self-close-fake /-->' .
-		                      '<!-- wp:custom/fake {"value":"b2"} /-->' .
-		                      'after';
+		  '<!-- wp:core/fake --><!-- /wp:core/fake -->' .
+		  '<!-- wp:core/fake_atts {"value":"b1"} --><!-- /wp:core/fake_atts -->' .
+		  '<!-- wp:core/fake-child -->
+			<p>testing the test</p>
+			<!-- /wp:core/fake-child -->' .
+		  'between' .
+		  '<!-- wp:core/self-close-fake /-->' .
+		  '<!-- wp:custom/fake {"value":"b2"} /-->' .
+		  'after';
 
 		self::$post_with_blocks_id = $factory->post->create(
 			array(
