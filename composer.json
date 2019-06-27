@@ -21,7 +21,7 @@
     "wp-coding-standards/wpcs": "^2.1.1",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
     "phpcompatibility/phpcompatibility-wp": "^2.0",
-    "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0"
+    "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
   },
   "scripts": {
     "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs",

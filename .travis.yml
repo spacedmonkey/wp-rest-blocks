@@ -36,7 +36,7 @@ matrix:
 
 before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - composer install
+  - composer install --ignore-platform-reqs --optimize-autoloader --no-interaction --prefer-dist
   - |
     if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
       phpenv config-rm xdebug.ini
