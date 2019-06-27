@@ -15,6 +15,9 @@
 namespace WP_REST_Blocks;
 
 use WP_REST_Blocks\Data;
+use WP_REST_Blocks\Filter;
 require_once __DIR__ . '/src/blocks.php';
+require_once __DIR__ . '/src/filters.php';
 
 Data\bootstrap();
+Filter\bootstrap();

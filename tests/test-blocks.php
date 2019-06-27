@@ -5,7 +5,9 @@
  * @package WP_REST_Blocks
  */
 
-use WP_REST_Blocks;
+namespace WP_REST_Blocks\Tests;
+
+use WP_REST_Blocks\Data;
 
 /**
  * Test block parsing.
@@ -19,6 +21,13 @@ class BlocksTest extends WP_UnitTestCase {
 	protected static $post_id;
 
 	/**
+	 * Static variable for post object.
+	 *
+	 * @var int $post_with_blocks_id Post id.
+	 */
+	protected static $post_with_blocks_id;
+
+	/**
 	 *
 	 * @param $factory
 	 */
@@ -26,6 +35,23 @@ class BlocksTest extends WP_UnitTestCase {
 		self::$post_id = $factory->post->create(
 			array(
 				'post_content' => '<!-- wp:core/separator -->',
+			)
+		);
+
+		$mixed_post_content = 'before' .
+		                      '<!-- wp:core/fake --><!-- /wp:core/fake -->' .
+		                      '<!-- wp:core/fake_atts {"value":"b1"} --><!-- /wp:core/fake_atts -->' .
+		                      '<!-- wp:core/fake-child -->
+								<p>testing the test</p>
+								<!-- /wp:core/fake-child -->' .
+		                      'between' .
+		                      '<!-- wp:core/self-close-fake /-->' .
+		                      '<!-- wp:custom/fake {"value":"b2"} /-->' .
+		                      'after';
+
+		self::$post_with_blocks_id = $factory->post->create(
+			array(
+				'post_content' => $mixed_post_content,
 			)
 		);
 	}
@@ -43,7 +69,7 @@ class BlocksTest extends WP_UnitTestCase {
 	public function test_has_block() {
 		$object = [ 'id' => self::$post_id ];
 		// Replace this with some actual testing code.
-		$this->assertTrue( WP_REST_Blocks\has_blocks_get_callback( $object ) );
+		$this->assertTrue( Data\has_blocks_get_callback( $object ) );
 	}
 
 	/**
@@ -52,6 +78,17 @@ class BlocksTest extends WP_UnitTestCase {
 	public function test_get_blocks() {
 		$object = [ 'content' => [ 'raw' => get_the_content( null, false, self::$post_id ) ] ];
 		// Replace this with some actual testing code.
-		$this->assertTrue( is_array( WP_REST_Blocks\blocks_get_callback( $object ) ) );
+		$this->assertTrue( is_array( Data\blocks_get_callback( $object ) ) );
+	}
+
+	/**
+	 *
+	 */
+	public function test_multiple_blocks() {
+		$object = [ 'content' => [ 'raw' => get_the_content( null, false, self::$post_with_blocks_id ) ] ];
+		// Replace this with some actual testing code.
+		$data = Data\blocks_get_callback( $object );
+		$this->assertTrue( is_array( $data ) );
+		$this->assertSame( 6, count( $data ) );
 	}
 }

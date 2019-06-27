@@ -14,8 +14,6 @@ use WP_Block_Type_Registry;
  */
 function bootstrap() {
 	add_action( 'rest_api_init', __NAMESPACE__ . '\\wp_rest_blocks_init' );
-	add_filter( 'block_data_core_image', __NAMESPACE__ . '\\block_data_image' );
-	add_filter( 'block_data_core_gallery', __NAMESPACE__ . '\\block_data_gallery' );
 }
 
 /**
@@ -154,97 +152,30 @@ function get_block_defaults( $name ) {
 }
 
 /**
- * Hook to gallery block and get attributes.
- *
- * @param array $block Gallery block as array.
- *
- * @return mixed
- */
-function block_data_gallery( $block ) {
-	$defaults                  = [
-		'columns'   => 3,
-		'imageCrop' => false,
-		'linkTo'    => 'none',
-		'ids'       => [],
-	];
-	$block['attrs']            = wp_parse_args( $block['attrs'], $defaults );
-	$columns                   = count( $block['attrs']['ids'] );
-	$columns                   = min( $columns, $block['attrs']['columns'] );
-	$block['attrs']['columns'] = $columns;
-
-	return $block;
-}
-
-/**
- * Hook to image block and get attributes.
- *
- * @param array $block Image block as array.
+ * @param $block
+ * @param $data
  *
  * @return mixed
  */
-function block_data_image( $block ) {
-	$data = [
-		'url'        => [
-			'type'      => 'string',
-			'source'    => 'attribute',
-			'selector'  => 'img',
-			'attribute' => 'src',
-		],
-		'alt'        => [
-			'type'      => 'string',
-			'source'    => 'attribute',
-			'selector'  => 'img',
-			'attribute' => 'alt',
-			'default'   => '',
-		],
-		'caption'    => [
-			'type'     => 'string',
-			'source'   => 'html',
-			'selector' => 'figcaption',
-		],
-		'href'       => [
-			'type'      => 'string',
-			'source'    => 'attribute',
-			'selector'  => 'a',
-			'attribute' => 'href',
-		],
-		'rel'        => [
-			'type'      => 'string',
-			'source'    => 'attribute',
-			'selector'  => 'a',
-			'attribute' => 'rel',
-		],
-		'linkClass'  => [
-			'type'      => 'string',
-			'source'    => 'attribute',
-			'selector'  => 'a',
-			'attribute' => 'class',
-		],
-		'linkTarget' => [
-			'type'      => 'string',
-			'source'    => 'attribute',
-			'selector'  => 'a',
-			'attribute' => 'target',
-		],
-	];
-
+function exact_attrs( $block, $data  ) {
 	$attrs = [];
 	$html  = $block['rendered'];
 
 	foreach ( $data as $key => $datum ) {
 		$array = array();
+
 		if ( 'attribute' === $datum['source'] ) {
 			preg_match( '/<' . $datum['selector'] . '.*?' . $datum['attribute'] . '="([^"]*)"/i', $html, $array );
 		}
 		if ( 'html' === $datum['source'] ) {
-			preg_match( '/<' . $datum['selector'] . '>(.*)<\/' . $datum['selector'] . '>/i', $html, $array );
+			preg_match( '/<' . $datum['selector'] . '.*?>(.*)<\/' . $datum['selector'] . '>/i', $html, $array );
 		}
 		if ( $array ) {
-			$attrs[ $key ] = $array[1];
+			$attrs[ $key ] = array_pop($array);
 		}
 	}
 
-	$block['attrs'] = wp_parse_args( $block['attrs'], $attrs );
+	$block['attrs'] = wp_parse_args( $attrs, $block['attrs'] );
 
 	return $block;
 }
