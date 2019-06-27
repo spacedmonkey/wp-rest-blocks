@@ -99,6 +99,7 @@ function handle_do_block( $block ) {
 	}
 
 	$block['rendered'] = render_block( $block );
+	$block['rendered'] = do_shortcode( $block['rendered'] );
 	$block['attrs']    = wp_parse_args( $block['attrs'], get_block_defaults( $block['blockName'] ) );
 	if ( ! empty( $block['innerBlocks'] ) ) {
 		$output = [];
@@ -155,7 +156,7 @@ function get_block_defaults( $name ) {
  * Process block data with attributes.
  *
  * @param array $block Block data.
- * @param array $data Attribute data.
+ * @param array $data  Attribute data.
  *
  * @return mixed
  */

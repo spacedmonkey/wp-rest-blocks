@@ -40,15 +40,15 @@ class BlocksTest extends WP_UnitTestCase {
 		);
 
 		$mixed_post_content = 'before' .
-		  '<!-- wp:core/fake --><!-- /wp:core/fake -->' .
-		  '<!-- wp:core/fake_atts {"value":"b1"} --><!-- /wp:core/fake_atts -->' .
-		  '<!-- wp:core/fake-child -->
+		                      '<!-- wp:core/fake --><!-- /wp:core/fake -->' .
+		                      '<!-- wp:core/fake_atts {"value":"b1"} --><!-- /wp:core/fake_atts -->' .
+		                      '<!-- wp:core/fake-child -->
 			<p>testing the test</p>
 			<!-- /wp:core/fake-child -->' .
-		  'between' .
-		  '<!-- wp:core/self-close-fake /-->' .
-		  '<!-- wp:custom/fake {"value":"b2"} /-->' .
-		  'after';
+		                      'between' .
+		                      '<!-- wp:core/self-close-fake /-->' .
+		                      '<!-- wp:custom/fake {"value":"b2"} /-->' .
+		                      'after';
 
 		self::$post_with_blocks_id = $factory->post->create(
 			array(
@@ -86,10 +86,24 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_multiple_blocks() {
-		$object = [ 'content' => [ 'raw' => get_the_content( null, false, self::$post_with_blocks_id ) ] ];
+		$object = [ 'content' => [ 'raw' => get_post( self::$post_with_blocks_id )->post_content ] ];
 		// Replace this with some actual testing code.
 		$data = Data\blocks_get_callback( $object );
 		$this->assertTrue( is_array( $data ) );
-		$this->assertSame( 5, count( $data ) );
+		$this->assertEquals( 5, count( $data ) );
+		$this->assertEquals( 'core/fake', $data[0]["blockName"] );
+		$this->assertEquals( 'core/fake_atts', $data[1]["blockName"] );
+	}
+
+	/**
+	 *
+	 */
+	public function test_multiple_blocks_attrs() {
+		$object = [ 'content' => [ 'raw' => get_post( self::$post_with_blocks_id )->post_content ] ];
+		// Replace this with some actual testing code.
+		$data = Data\blocks_get_callback( $object );
+		$this->assertEquals( 'core/fake_atts', $data[1]["blockName"] );
+		$this->assertEquals( 'b1', $data[1]["attrs"]["value"] );
+		$this->assertArrayHasKey( 'value', $data[1]["attrs"] );
 	}
 }
