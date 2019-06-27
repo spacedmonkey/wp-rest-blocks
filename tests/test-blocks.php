@@ -11,6 +11,7 @@ use WP_REST_Blocks;
  * Sample test case.
  */
 class SampleTest extends WP_UnitTestCase {
+	protected static $post_id;
 
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$post_id = $factory->post->create(
