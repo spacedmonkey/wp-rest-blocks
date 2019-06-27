@@ -90,6 +90,6 @@ class BlocksTest extends WP_UnitTestCase {
 		// Replace this with some actual testing code.
 		$data = Data\blocks_get_callback( $object );
 		$this->assertTrue( is_array( $data ) );
-		$this->assertSame( 6, count( $data ) );
+		$this->assertSame( 5, count( $data ) );
 	}
 }
