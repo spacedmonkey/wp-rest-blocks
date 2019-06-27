@@ -12,7 +12,9 @@
  * @package         WP_REST_Blocks
  */
 
-use WP_REST_Blocks;
+namespace WP_REST_Blocks;
+
+use WP_REST_Blocks\Data;
 require_once __DIR__ . '/src/blocks.php';
 
-WP_REST_Blocks\bootstrap();
+Data\bootstrap();

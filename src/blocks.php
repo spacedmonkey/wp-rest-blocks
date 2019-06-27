@@ -5,7 +5,7 @@
  * @package WP_REST_Blocks.
  */
 
-namespace WP_REST_Blocks;
+namespace WP_REST_Blocks\Data;
 
 use WP_Block_Type_Registry;
 
