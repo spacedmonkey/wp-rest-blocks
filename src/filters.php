@@ -21,6 +21,7 @@ function bootstrap() {
 	add_filter( 'block_data_core_button', __NAMESPACE__ . '\\block_data_button' );
 	add_filter( 'block_data_core_video', __NAMESPACE__ . '\\block_data_video' );
 	add_filter( 'block_data_core_audio', __NAMESPACE__ . '\\block_data_audio' );
+	add_filter( 'block_data_core_file', __NAMESPACE__ . '\\block_data_file' );
 }
 
 
@@ -292,3 +293,40 @@ function block_data_auio( $block ) {
 
 	return Data\exact_attrs( $block, $data );
 }
+
+/**
+ * Hook to file block and get attributes.
+ *
+ * @param array $block file block as array.
+ *
+ * @return mixed
+ */
+function block_data_file( $block ) {
+	$data = [
+		'fileName'           => [
+			'type'     => 'string',
+			'source'   => 'html',
+			'selector' => 'a',
+		],
+		'textLinkHref'       => [
+			'type'      => 'string',
+			'source'    => 'attribute',
+			'selector'  => 'a',
+			'attribute' => 'href',
+		],
+		'textLinkTarget'     => [
+			'type'      => 'string',
+			'source'    => 'attribute',
+			'selector'  => 'a',
+			'attribute' => 'target',
+		],
+		'downloadButtonText' => [
+			'type'     => 'string',
+			'source'   => 'html',
+			'selector' => 'a',
+		],
+	];
+
+	return Data\exact_attrs( $block, $data );
+}
+
