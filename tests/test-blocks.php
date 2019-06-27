@@ -117,7 +117,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_multiple_blocks_attrs() {
-		$object = [ 'content' => [ 'raw' => get_post( self::$post_with_image_id )->post_content ] ];
+		$object = [ 'content' => [ 'raw' => get_post( self::$post_with_blocks_id )->post_content ] ];
 		// Replace this with some actual testing code.
 		$data = Data\blocks_get_callback( $object );
 		$this->assertEquals( 'core/fake_atts', $data[1]['blockName'] );
@@ -129,7 +129,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_image_blocks_attrs() {
-		$object = [ 'content' => [ 'raw' => get_post( self::$post_with_blocks_id )->post_content ] ];
+		$object = [ 'content' => [ 'raw' => get_post( self::$post_with_image_id )->post_content ] ];
 		$data   = Data\blocks_get_callback( $object );
 		$this->assertEquals( 'core/image', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'src', $data[0]['attrs'] );
