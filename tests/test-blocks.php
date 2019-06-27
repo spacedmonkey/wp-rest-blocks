@@ -29,6 +29,13 @@ class BlocksTest extends WP_UnitTestCase {
 	protected static $post_with_blocks_id;
 
 	/**
+	 * Static variable for post object.
+	 *
+	 * @var int $post_with_blocks_id Post id.
+	 */
+	protected static $post_with_image_id;
+
+	/**
 	 *
 	 * @param $factory
 	 */
@@ -55,6 +62,17 @@ class BlocksTest extends WP_UnitTestCase {
 				'post_content' => $mixed_post_content,
 			)
 		);
+
+		$mixed_post_content = '
+		<!-- wp:image {"align":"center"} -->
+			<div class="wp-block-image"><figure class="aligncenter"><img src="https://cldup.com/YLYhpou2oq.jpg" alt="Test alt"/><figcaption>Give it a try. Press the "really wide" button on the image toolbar.</figcaption></figure></div>
+		<!-- /wp:image -->';
+
+		self::$post_with_image_id = $factory->post->create(
+			array(
+				'post_content' => $mixed_post_content,
+			)
+		);
 	}
 
 	/**
@@ -77,7 +95,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_get_blocks() {
-		$object = [ 'content' => [ 'raw' => get_the_content( null, false, self::$post_id ) ] ];
+		$object = [ 'content' => [ 'raw' => get_post( self::$post_id )->post_content ] ];
 		// Replace this with some actual testing code.
 		$this->assertTrue( is_array( Data\blocks_get_callback( $object ) ) );
 	}
@@ -99,11 +117,26 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_multiple_blocks_attrs() {
-		$object = [ 'content' => [ 'raw' => get_post( self::$post_with_blocks_id )->post_content ] ];
+		$object = [ 'content' => [ 'raw' => get_post( self::$post_with_image_id )->post_content ] ];
 		// Replace this with some actual testing code.
 		$data = Data\blocks_get_callback( $object );
 		$this->assertEquals( 'core/fake_atts', $data[1]["blockName"] );
 		$this->assertEquals( 'b1', $data[1]["attrs"]["value"] );
 		$this->assertArrayHasKey( 'value', $data[1]["attrs"] );
+	}
+
+	/**
+	 *
+	 */
+	public function test_image_blocks_attrs() {
+		$object = [ 'content' => [ 'raw' => get_post( self::$post_with_blocks_id )->post_content ] ];
+		$data = Data\blocks_get_callback( $object );
+		$this->assertEquals( 'core/image', $data[0]["blockName"] );
+		$this->assertArrayHasKey( 'src', $data[0]["attrs"] );
+		$this->assertArrayHasKey( 'alt', $data[0]["attrs"] );
+		$this->assertArrayHasKey( 'caption', $data[0]["attrs"] );
+		$this->assertEquals( 'https://cldup.com/YLYhpou2oq.jpg', $data[0]["attrs"]["src"] );
+		$this->assertEquals( 'Test alt', $data[0]["attrs"]["alt"] );
+		$this->assertEquals( 'Give it a try. Press the "really wide" button on the image toolbar.', $data[0]["attrs"]["caption"] );
 	}
 }
