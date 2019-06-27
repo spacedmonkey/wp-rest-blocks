@@ -7,6 +7,8 @@
 
 namespace WP_REST_Blocks;
 
+use WP_Block_Type_Registry;
+
 /**
  * Bootstrap filters and actions.
  */
