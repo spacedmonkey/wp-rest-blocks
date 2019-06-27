@@ -1,17 +1,17 @@
-=== REST API blocks ===
-Contributors: spacedmonkey
-Donate link: https://example.com/
-Tags: comments, spam
-Requires at least: 5.0
-Tested up to: 5.2
-Requires PHP: 7.0.0
-Stable tag: 0.1.0
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+# REST API blocks #
+**Contributors:** spacedmonkey  
+**Donate link:** https://example.com/  
+**Tags:** comments, spam  
+**Requires at least:** 5.0  
+**Tested up to:** 5.2  
+**Requires PHP:** 7.0.0  
+**Stable tag:** 0.1.0  
+**License:** GPLv2 or later  
+**License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
 Add gutenberg blocks data into the post / page endpoints api.
 
-== Description ==
+## Description ##
 
 A simple plugin to add block data in json format into the rest api. Once installed, there will be two new fields added to the rest api, `has_blocks` and `blocks`.
 For example output.
@@ -45,7 +45,7 @@ For example output.
 ],
 ```
 
-== Installation ==
+## Installation ##
 
 ### Using The WordPress Dashboard
 
@@ -75,7 +75,7 @@ The WP User Roles includes native support for the [GitHub Updater](https://githu
 
 
 
-== Changelog ==
+## Changelog ##
 
-= 0.1.0 =
+### 0.1.0 ###
 * First version.
