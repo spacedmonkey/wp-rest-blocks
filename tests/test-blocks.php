@@ -2,17 +2,26 @@
 /**
  * Class SampleTest
  *
- * @package Wp_Rest_Blocks
+ * @package WP_REST_Blocks
  */
 
 use WP_REST_Blocks;
 
 /**
- * Sample test case.
+ * Test block parsing.
  */
-class SampleTest extends WP_UnitTestCase {
+class BlocksTest extends WP_UnitTestCase {
+	/**
+	 * Static variable for post object.
+	 *
+	 * @var int $post_id Post id.
+	 */
 	protected static $post_id;
 
+	/**
+	 *
+	 * @param $factory
+	 */
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$post_id = $factory->post->create(
 			array(
@@ -21,6 +30,9 @@ class SampleTest extends WP_UnitTestCase {
 		);
 	}
 
+	/**
+	 *
+	 */
 	public static function wpTearDownAfterClass() {
 		wp_delete_post( self::$post_id, true );
 	}

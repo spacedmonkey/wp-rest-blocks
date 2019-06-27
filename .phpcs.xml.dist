@@ -24,6 +24,14 @@
 
 	</rule>
 
+	<rule ref="Squiz.Commenting.FunctionComment">
+		<exclude-pattern>test</exclude-pattern>
+	</rule>
+
+	<rule ref="Generic.Commenting.DocComment">
+		<exclude-pattern>test</exclude-pattern>
+	</rule>
+
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<!-- Value: replace the text domain used. -->
