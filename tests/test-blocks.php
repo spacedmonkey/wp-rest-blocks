@@ -8,6 +8,7 @@
 namespace WP_REST_Blocks\Tests;
 
 use WP_REST_Blocks\Data;
+use WP_UnitTestCase;
 
 /**
  * Test block parsing.
