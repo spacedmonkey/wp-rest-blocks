@@ -60,7 +60,7 @@ class BlocksTest extends WP_UnitTestCase {
 			)
 		);
 		$mixed_post_content      = '
-		<!-- wp:core/gallery {"ids": [1,2]}-->
+		<!-- wp:core/gallery {"ids": [1,2]} -->
 		<ul class="wp-block-gallery columns-2 is-cropped">
 			<li class="blocks-gallery-item">
 				<figure>
@@ -154,7 +154,7 @@ class BlocksTest extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'url', $data[0]['attrs'] );
 		$this->assertArrayHasKey( 'alt', $data[0]['attrs'] );
 		$this->assertArrayHasKey( 'caption', $data[0]['attrs'] );
-		$this->assertEquals( 'https://cldup.com/YLYhpou2oq.jpg', $data[0]['attrs']['src'] );
+		$this->assertEquals( 'https://cldup.com/YLYhpou2oq.jpg', $data[0]['attrs']['url'] );
 		$this->assertEquals( 'Test alt', $data[0]['attrs']['alt'] );
 		$this->assertEquals( 'Give it a try. Press the "really wide" button on the image toolbar.', $data[0]['attrs']['caption'] );
 	}
@@ -184,9 +184,9 @@ class BlocksTest extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'align', $data[0]['attrs'] );
 		$this->assertArrayHasKey( 'anchor', $data[0]['attrs'] );
 
-		$this->assertSame( 3, $data[0]['attrs']['level'] );
-		$this->assertSame( 'class', $data[0]['attrs']['className'] );
-		$this->assertSame( 'center', $data[0]['attrs']['align'] );
-		$this->assertSame( 'anchor', $data[0]['attrs']['anchor'] );
+		$this->assertEquals( 3, $data[0]['attrs']['level'] );
+		$this->assertEquals( 'class', $data[0]['attrs']['className'] );
+		$this->assertEquals( 'center', $data[0]['attrs']['align'] );
+		$this->assertEquals( 'anchor', $data[0]['attrs']['anchor'] );
 	}
 }
