@@ -101,6 +101,40 @@ class BlocksTest extends WP_UnitTestCase {
 				'post_content' => $mixed_post_content,
 			)
 		);
+		$mixed_post_content       = '
+		<!-- wp:core/paragraph {"align":"right"} -->
+		<p style="text-align:right;">... like this one, which is separate from the above and right aligned.</p>
+		<!-- /wp:core/paragraph -->';
+
+		self::$post_ids['paragraph'] = $factory->post->create(
+			array(
+				'post_content' => $mixed_post_content,
+			)
+		);
+
+		$mixed_post_content = '
+		<!-- wp:core/video -->
+		<figure class="wp-block-video"><video controls src="https://awesome-fake.video/file.mp4"></video></figure>
+		<!-- /wp:core/video -->';
+
+		self::$post_ids['video'] = $factory->post->create(
+			array(
+				'post_content' => $mixed_post_content,
+			)
+		);
+
+		$mixed_post_content = '
+		<!-- wp:core/audio {"align":"right"} -->
+		<figure class="wp-block-audio alignright">
+		    <audio controls="" src="https://media.simplecast.com/episodes/audio/80564/draft-podcast-51-livePublish2.mp3"></audio>
+		</figure>
+		<!-- /wp:core/audio -->';
+
+		self::$post_ids['audio'] = $factory->post->create(
+			array(
+				'post_content' => $mixed_post_content,
+			)
+		);
 
 		self::$post_ids['empty'] = $factory->post->create(
 			array(
@@ -239,5 +273,41 @@ class BlocksTest extends WP_UnitTestCase {
 		$this->assertEquals( 'https://github.com/WordPress/gutenberg', $data[0]['attrs']['url'] );
 		$this->assertEquals( 'center', $data[0]['attrs']['align'] );
 		$this->assertEquals( 'Gutenberg is cool', $data[0]['attrs']['title'] );
+	}
+
+	/**
+	 *
+	 */
+	public function test_audio_blocks_attrs() {
+		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['audio'] )->post_content ] ];
+		$data   = Data\blocks_get_callback( $object );
+		$this->assertEquals( 'core/audio', $data[0]['blockName'] );
+		$this->assertArrayHasKey( 'src', $data[0]['attrs'] );
+
+		$this->assertEquals( 'https://media.simplecast.com/episodes/audio/80564/draft-podcast-51-livePublish2.mp3', $data[0]['attrs']['src'] );
+	}
+
+	/**
+	 *
+	 */
+	public function test_video_blocks_attrs() {
+		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['video'] )->post_content ] ];
+		$data   = Data\blocks_get_callback( $object );
+		$this->assertEquals( 'core/video', $data[0]['blockName'] );
+		$this->assertArrayHasKey( 'src', $data[0]['attrs'] );
+
+		$this->assertEquals( 'https://awesome-fake.video/file.mp4', $data[0]['attrs']['url'] );
+	}
+
+	/**
+	 *
+	 */
+	public function test_paragrap_blocks_attrs() {
+		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['paragraph'] )->post_content ] ];
+		$data   = Data\blocks_get_callback( $object );
+		$this->assertEquals( 'core/paragraph', $data[0]['blockName'] );
+		$this->assertArrayHasKey( 'text', $data[0]['attrs'] );
+
+		$this->assertEquals( '... like this one, which is separate from the above and right aligned.', $data[0]['attrs']['text'] );
 	}
 }
