@@ -202,9 +202,6 @@ function block_data_video( $block ) {
 			'attribute' => 'controls',
 			'default'   => true,
 		],
-		'id'          => [
-			'type' => 'number',
-		],
 		'loop'        => [
 			'type'      => 'boolean',
 			'source'    => 'attribute',
@@ -255,7 +252,7 @@ function block_data_video( $block ) {
  *
  * @return mixed
  */
-function block_data_auio( $block ) {
+function block_data_audio( $block ) {
 	$data = [
 		'src'      => [
 			'type'      => 'string',
@@ -267,9 +264,6 @@ function block_data_auio( $block ) {
 			'type'     => 'string',
 			'source'   => 'html',
 			'selector' => 'figcaption',
-		],
-		'id'       => [
-			'type' => 'number',
 		],
 		'autoplay' => [
 			'type'      => 'boolean',
