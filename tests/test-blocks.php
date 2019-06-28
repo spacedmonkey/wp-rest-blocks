@@ -19,28 +19,14 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 * @var int $post_id Post id.
 	 */
-	protected static $post_id;
-
-	/**
-	 * Static variable for post object.
-	 *
-	 * @var int $post_with_blocks_id Post id.
-	 */
-	protected static $post_with_blocks_id;
-
-	/**
-	 * Static variable for post object.
-	 *
-	 * @var int $post_with_blocks_id Post id.
-	 */
-	protected static $post_with_image_id;
+	protected static $post_ids = array();
 
 	/**
 	 *
 	 * @param $factory
 	 */
 	public static function wpSetUpBeforeClass( $factory ) {
-		self::$post_id = $factory->post->create(
+		self::$post_ids['separator'] = $factory->post->create(
 			array(
 				'post_content' => '<!-- wp:core/separator -->',
 			)
@@ -57,7 +43,7 @@ class BlocksTest extends WP_UnitTestCase {
 							  '<!-- wp:custom/fake {"value":"b2"} /-->' .
 							  'after';
 
-		self::$post_with_blocks_id = $factory->post->create(
+		self::$post_ids['multi'] = $factory->post->create(
 			array(
 				'post_content' => $mixed_post_content,
 			)
@@ -68,7 +54,38 @@ class BlocksTest extends WP_UnitTestCase {
 			<div class="wp-block-image"><figure class="aligncenter"><img src="https://cldup.com/YLYhpou2oq.jpg" alt="Test alt"/><figcaption>Give it a try. Press the "really wide" button on the image toolbar.</figcaption></figure></div>
 		<!-- /wp:image -->';
 
-		self::$post_with_image_id = $factory->post->create(
+		self::$post_ids['image'] = $factory->post->create(
+			array(
+				'post_content' => $mixed_post_content,
+			)
+		);
+		$mixed_post_content      = '
+		<!-- wp:core/gallery {"ids": [1,2]}-->
+		<ul class="wp-block-gallery columns-2 is-cropped">
+			<li class="blocks-gallery-item">
+				<figure>
+					<img src="https://cldup.com/uuUqE_dXzy.jpg" alt="title" />
+				</figure>
+			</li>
+			<li class="blocks-gallery-item">
+				<figure>
+					<img src="http://google.com/hi.png" alt="title" />
+				</figure>
+			</li>
+		</ul>
+		<!-- /wp:core/gallery -->';
+
+		self::$post_ids['gallery'] = $factory->post->create(
+			array(
+				'post_content' => $mixed_post_content,
+			)
+		);
+		$mixed_post_content        = '
+		<!-- wp:heading {"level":3,"align":"center","className":"class"} -->
+		<h3 style="text-align:center" id="anchor" class="class">Header</h3>
+		<!-- /wp:heading -->';
+
+		self::$post_ids['heading'] = $factory->post->create(
 			array(
 				'post_content' => $mixed_post_content,
 			)
@@ -79,14 +96,16 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public static function wpTearDownAfterClass() {
-		wp_delete_post( self::$post_id, true );
+		foreach ( self::$post_ids as $post_id ) {
+			wp_delete_post( $post_id, true );
+		}
 	}
 
 	/**
 	 *
 	 */
 	public function test_has_block() {
-		$object = [ 'id' => self::$post_id ];
+		$object = [ 'id' => self::$post_ids['separator'] ];
 		// Replace this with some actual testing code.
 		$this->assertTrue( Data\has_blocks_get_callback( $object ) );
 	}
@@ -95,7 +114,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_get_blocks() {
-		$object = [ 'content' => [ 'raw' => get_post( self::$post_id )->post_content ] ];
+		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['separator'] )->post_content ] ];
 		// Replace this with some actual testing code.
 		$this->assertTrue( is_array( Data\blocks_get_callback( $object ) ) );
 	}
@@ -104,7 +123,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_multiple_blocks() {
-		$object = [ 'content' => [ 'raw' => get_post( self::$post_with_blocks_id )->post_content ] ];
+		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['multi'] )->post_content ] ];
 		// Replace this with some actual testing code.
 		$data = Data\blocks_get_callback( $object );
 		$this->assertTrue( is_array( $data ) );
@@ -117,7 +136,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_multiple_blocks_attrs() {
-		$object = [ 'content' => [ 'raw' => get_post( self::$post_with_blocks_id )->post_content ] ];
+		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['multi'] )->post_content ] ];
 		// Replace this with some actual testing code.
 		$data = Data\blocks_get_callback( $object );
 		$this->assertEquals( 'core/fake_atts', $data[1]['blockName'] );
@@ -129,7 +148,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_image_blocks_attrs() {
-		$object = [ 'content' => [ 'raw' => get_post( self::$post_with_image_id )->post_content ] ];
+		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['image'] )->post_content ] ];
 		$data   = Data\blocks_get_callback( $object );
 		$this->assertEquals( 'core/image', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'url', $data[0]['attrs'] );
@@ -138,5 +157,36 @@ class BlocksTest extends WP_UnitTestCase {
 		$this->assertEquals( 'https://cldup.com/YLYhpou2oq.jpg', $data[0]['attrs']['src'] );
 		$this->assertEquals( 'Test alt', $data[0]['attrs']['alt'] );
 		$this->assertEquals( 'Give it a try. Press the "really wide" button on the image toolbar.', $data[0]['attrs']['caption'] );
+	}
+
+	/**
+	 *
+	 */
+	public function test_gallery() {
+		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['gallery'] )->post_content ] ];
+		$data   = Data\blocks_get_callback( $object );
+		$this->assertEquals( 'core/gallery', $data[0]['blockName'] );
+		$this->assertTrue( is_array( $data[0]['attrs']['ids'] ) );
+		$this->assertFalse( $data[0]['attrs']['imageCrop'] );
+		$this->assertEquals( 'none', $data[0]['attrs']['linkTo'] );
+		$this->assertEquals( 2, $data[0]['attrs']['columns'] );
+	}
+
+	/**
+	 *
+	 */
+	public function test_heading_blocks_attrs() {
+		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['heading'] )->post_content ] ];
+		$data   = Data\blocks_get_callback( $object );
+		$this->assertEquals( 'core/heading', $data[0]['blockName'] );
+		$this->assertArrayHasKey( 'level', $data[0]['attrs'] );
+		$this->assertArrayHasKey( 'className', $data[0]['attrs'] );
+		$this->assertArrayHasKey( 'align', $data[0]['attrs'] );
+		$this->assertArrayHasKey( 'anchor', $data[0]['attrs'] );
+
+		$this->assertSame( 3, $data[0]['attrs']['level'] );
+		$this->assertSame( 'class', $data[0]['attrs']['className'] );
+		$this->assertSame( 'center', $data[0]['attrs']['align'] );
+		$this->assertSame( 'anchor', $data[0]['attrs']['anchor'] );
 	}
 }
