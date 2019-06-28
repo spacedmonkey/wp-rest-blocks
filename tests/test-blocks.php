@@ -296,7 +296,7 @@ class BlocksTest extends WP_UnitTestCase {
 		$this->assertEquals( 'core/video', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'src', $data[0]['attrs'] );
 
-		$this->assertEquals( 'https://awesome-fake.video/file.mp4', $data[0]['attrs']['url'] );
+		$this->assertEquals( 'https://awesome-fake.video/file.mp4', $data[0]['attrs']['src'] );
 	}
 
 	/**
