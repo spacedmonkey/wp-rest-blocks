@@ -90,6 +90,23 @@ class BlocksTest extends WP_UnitTestCase {
 				'post_content' => $mixed_post_content,
 			)
 		);
+
+		$mixed_post_content = '
+		<!-- wp:core/button {"align":"center"} -->
+		<div class="wp-block-button aligncenter"><a class="wp-block-button__link" title="Gutenberg is cool" href="https://github.com/WordPress/gutenberg">Help build Gutenberg</a></div>
+		<!-- /wp:core/button -->';
+
+		self::$post_ids['button'] = $factory->post->create(
+			array(
+				'post_content' => $mixed_post_content,
+			)
+		);
+
+		self::$post_ids['empty'] = $factory->post->create(
+			array(
+				'post_content' => '',
+			)
+		);
 	}
 
 	/**
@@ -106,7 +123,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 */
 	public function test_has_block() {
 		$object = [ 'id' => self::$post_ids['separator'] ];
-		// Replace this with some actual testing code.
+
 		$this->assertTrue( Data\has_blocks_get_callback( $object ) );
 	}
 
@@ -115,8 +132,23 @@ class BlocksTest extends WP_UnitTestCase {
 	 */
 	public function test_get_blocks() {
 		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['separator'] )->post_content ] ];
-		// Replace this with some actual testing code.
+
 		$this->assertTrue( is_array( Data\blocks_get_callback( $object ) ) );
+	}
+
+	/**
+	 *
+	 */
+	public function test_empty_string() {
+		$object = [
+			'id'      => self::$post_ids['empty'],
+			'content' => [ 'raw' => get_post( self::$post_ids['empty'] )->post_content ],
+		];
+		$data   = Data\blocks_get_callback( $object );
+
+		$this->assertTrue( is_array( $data ) );
+		$this->assertTrue( empty( $data ) );
+		$this->assertFalse( Data\has_blocks_get_callback( $object ) );
 	}
 
 	/**
@@ -124,7 +156,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 */
 	public function test_multiple_blocks() {
 		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['multi'] )->post_content ] ];
-		// Replace this with some actual testing code.
+
 		$data = Data\blocks_get_callback( $object );
 		$this->assertTrue( is_array( $data ) );
 		$this->assertEquals( 5, count( $data ) );
@@ -137,7 +169,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 */
 	public function test_multiple_blocks_attrs() {
 		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['multi'] )->post_content ] ];
-		// Replace this with some actual testing code.
+
 		$data = Data\blocks_get_callback( $object );
 		$this->assertEquals( 'core/fake_atts', $data[1]['blockName'] );
 		$this->assertEquals( 'b1', $data[1]['attrs']['value'] );
@@ -188,5 +220,24 @@ class BlocksTest extends WP_UnitTestCase {
 		$this->assertEquals( 'class', $data[0]['attrs']['className'] );
 		$this->assertEquals( 'center', $data[0]['attrs']['align'] );
 		$this->assertEquals( 'anchor', $data[0]['attrs']['anchor'] );
+	}
+
+
+	/**
+	 *
+	 */
+	public function test_button_blocks_attrs() {
+		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['button'] )->post_content ] ];
+		$data   = Data\blocks_get_callback( $object );
+		$this->assertEquals( 'core/button', $data[0]['blockName'] );
+		$this->assertArrayHasKey( 'text', $data[0]['attrs'] );
+		$this->assertArrayHasKey( 'url', $data[0]['attrs'] );
+		$this->assertArrayHasKey( 'align', $data[0]['attrs'] );
+		$this->assertArrayHasKey( 'title', $data[0]['attrs'] );
+
+		$this->assertEquals( 'Help build Gutenberg', $data[0]['attrs']['text'] );
+		$this->assertEquals( 'https://github.com/WordPress/gutenberg', $data[0]['attrs']['url'] );
+		$this->assertEquals( 'center', $data[0]['attrs']['align'] );
+		$this->assertEquals( 'Gutenberg is cool', $data[0]['attrs']['title'] );
 	}
 }
