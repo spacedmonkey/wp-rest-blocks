@@ -73,7 +73,7 @@ For example output.
 
 ## GitHub Updater
 
-The WP User Roles includes native support for the [GitHub Updater](https://github.com/afragen/github-updater) which allows you to provide updates to your WordPress plugin from GitHub.
+REST API blocks includes native support for the [GitHub Updater](https://github.com/afragen/github-updater) which allows you to provide updates to your WordPress plugin from GitHub.
 
 
 
