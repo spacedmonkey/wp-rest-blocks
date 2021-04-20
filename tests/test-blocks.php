@@ -156,7 +156,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_has_block() {
-		$object = [ 'id' => self::$post_ids['separator'] ];
+		$object = array( 'id' => self::$post_ids['separator'] );
 
 		$this->assertTrue( Data\has_blocks_get_callback( $object ) );
 	}
@@ -165,7 +165,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_get_blocks() {
-		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['separator'] )->post_content ] ];
+		$object = array( 'content' => array( 'raw' => get_post( self::$post_ids['separator'] )->post_content ) );
 
 		$this->assertTrue( is_array( Data\blocks_get_callback( $object ) ) );
 	}
@@ -174,10 +174,10 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_empty_string() {
-		$object = [
+		$object = array(
 			'id'      => self::$post_ids['empty'],
-			'content' => [ 'raw' => get_post( self::$post_ids['empty'] )->post_content ],
-		];
+			'content' => array( 'raw' => get_post( self::$post_ids['empty'] )->post_content ),
+		);
 		$data   = Data\blocks_get_callback( $object );
 
 		$this->assertTrue( is_array( $data ) );
@@ -189,7 +189,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_multiple_blocks() {
-		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['multi'] )->post_content ] ];
+		$object = array( 'content' => array( 'raw' => get_post( self::$post_ids['multi'] )->post_content ) );
 
 		$data = Data\blocks_get_callback( $object );
 		$this->assertTrue( is_array( $data ) );
@@ -202,7 +202,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_multiple_blocks_attrs() {
-		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['multi'] )->post_content ] ];
+		$object = array( 'content' => array( 'raw' => get_post( self::$post_ids['multi'] )->post_content ) );
 
 		$data = Data\blocks_get_callback( $object );
 		$this->assertEquals( 'core/fake_atts', $data[1]['blockName'] );
@@ -214,7 +214,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_image_blocks_attrs() {
-		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['image'] )->post_content ] ];
+		$object = array( 'content' => array( 'raw' => get_post( self::$post_ids['image'] )->post_content ) );
 		$data   = Data\blocks_get_callback( $object );
 		$this->assertEquals( 'core/image', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'url', $data[0]['attrs'] );
@@ -229,7 +229,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_gallery() {
-		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['gallery'] )->post_content ] ];
+		$object = array( 'content' => array( 'raw' => get_post( self::$post_ids['gallery'] )->post_content ) );
 		$data   = Data\blocks_get_callback( $object );
 		$this->assertEquals( 'core/gallery', $data[0]['blockName'] );
 		$this->assertTrue( is_array( $data[0]['attrs']['ids'] ) );
@@ -242,7 +242,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_heading_blocks_attrs() {
-		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['heading'] )->post_content ] ];
+		$object = array( 'content' => array( 'raw' => get_post( self::$post_ids['heading'] )->post_content ) );
 		$data   = Data\blocks_get_callback( $object );
 		$this->assertEquals( 'core/heading', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'level', $data[0]['attrs'] );
@@ -261,7 +261,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_button_blocks_attrs() {
-		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['button'] )->post_content ] ];
+		$object = array( 'content' => array( 'raw' => get_post( self::$post_ids['button'] )->post_content ) );
 		$data   = Data\blocks_get_callback( $object );
 		$this->assertEquals( 'core/button', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'text', $data[0]['attrs'] );
@@ -279,7 +279,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_audio_blocks_attrs() {
-		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['audio'] )->post_content ] ];
+		$object = array( 'content' => array( 'raw' => get_post( self::$post_ids['audio'] )->post_content ) );
 		$data   = Data\blocks_get_callback( $object );
 		$this->assertEquals( 'core/audio', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'src', $data[0]['attrs'] );
@@ -291,7 +291,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_video_blocks_attrs() {
-		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['video'] )->post_content ] ];
+		$object = array( 'content' => array( 'raw' => get_post( self::$post_ids['video'] )->post_content ) );
 		$data   = Data\blocks_get_callback( $object );
 		$this->assertEquals( 'core/video', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'src', $data[0]['attrs'] );
@@ -303,7 +303,7 @@ class BlocksTest extends WP_UnitTestCase {
 	 *
 	 */
 	public function test_paragrap_blocks_attrs() {
-		$object = [ 'content' => [ 'raw' => get_post( self::$post_ids['paragraph'] )->post_content ] ];
+		$object = array( 'content' => array( 'raw' => get_post( self::$post_ids['paragraph'] )->post_content ) );
 		$data   = Data\blocks_get_callback( $object );
 		$this->assertEquals( 'core/paragraph', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'text', $data[0]['attrs'] );
