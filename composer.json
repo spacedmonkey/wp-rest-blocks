@@ -3,7 +3,7 @@
   "type": "wordpress-plugin",
   "description": "Add gutenberg blocks data into the post / page endpoints api.",
   "homepage": "http://wp-api.org/",
-  "license": "GPL2+",
+	"license": "GPL-2.0-or-later",
   "authors": [
     {
       "name": "Jonny Harris",
