@@ -12,5 +12,12 @@
     "minimatch": "^3.0.2",
     "underscore.string": "^3.3.5"
   },
-  "dependencies": {}
+  "dependencies": {},
+   "scripts": {
+     "lint:php": "composer phpcs",
+     "lint:php:fix": "composer phpcbf",
+     "test:php": "vendor/bin/phpunit",
+     "test:php:multisite": "vendor/bin/phpunit -c phpunit-multisite.xml.dist",
+     "test:php:help": "npm run test:php -- --help"
+   }
 }

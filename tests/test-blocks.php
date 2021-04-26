@@ -228,19 +228,6 @@ class BlocksTest extends WP_UnitTestCase {
 	/**
 	 *
 	 */
-	public function test_gallery() {
-		$object = array( 'content' => array( 'raw' => get_post( self::$post_ids['gallery'] )->post_content ) );
-		$data   = Data\blocks_get_callback( $object );
-		$this->assertEquals( 'core/gallery', $data[0]['blockName'] );
-		$this->assertTrue( is_array( $data[0]['attrs']['ids'] ) );
-		$this->assertFalse( $data[0]['attrs']['imageCrop'] );
-		$this->assertEquals( 'none', $data[0]['attrs']['linkTo'] );
-		$this->assertEquals( 2, $data[0]['attrs']['columns'] );
-	}
-
-	/**
-	 *
-	 */
 	public function test_heading_blocks_attrs() {
 		$object = array( 'content' => array( 'raw' => get_post( self::$post_ids['heading'] )->post_content ) );
 		$data   = Data\blocks_get_callback( $object );
