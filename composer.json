@@ -3,7 +3,7 @@
   "type": "wordpress-plugin",
   "description": "Add gutenberg blocks data into the post / page endpoints api.",
   "homepage": "http://wp-api.org/",
-  "license": "GPL2+",
+	"license": "GPL-2.0-or-later",
   "authors": [
     {
       "name": "Jonny Harris",
@@ -14,18 +14,25 @@
     "issues": "https://github.com/spacedmonkey/wp-user-roles/issues"
   },
   "require": {
-    "composer/installers": "~1.0",
-    "php": "^7.0"
+    "composer/installers": "^1.10",
+    "php": "^7.0 || ^8.0"
+  },
+  "config": {
+    "discard-changes": true,
+    "platform": {
+      "php": "7.0"
+    },
+    "sort-packages": true
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.3.1",
     "wp-coding-standards/wpcs": "^2.1.1",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
-    "phpcompatibility/phpcompatibility-wp": "^2.0",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
     "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0"
   },
   "scripts": {
-    "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs",
-    "post-update-cmd" : "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs"
+    "phpcbf": "phpcbf",
+    "phpcs": "phpcs"
   }
 }
