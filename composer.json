@@ -15,7 +15,7 @@
   },
   "require": {
     "composer/installers": "^1.10",
-    "php": "^7.0 || ^8.0"
+    "php": "^7.0 || ^8.0",
     "tburry/pquery": "^1.1"
   },
   "config": {
