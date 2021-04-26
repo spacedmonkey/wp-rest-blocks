@@ -103,30 +103,45 @@ function handle_do_block( $block, $post_id = 0 ) {
 	}
 
 	$block_object = new WP_Block( $block );
-	$attr         = array();
+	$attr         = $block['attrs'];
 	if ( $block_object && $block_object->block_type ) {
 		$attributes = $block_object->block_type->attributes;
-		$attr       = $block['attrs'];
+		$supports   = $block_object->block_type->supports;
+		if ( $supports && isset( $supports['anchor'] ) && $supports['anchor'] ) {
+				$attributes['anchor'] = [
+					'type'      => 'string',
+					'source'    => 'attribute',
+					'attribute' => 'id',
+					'selector'  => '*',
+					'default'   => '',
+				];
+		}
+
 		if ( $attributes ) {
-			$dom = pQuery::parseStr( $block_object->inner_html );
+			$dom = pQuery::parseStr( trim( $block_object->inner_html ) );
 			foreach ( $attributes as $key => $attribute ) {
 				if ( isset( $attribute['source'] ) ) {
 					$value = null;
-					if ( 'attribute' === $attribute['source'] && isset( $attribute['selector'] ) ) {
-						$value = $dom->query( $attribute['selector'] )->attr( $attribute['attribute'] );
-					} elseif ( 'html' === $attribute['source'] && isset( $attribute['selector'] ) ) {
-						$value = $dom->query( $attribute['selector'] )->html();
-					} elseif ( 'text' === $attribute['source'] && isset( $attribute['selector'] ) ) {
-						$value = $dom->query( $attribute['selector'] )->text();
-					} elseif ( 'meta' === $attribute['source'] && isset( $attribute['meta'] ) ) {
+					if ( isset( $attribute['selector'] ) ) {
+						if ( 'attribute' === $attribute['source'] ) {
+							$value = $dom->query( $attribute['selector'] )->attr( $attribute['attribute'] );
+						} elseif ( 'html' === $attribute['source'] ) {
+							$value = $dom->query( $attribute['selector'] )->html();
+						} elseif ( 'text' === $attribute['source'] ) {
+							$value = $dom->query( $attribute['selector'] )->text();
+						}
+					}
+					if ( 'meta' === $attribute['source'] && isset( $attribute['meta'] ) ) {
 						$value = get_post_meta( $post_id, $attribute['meta'], true );
 					}
 
 					if ( null !== $value ) {
 						$attr[ $key ] = $value;
-					} elseif ( isset( $attribute['default'] ) ) {
-						$attr[ $key ] = $attribute['default'];
 					}
+				}
+
+				if ( ! isset( $attr[ $key ] ) && isset( $attribute['default'] ) ) {
+					$attr[ $key ] = $attribute['default'];
 				}
 
 				if ( isset( $attr[ $key ] ) && rest_validate_value_from_schema( $attr[ $key ], $attribute ) ) {
