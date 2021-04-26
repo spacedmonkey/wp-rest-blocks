@@ -28,6 +28,11 @@
 		<exclude-pattern>test</exclude-pattern>
 	</rule>
 
+	<rule ref="WordPress-Core">
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax" />
+		<exclude name="WordPress.PHP.DisallowShortTernary" />
+	</rule>
+
 	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
 		<exclude-pattern>test</exclude-pattern>
     </rule>
