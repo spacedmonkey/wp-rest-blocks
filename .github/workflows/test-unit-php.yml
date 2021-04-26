@@ -42,18 +42,9 @@ jobs:
     continue-on-error: ${{ matrix.experimental == true }}
     strategy:
       matrix:
-        php: ['7.0', '5.6']
+        php: ['7.0', '7.4', '8.0']
         wp: ['latest']
         include:
-          - php: '7.4'
-            wp: 'latest'
-            
-          - php: '5.6'
-            wp: '5.3'
-
-          - php: '8.0'
-            wp: 'latest'
-
           - php: '7.4'
             wp: 'trunk'
             experimental: true
