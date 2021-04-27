@@ -49,33 +49,7 @@ For example output.
 
 ## Installation ##
 
-### Using The WordPress Dashboard
-
-1. Navigate to the 'Add New' in the plugins dashboard
-2. Search for 'wp-rest-blocks'
-3. Click 'Install Now'
-4. Activate the plugin on the Plugin dashboard
-
-### Uploading in WordPress Dashboard
-
-1. Navigate to the 'Add New' in the plugins dashboard
-2. Navigate to the 'Upload' area
-3. Select `wp-rest-blocks.zip` from your computer
-4. Click 'Install Now'
-5. Activate the plugin in the Plugin dashboard
-
-### Using FTP
-1. Download `wp-rest-blocks.zip`
-2. Extract the `wp-rest-blocks` directory to your computer
-3. Upload the `wp-rest-blocks` directory to the `/wp-content/plugins/` directory
-4. Activate the plugin in the Plugin dashboard
-
-
-## GitHub Updater
-
-REST API blocks includes native support for the [GitHub Updater](https://github.com/afragen/github-updater) which allows you to provide updates to your WordPress plugin from GitHub.
-
-
+Installation requires you to check the project out in plugin directory and do a `composer install`.
 
 ## Changelog ##
 
