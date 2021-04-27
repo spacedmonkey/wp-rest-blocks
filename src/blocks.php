@@ -104,7 +104,7 @@ function blocks_get_callback( array $object ) {
  *
  * @return array
  */
-function handle_do_block( $block, $post_id = 0 ) {
+function handle_do_block( array $block, $post_id = 0 ) {
 	if ( ! $block['blockName'] ) {
 		return false;
 	}
