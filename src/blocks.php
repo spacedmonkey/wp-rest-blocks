@@ -11,6 +11,8 @@ use WP_Block_Type_Registry;
 
 /**
  * Bootstrap filters and actions.
+ *
+ * @return void
  */
 function bootstrap() {
 	add_action( 'rest_api_init', __NAMESPACE__ . '\\wp_rest_blocks_init' );
@@ -18,6 +20,8 @@ function bootstrap() {
 
 /**
  * Add rest api fields.
+ *
+ * @return void
  */
 function wp_rest_blocks_init() {
 	$types = get_post_types(
@@ -30,27 +34,27 @@ function wp_rest_blocks_init() {
 	register_rest_field(
 		$types,
 		'has_blocks',
-		array(
+		[
 			'get_callback'    => __NAMESPACE__ . '\\has_blocks_get_callback',
 			'update_callback' => null,
-			'schema'          => array(
+			'schema'          => [
 				'description' => __( 'Has blocks.', 'wp-rest-blocks' ),
 				'type'        => 'boolean',
-			),
-		)
+			],
+		]
 	);
 
 	register_rest_field(
 		$types,
 		'blocks',
-		array(
+		[
 			'get_callback'    => __NAMESPACE__ . '\\blocks_get_callback',
 			'update_callback' => null,
-			'schema'          => array(
+			'schema'          => [
 				'description' => __( 'Blocks.', 'wp-rest-blocks' ),
 				'type'        => 'object',
-			),
-		)
+			],
+		]
 	);
 }
 
@@ -62,7 +66,7 @@ function wp_rest_blocks_init() {
  *
  * @return bool
  */
-function has_blocks_get_callback( $object ) {
+function has_blocks_get_callback( array $object ) {
 	return has_blocks( $object['id'] );
 }
 
@@ -73,7 +77,7 @@ function has_blocks_get_callback( $object ) {
  *
  * @return array
  */
-function blocks_get_callback( $object ) {
+function blocks_get_callback( array $object ) {
 	$blocks = parse_blocks( $object['content']['raw'] );
 	$output = [];
 	foreach ( $blocks as $block ) {
@@ -93,7 +97,7 @@ function blocks_get_callback( $object ) {
  *
  * @return array
  */
-function handle_do_block( $block ) {
+function handle_do_block( array $block ) {
 	if ( ! $block['blockName'] ) {
 		return false;
 	}
@@ -165,7 +169,7 @@ function exact_attrs( $block, $data ) {
 	$html  = $block['rendered'];
 
 	foreach ( $data as $key => $datum ) {
-		$array = array();
+		$array = [];
 
 		if ( 'attribute' === $datum['source'] ) {
 			preg_match( '/<' . $datum['selector'] . '.*?' . $datum['attribute'] . '="([^"]*)"/i', $html, $array );

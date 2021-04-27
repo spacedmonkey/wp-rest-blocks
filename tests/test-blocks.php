@@ -8,18 +8,18 @@
 namespace WP_REST_Blocks\Tests;
 
 use WP_REST_Blocks\Data;
-use WP_UnitTestCase;
+use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 /**
  * Test block parsing.
  */
-class BlocksTest extends WP_UnitTestCase {
+class BlocksTest extends TestCase {
 	/**
 	 * Static variable for post object.
 	 *
 	 * @var int $post_id Post id.
 	 */
-	protected static $post_ids = array();
+	protected static $post_ids = [];
 
 	/**
 	 *
@@ -27,9 +27,9 @@ class BlocksTest extends WP_UnitTestCase {
 	 */
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$post_ids['separator'] = $factory->post->create(
-			array(
+			[
 				'post_content' => '<!-- wp:core/separator -->',
-			)
+			]
 		);
 
 		$mixed_post_content = 'before' .
@@ -44,9 +44,9 @@ class BlocksTest extends WP_UnitTestCase {
 							  'after';
 
 		self::$post_ids['multi'] = $factory->post->create(
-			array(
+			[
 				'post_content' => $mixed_post_content,
-			)
+			]
 		);
 
 		$mixed_post_content = '
@@ -55,9 +55,9 @@ class BlocksTest extends WP_UnitTestCase {
 		<!-- /wp:image -->';
 
 		self::$post_ids['image'] = $factory->post->create(
-			array(
+			[
 				'post_content' => $mixed_post_content,
-			)
+			]
 		);
 		$mixed_post_content      = '
 		<!-- wp:core/gallery {"ids": [1,2]} -->
@@ -76,9 +76,9 @@ class BlocksTest extends WP_UnitTestCase {
 		<!-- /wp:core/gallery -->';
 
 		self::$post_ids['gallery'] = $factory->post->create(
-			array(
+			[
 				'post_content' => $mixed_post_content,
-			)
+			]
 		);
 		$mixed_post_content        = '
 		<!-- wp:heading {"level":3,"align":"center","className":"class"} -->
@@ -86,9 +86,9 @@ class BlocksTest extends WP_UnitTestCase {
 		<!-- /wp:heading -->';
 
 		self::$post_ids['heading'] = $factory->post->create(
-			array(
+			[
 				'post_content' => $mixed_post_content,
-			)
+			]
 		);
 
 		$mixed_post_content = '
@@ -97,9 +97,9 @@ class BlocksTest extends WP_UnitTestCase {
 		<!-- /wp:core/button -->';
 
 		self::$post_ids['button'] = $factory->post->create(
-			array(
+			[
 				'post_content' => $mixed_post_content,
-			)
+			]
 		);
 		$mixed_post_content       = '
 		<!-- wp:core/paragraph {"align":"right"} -->
@@ -107,9 +107,9 @@ class BlocksTest extends WP_UnitTestCase {
 		<!-- /wp:core/paragraph -->';
 
 		self::$post_ids['paragraph'] = $factory->post->create(
-			array(
+			[
 				'post_content' => $mixed_post_content,
-			)
+			]
 		);
 
 		$mixed_post_content = '
@@ -118,9 +118,9 @@ class BlocksTest extends WP_UnitTestCase {
 		<!-- /wp:core/video -->';
 
 		self::$post_ids['video'] = $factory->post->create(
-			array(
+			[
 				'post_content' => $mixed_post_content,
-			)
+			]
 		);
 
 		$mixed_post_content = '
@@ -131,15 +131,15 @@ class BlocksTest extends WP_UnitTestCase {
 		<!-- /wp:core/audio -->';
 
 		self::$post_ids['audio'] = $factory->post->create(
-			array(
+			[
 				'post_content' => $mixed_post_content,
-			)
+			]
 		);
 
 		self::$post_ids['empty'] = $factory->post->create(
-			array(
+			[
 				'post_content' => '',
-			)
+			]
 		);
 	}
 
