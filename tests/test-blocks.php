@@ -145,7 +145,7 @@ class BlocksTest extends TestCase {
 		);
 
 		$name     = 'fake/test';
-		$settings = array(
+		$settings = [
 			'icon'       => 'text',
 			'attributes' => [
 				'test_meta' => [
@@ -154,7 +154,7 @@ class BlocksTest extends TestCase {
 					'type'   => 'number',
 				],
 			],
-		);
+		];
 
 		register_block_type( $name, $settings );
 
@@ -162,9 +162,9 @@ class BlocksTest extends TestCase {
 		<!-- wp:fake/test {"align":"right"} --><!-- /wp:fake/test -->';
 
 		self::$post_ids['meta_block'] = $factory->post->create(
-			array(
+			[
 				'post_content' => $mixed_post_content,
-			)
+			]
 		);
 
 		update_post_meta( self::$post_ids['meta_block'], 'test_meta', 99 );
@@ -352,13 +352,13 @@ class BlocksTest extends TestCase {
 	 * @return array
 	 */
 	protected function get_object( $id ) {
-		$object = array();
+		$object = [];
 		$post   = get_post( $id );
 		if ( $post ) {
-			$object = array(
+			$object = [
 				'id'      => $id,
-				'content' => array( 'raw' => $post->post_content ),
-			);
+				'content' => [ 'raw' => $post->post_content ],
+			];
 		}
 
 		return $object;

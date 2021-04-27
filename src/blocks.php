@@ -27,9 +27,9 @@ function bootstrap() {
  */
 function wp_rest_blocks_init() {
 	$post_types = get_post_types(
-		array(
+		[
 			'show_in_rest' => true,
-		),
+		],
 		'names'
 	);
 
@@ -84,7 +84,7 @@ function has_blocks_get_callback( array $object ) {
 function blocks_get_callback( array $object ) {
 	$blocks  = parse_blocks( $object['content']['raw'] );
 	$post_id = $object['id'];
-	$output = [];
+	$output  = [];
 
 	foreach ( $blocks as $block ) {
 		$block_data = handle_do_block( $block, $post_id );
@@ -158,12 +158,11 @@ function handle_do_block( $block, $post_id = 0 ) {
 		}
 	}
 
-
 	$block['rendered'] = $block_object->render();
 	$block['rendered'] = do_shortcode( $block['rendered'] );
 	$block['attrs']    = $attr;
 	if ( ! empty( $block['innerBlocks'] ) ) {
-		$output = array();
+		$output = [];
 		foreach ( $block['innerBlocks'] as $_block ) {
 			$output[] = handle_do_block( $_block, $post_id );
 		}
