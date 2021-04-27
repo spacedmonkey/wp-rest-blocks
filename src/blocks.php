@@ -33,6 +33,10 @@ function wp_rest_blocks_init() {
 		'names'
 	);
 
+	if ( ! function_exists( 'use_block_editor_for_post_type' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/post.php';
+	}
+
 	$types = array_filter( $post_types, 'use_block_editor_for_post_type' );
 
 	register_rest_field(
