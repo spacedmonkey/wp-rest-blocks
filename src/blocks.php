@@ -118,11 +118,11 @@ function handle_do_block( $block, $post_id = 0 ) {
 		}
 
 		if ( $attributes ) {
-			$dom = pQuery::parseStr( trim( $block_object->inner_html ) );
 			foreach ( $attributes as $key => $attribute ) {
 				if ( isset( $attribute['source'] ) ) {
 					$value = null;
 					if ( isset( $attribute['selector'] ) ) {
+						$dom = pQuery::parseStr( trim( $block_object->inner_html ) );
 						if ( 'attribute' === $attribute['source'] ) {
 							$value = $dom->query( $attribute['selector'] )->attr( $attribute['attribute'] );
 						} elseif ( 'html' === $attribute['source'] ) {
