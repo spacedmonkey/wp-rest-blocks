@@ -16,8 +16,8 @@
    "scripts": {
      "lint:php": "composer phpcs",
      "lint:php:fix": "composer phpcbf",
-     "test:php": "vendor/bin/phpunit",
-     "test:php:multisite": "vendor/bin/phpunit -c phpunit-multisite.xml.dist",
-     "test:php:help": "npm run test:php -- --help"
+     "test:php": "composer test",
+     "test:php:multisite": "composer test -- -c phpunit-multisite.xml.dist",
+     "test:php:help": "composer test --help"
    }
 }
