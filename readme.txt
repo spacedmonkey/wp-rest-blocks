@@ -2,10 +2,10 @@
 Contributors: spacedmonkey
 Donate link: https://www.spacedmonkey.com
 Tags: blocks, gutenberg
-Requires at least: 5.0
-Tested up to: 5.2
+Requires at least: 5.5
+Tested up to: 5.7
 Requires PHP: 7.0.0
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,9 @@ The WP User Roles includes native support for the [GitHub Updater](https://githu
 
 
 == Changelog ==
+
+= 0.2.0 =
+* Breaking change. Field names have changed and required WordPress 5.5+
 
 = 0.1.0 =
 * First version.
