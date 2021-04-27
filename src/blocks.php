@@ -9,7 +9,6 @@ namespace WP_REST_Blocks\Data;
 
 use WP_Block;
 use pQuery;
-use Symfony\Component\CssSelector\CssSelectorConverter;
 
 /**
  * Bootstrap filters and actions.
