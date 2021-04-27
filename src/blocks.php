@@ -9,6 +9,7 @@ namespace WP_REST_Blocks\Data;
 
 use WP_Block;
 use pQuery;
+use Symfony\Component\CssSelector\CssSelectorConverter;
 
 /**
  * Bootstrap filters and actions.
@@ -31,6 +32,11 @@ function wp_rest_blocks_init() {
 		],
 		'names'
 	);
+
+	if ( ! function_exists( 'use_block_editor_for_post_type' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/post.php';
+	}
+
 	$types = array_filter( $post_types, 'use_block_editor_for_post_type' );
 
 	register_rest_field(
@@ -112,7 +118,6 @@ function handle_do_block( array $block, $post_id = 0 ) {
 	if ( $block_object && $block_object->block_type ) {
 		$attributes = $block_object->block_type->attributes;
 		$supports   = $block_object->block_type->supports;
-
 		if ( $supports && isset( $supports['anchor'] ) && $supports['anchor'] ) {
 				$attributes['anchor'] = [
 					'type'      => 'string',
