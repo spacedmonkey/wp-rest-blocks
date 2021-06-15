@@ -11,8 +11,7 @@ behat.yml
 bitbucket-pipelines.yml
 bin
 .circleci/config.yml
-composer.json
-composer.lock
+.github
 Gruntfile.js
 package.json
 package-lock.json
@@ -28,7 +27,6 @@ README.md
 wp-cli.local.yml
 yarn.lock
 tests
-vendor
 node_modules
 *.sql
 *.tar.gz

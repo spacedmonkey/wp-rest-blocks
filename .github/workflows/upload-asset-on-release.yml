@@ -35,35 +35,6 @@ jobs:
       - name: PHP version
         run: php --version
 
-      - name: Set Node.js 14.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
-
-      - name: Node version
-        run: node --version
-
-      - name: NPM version
-        run: npm --version
-
-      - name: Get npm cache directory
-        id: npm-cache
-        run: echo "::set-output name=dir::$(npm config get cache)"
-
-      - name: Cache node modules
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.npm-cache.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: npm install
-        run: npm install
-
-      - name: Build JavaScript
-        run: npm run build
-
       - name: Validate composer.json and composer.lock
         run: composer validate
 
