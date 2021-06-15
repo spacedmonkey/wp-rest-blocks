@@ -1,13 +1,13 @@
 # REST API blocks #
-**Contributors:** spacedmonkey  
-**Donate link:** https://www.spacedmonkey.com  
-**Tags:** blocks, gutenberg  
-**Requires at least:** 5.0  
-**Tested up to:** 5.2  
-**Requires PHP:** 7.0.0  
-**Stable tag:** 0.1.0  
-**License:** GPLv2 or later  
-**License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
+**Contributors:** spacedmonkey
+**Donate link:** https://www.spacedmonkey.com
+**Tags:** blocks, gutenberg
+**Requires at least:** 5.7
+**Tested up to:** 5.5
+**Requires PHP:** 7.0.0
+**Stable tag:** 0.2.0
+**License:** GPLv2 or later
+**License URI:** https://www.gnu.org/licenses/gpl-2.0.html
 
 Add gutenberg blocks data into the post / page endpoints api.
 
@@ -49,35 +49,12 @@ For example output.
 
 ## Installation ##
 
-### Using The WordPress Dashboard
-
-1. Navigate to the 'Add New' in the plugins dashboard
-2. Search for 'wp-rest-blocks'
-3. Click 'Install Now'
-4. Activate the plugin on the Plugin dashboard
-
-### Uploading in WordPress Dashboard
-
-1. Navigate to the 'Add New' in the plugins dashboard
-2. Navigate to the 'Upload' area
-3. Select `wp-rest-blocks.zip` from your computer
-4. Click 'Install Now'
-5. Activate the plugin in the Plugin dashboard
-
-### Using FTP
-1. Download `wp-rest-blocks.zip`
-2. Extract the `wp-rest-blocks` directory to your computer
-3. Upload the `wp-rest-blocks` directory to the `/wp-content/plugins/` directory
-4. Activate the plugin in the Plugin dashboard
-
-
-## GitHub Updater
-
-REST API blocks includes native support for the [GitHub Updater](https://github.com/afragen/github-updater) which allows you to provide updates to your WordPress plugin from GitHub.
-
-
+Installation requires you to check the project out in plugin directory and do a `composer install`.
 
 ## Changelog ##
+
+### 0.2.0 ###
+* Breaking change. Field names have changed and required WordPress 5.5+
 
 ### 0.1.0 ###
 * First version.
