@@ -1,6 +1,6 @@
 === REST API blocks ===
 Contributors: spacedmonkey
-Donate link: https://www.spacedmonkey.com
+Donate link: https://github.com/sponsors/spacedmonkey
 Tags: blocks, gutenberg
 Requires at least: 5.5
 Tested up to: 5.7
