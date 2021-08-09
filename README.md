@@ -1,12 +1,20 @@
 # REST API blocks #
 **Contributors:** spacedmonkey
-**Donate link:** https://www.spacedmonkey.com
+
+**Donate link:** https://github.com/sponsors/spacedmonkey
+
 **Tags:** blocks, gutenberg
+
 **Requires at least:** 5.7
+
 **Tested up to:** 5.5
+
 **Requires PHP:** 7.0.0
+
 **Stable tag:** 0.2.0
+
 **License:** GPLv2 or later
+
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
 
 Add gutenberg blocks data into the post / page endpoints api.
