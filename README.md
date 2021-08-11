@@ -61,6 +61,9 @@ Installation requires you to check the project out in plugin directory and do a 
 
 ## Changelog ##
 
+### 0.2.1 ###
+* Update dependency.
+
 ### 0.2.0 ###
 * Breaking change. Field names have changed and required WordPress 5.5+
 
