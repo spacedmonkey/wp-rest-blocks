@@ -14,7 +14,8 @@ Add gutenberg blocks data into the post / page REST API endpoints.
 == Description ==
 
 A simple plugin to add block data in json format into the rest api. Once installed, there will be two new fields added to the rest api, `has_blocks` and `blocks`.
-For example output.
+
+An example of output, can be found in the screenshots. 
 
 === Technical Notes ===
 
