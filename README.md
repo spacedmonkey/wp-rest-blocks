@@ -11,7 +11,7 @@
 
 **Requires PHP:** 7.0.0
 
-**Stable tag:** 0.2.0
+**Stable tag:** 0.2.6
 
 **License:** GPLv2 or later
 
