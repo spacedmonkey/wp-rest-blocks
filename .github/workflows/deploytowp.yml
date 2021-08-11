@@ -33,7 +33,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install PHP Dependencies
-        run: composer install --prefer-dist --no-progress -no-progress --no-dev --optimize-autoloader --no-interaction
+        run: composer install --prefer-dist --no-progress --no-dev --optimize-autoloader --no-interaction
 
       - name: WordPress Plugin Deploy
         uses: 10up/action-wordpress-plugin-deploy@stable
