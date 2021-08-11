@@ -7,6 +7,8 @@
 .travis.yml
 .DS_Store
 .wordpress-org
+composer.json
+composer.lock
 Thumbs.db
 behat.yml
 bitbucket-pipelines.yml
