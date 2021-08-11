@@ -2,7 +2,7 @@ name: Asset update
 on:
   push:
     branches:
-      - main
+      - master
 jobs:
   master:
     name: Push to main
