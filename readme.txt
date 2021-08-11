@@ -9,13 +9,18 @@ Stable tag: 0.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Add gutenberg blocks data into the post / page endpoints api.
+Add gutenberg blocks data into the post / page REST API endpoints.
 
 == Description ==
 
 A simple plugin to add block data in json format into the rest api. Once installed, there will be two new fields added to the rest api, `has_blocks` and `blocks`.
 For example output.
 
+=== Technical Notes ===
+
+* Requires PHP 5.6+.
+* Requires WordPress 5.5+.
+* Issues and Pull requests welcome on the GitHub repository: https://github.com/spacedmonkey/wp-rest-blocks
 
 == Installation ==
 
@@ -40,6 +45,9 @@ For example output.
 3. Upload the `wp-rest-blocks` directory to the `/wp-content/plugins/` directory
 4. Activate the plugin in the Plugin dashboard
 
+== Screenshots ==
+
+1. Add fields to the rest api.
 
 == Changelog ==
 
