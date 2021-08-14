@@ -22,6 +22,9 @@ if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
 }
 
-require_once __DIR__ . '/src/blocks.php';
+require_once __DIR__ . '/src/data.php';
+require_once __DIR__ . '/src/posts.php';
+require_once __DIR__ . '/src/widgets.php';
 
-Data\bootstrap();
+Posts\bootstrap();
+Widgets\bootstrap();
