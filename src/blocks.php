@@ -63,6 +63,32 @@ function wp_rest_blocks_init() {
 			],
 		]
 	);
+
+	register_rest_field(
+		'widget',
+		'has_blocks',
+		[
+			'get_callback'    => __NAMESPACE__ . '\\has_blocks_widget_get_callback',
+			'update_callback' => null,
+			'schema'          => [
+				'description' => __( 'Has blocks.', 'wp-rest-blocks' ),
+				'type'        => 'boolean',
+			],
+		]
+	);
+
+	register_rest_field(
+		'widget',
+		'blocks',
+		[
+			'get_callback'    => __NAMESPACE__ . '\\blocks_widget_get_callback',
+			'update_callback' => null,
+			'schema'          => [
+				'description' => __( 'Blocks.', 'wp-rest-blocks' ),
+				'type'        => 'object',
+			],
+		]
+	);
 }
 
 
@@ -85,9 +111,54 @@ function has_blocks_get_callback( array $object ) {
  * @return array
  */
 function blocks_get_callback( array $object ) {
-	$blocks  = parse_blocks( $object['content']['raw'] );
-	$post_id = $object['id'];
-	$output  = [];
+	return get_blocks( $object['content']['raw'], $object['id'] );
+}
+
+/**
+ * Callback to get if post content has block data.
+ *
+ * @param array $object Array of data rest api request.
+ *
+ * @return bool
+ */
+function has_blocks_widget_get_callback( array $object ) {
+	if ( ! isset( $object['id_base'] ) || 'block' !== $object['id_base'] ) {
+		return false;
+	}
+
+	if ( ! isset( $object['instance']['raw']['content'] ) || ! $object['instance']['raw']['content'] ) {
+		return false;
+	}
+
+	return has_blocks( $object['instance']['raw']['content'] );
+}
+
+/**
+ * Loop around all blocks and get block data.
+ *
+ * @param array $object Array of data rest api request.
+ *
+ * @return array
+ */
+function blocks_widget_get_callback( array $object ) {
+	if ( ! has_blocks_widget_get_callback( $object ) ) {
+		return [];
+	}
+
+	return get_blocks( $object['instance']['raw']['content'] );
+}
+
+/**
+ * Get blocks from html string.
+ *
+ * @param string $content Content to parse.
+ * @param int    $post_id Post int.
+ *
+ * @return array
+ */
+function get_blocks( $content, $post_id = 0 ) {
+	$output = [];
+	$blocks = parse_blocks( $content );
 
 	foreach ( $blocks as $block ) {
 		$block_data = handle_do_block( $block, $post_id );
@@ -98,6 +169,7 @@ function blocks_get_callback( array $object ) {
 
 	return $output;
 }
+
 
 /**
  * Process a block, getting all extra fields.
@@ -141,7 +213,7 @@ function handle_do_block( array $block, $post_id = 0 ) {
 							$value = $dom->query( $attribute['selector'] )->text();
 						}
 					}
-					if ( 'meta' === $attribute['source'] && isset( $attribute['meta'] ) ) {
+					if ( $post_id && 'meta' === $attribute['source'] && isset( $attribute['meta'] ) ) {
 						$value = get_post_meta( $post_id, $attribute['meta'], true );
 					}
 
