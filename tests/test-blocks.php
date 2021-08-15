@@ -138,7 +138,6 @@ class BlocksTest extends TestCase {
 			]
 		);
 
-
 		$mixed_post_content = '
 		<!-- wp:columns -->
 		<div class="wp-block-columns"><!-- wp:column {"width":"40%"} -->

@@ -149,9 +149,9 @@ function handle_do_block( array $block, $post_id = 0 ) {
 	$block['rendered'] = do_shortcode( $block['rendered'] );
 	$block['attrs']    = $attr;
 	if ( ! empty( $block['innerBlocks'] ) ) {
-		$innerBlocks          = $block['innerBlocks'];
+		$inner_blocks         = $block['innerBlocks'];
 		$block['innerBlocks'] = [];
-		foreach ( $innerBlocks as $_block ) {
+		foreach ( $inner_blocks as $_block ) {
 			$block['innerBlocks'][] = handle_do_block( $_block, $post_id );
 		}
 	}
