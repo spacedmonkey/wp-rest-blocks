@@ -1,6 +1,6 @@
 <?php
 /**
- * Posts
+ * Posts.
  *
  * @package WP_REST_Blocks.
  */
