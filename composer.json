@@ -11,7 +11,7 @@
     }
   ],
   "support": {
-    "issues": "https://github.com/spacedmonkey/wp-user-roles/issues"
+    "issues": "https://github.com/spacedmonkey/wp-rest-blocks/issues"
   },
   "require": {
     "composer/installers": "^1.10",
