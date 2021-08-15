@@ -52,6 +52,10 @@ An example of output, can be found in the screenshots.
 
 == Changelog ==
 
+= 0.3.0 =
+* Improve support for block that have attributes that use query source type. 
+* Improve error handling for those that install this plugin without using composer. 
+
 = 0.2.1 =
 * Update dependency.
 
