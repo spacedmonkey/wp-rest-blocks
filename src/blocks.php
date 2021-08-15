@@ -74,7 +74,12 @@ function wp_rest_blocks_init() {
  * @return bool
  */
 function has_blocks_get_callback( array $object ) {
-	return has_blocks( $object['id'] );
+	$post = get_post( $object['id'] );
+	if ( ! $post ) {
+		return false;
+	}
+
+	return has_blocks( $post );
 }
 
 /**
@@ -85,10 +90,14 @@ function has_blocks_get_callback( array $object ) {
  * @return array
  */
 function blocks_get_callback( array $object ) {
-	$blocks  = parse_blocks( $object['content']['raw'] );
-	$post_id = $object['id'];
-	$output  = [];
+	$post   = get_post( $object['id'] );
+	$output = [];
+	if ( ! $post ) {
+		return $output;
+	}
 
+	$post_id = $post->ID;
+	$blocks  = parse_blocks( $post->post_content );
 	foreach ( $blocks as $block ) {
 		$block_data = handle_do_block( $block, $post_id );
 		if ( $block_data ) {
@@ -105,7 +114,7 @@ function blocks_get_callback( array $object ) {
  * @param array $block Block data.
  * @param int   $post_id Post ID.
  *
- * @return array
+ * @return array|false
  */
 function handle_do_block( array $block, $post_id = 0 ) {
 	if ( ! $block['blockName'] ) {
@@ -129,33 +138,8 @@ function handle_do_block( array $block, $post_id = 0 ) {
 
 		if ( $attributes ) {
 			foreach ( $attributes as $key => $attribute ) {
-				if ( isset( $attribute['source'] ) ) {
-					$value = null;
-					if ( isset( $attribute['selector'] ) ) {
-						$dom = pQuery::parseStr( trim( $block_object->inner_html ) );
-						if ( 'attribute' === $attribute['source'] ) {
-							$value = $dom->query( $attribute['selector'] )->attr( $attribute['attribute'] );
-						} elseif ( 'html' === $attribute['source'] ) {
-							$value = $dom->query( $attribute['selector'] )->html();
-						} elseif ( 'text' === $attribute['source'] ) {
-							$value = $dom->query( $attribute['selector'] )->text();
-						}
-					}
-					if ( 'meta' === $attribute['source'] && isset( $attribute['meta'] ) ) {
-						$value = get_post_meta( $post_id, $attribute['meta'], true );
-					}
-
-					if ( null !== $value ) {
-						$attr[ $key ] = $value;
-					}
-				}
-
-				if ( ! isset( $attr[ $key ] ) && isset( $attribute['default'] ) ) {
-					$attr[ $key ] = $attribute['default'];
-				}
-
-				if ( isset( $attr[ $key ] ) && rest_validate_value_from_schema( $attr[ $key ], $attribute ) ) {
-					$attr[ $key ] = rest_sanitize_value_from_schema( $attr[ $key ], $attribute );
+				if ( ! isset( $attr[ $key ] ) ) {
+					$attr[ $key ] = get_attribute( $attribute, $block_object->inner_html, $post_id );
 				}
 			}
 		}
@@ -165,12 +149,74 @@ function handle_do_block( array $block, $post_id = 0 ) {
 	$block['rendered'] = do_shortcode( $block['rendered'] );
 	$block['attrs']    = $attr;
 	if ( ! empty( $block['innerBlocks'] ) ) {
-		$output = [];
 		foreach ( $block['innerBlocks'] as $_block ) {
-			$output[] = handle_do_block( $_block, $post_id );
+			$block['innerBlocks'][] = handle_do_block( $_block, $post_id );
 		}
-		$block['innerBlocks'] = $output;
 	}
 
 	return $block;
+}
+
+/**
+ * Get attribute.
+ *
+ * @param array  $attribute Attributes.
+ * @param string $html HTML string.
+ * @param int    $post_id Post Number. Deafult 0.
+ *
+ * @return mixed
+ */
+function get_attribute( $attribute, $html, $post_id = 0 ) {
+	$value = null;
+	if ( isset( $attribute['source'] ) ) {
+		if ( isset( $attribute['selector'] ) ) {
+			$dom = pQuery::parseStr( trim( $html ) );
+			if ( 'attribute' === $attribute['source'] ) {
+				$value = $dom->query( $attribute['selector'] )->attr( $attribute['attribute'] );
+			} elseif ( 'html' === $attribute['source'] ) {
+				$value = $dom->query( $attribute['selector'] )->html();
+			} elseif ( 'text' === $attribute['source'] ) {
+				$value = $dom->query( $attribute['selector'] )->text();
+			} elseif ( 'query' === $attribute['source'] && isset( $attribute['query'] ) ) {
+				$nodes   = $dom->query( $attribute['selector'] )->getIterator();
+				$counter = 0;
+				foreach ( $nodes as $node ) {
+					foreach ( $attribute['query'] as $key => $current_attribute ) {
+						$current_value = get_attribute( $current_attribute, $node->toString(), $post_id );
+						if ( null !== $current_value ) {
+							$value[ $counter ][ $key ] = $current_value;
+						}
+					}
+					$counter ++;
+				}
+			}
+		} else {
+			$dom  = pQuery::parseStr( trim( $html ) );
+			$node = $dom->query();
+			if ( 'attribute' === $attribute['source'] ) {
+				$current_value = $node->attr( $attribute['attribute'] );
+				if ( null !== $current_value ) {
+					$value = $current_value;
+				}
+			} elseif ( 'html' === $attribute['source'] ) {
+				$value = $node->html();
+			} elseif ( 'text' === $attribute['source'] ) {
+				$value = $node->text();
+			}
+		}
+
+		if ( 'meta' === $attribute['source'] && isset( $attribute['meta'] ) ) {
+			$value = get_post_meta( $post_id, $attribute['meta'], true );
+		}
+	}
+
+	if ( is_null( $value ) && isset( $attribute['default'] ) ) {
+		$value = $attribute['default'];
+	}
+
+	if ( isset( $attribute['type'] ) && rest_validate_value_from_schema( $value, $attribute ) ) {
+		$value = rest_sanitize_value_from_schema( $value, $attribute );
+	}
+
+	return $value;
 }
