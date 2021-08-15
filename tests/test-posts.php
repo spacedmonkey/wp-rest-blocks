@@ -61,21 +61,21 @@ class PostsTest extends TestCase {
 				'post_content' => $mixed_post_content,
 			]
 		);
-		$mixed_post_content      = '
-		<!-- wp:gallery {"ids":[1,2],"columns":2,"linkTo":"none"} -->
-		<ul class="wp-block-gallery columns-2 is-cropped">
-			<li class="blocks-gallery-item">
-				<figure>
-					<img src="https://cldup.com/uuUqE_dXzy.jpg" alt="title" />
-				</figure>
-			</li>
-			<li class="blocks-gallery-item">
-				<figure>
-					<img src="http://google.com/hi.png" alt="title" />
-				</figure>
-			</li>
-		</ul>
-		<!-- /wp:core/gallery -->';
+
+		$mixed_post_content = '<!-- wp:table {"className":"is-style-regular"} -->
+<figure class="wp-block-table is-style-regular"><table><thead><tr><th>Header 1</th><th>Header 2</th></tr></thead><tbody><tr><td>Test 1</td><td>Test 2</td></tr><tr><td>Example 1</td><td>Example 2</td></tr></tbody><tfoot><tr><td>Footer 1</td><td><meta charset="utf-8">Footer 2</td></tr></tfoot></table></figure>
+<!-- /wp:table -->';
+
+		self::$post_ids['table'] = $factory->post->create(
+			[
+				'post_content' => $mixed_post_content,
+			]
+		);
+
+		$mixed_post_content = '
+		<!-- wp:gallery {"ids":[2220,2219,2218,2217,2168,2167],"columns":2,"linkTo":"none"} -->
+<figure class="wp-block-gallery columns-3 is-cropped"><ul class="blocks-gallery-grid"><li class="blocks-gallery-item"><figure><img src="http://localhost:8889/wp-content/uploads/2021/07/photo-1558981000-f294a6ed32b2-1024x683.png" alt="" data-id="2220" data-full-url="http://localhost:8889/wp-content/uploads/2021/07/photo-1558981000-f294a6ed32b2.png" data-link="http://localhost:8889/photo-1558981000-f294a6ed32b2/" class="wp-image-2220"/></figure></li><li class="blocks-gallery-item"><figure><img src="http://localhost:8889/wp-content/uploads/2021/07/pavan-trikutam-71CjSSB83Wo-unsplash-1024x683.jpg" alt="" data-id="2219" data-full-url="http://localhost:8889/wp-content/uploads/2021/07/pavan-trikutam-71CjSSB83Wo-unsplash-scaled.jpg" data-link="http://localhost:8889/pavan-trikutam-71cjssb83wo-unsplash/" class="wp-image-2219"/></figure></li><li class="blocks-gallery-item"><figure><img src="http://localhost:8889/wp-content/uploads/2021/07/xps-uwffw7leqni-unsplash-1024x684.jpeg" alt="" data-id="2218" data-full-url="http://localhost:8889/wp-content/uploads/2021/07/xps-uwffw7leqni-unsplash-scaled.jpeg" data-link="http://localhost:8889/xps-uwffw7leqni-unsplash/" class="wp-image-2218"/></figure></li><li class="blocks-gallery-item"><figure><img src="http://localhost:8889/wp-content/uploads/2021/07/xps-ynvvnpcurd8-unsplash-edited-1024x576.jpeg" alt="" data-id="2217" data-full-url="http://localhost:8889/wp-content/uploads/2021/07/xps-ynvvnpcurd8-unsplash-edited-scaled.jpeg" data-link="http://localhost:8889/xps-ynvvnpcurd8-unsplash-edited/" class="wp-image-2217"/></figure></li><li class="blocks-gallery-item"><figure><img src="http://localhost:8889/wp-content/uploads/2021/05/DED8A8E6-D2E6-45E0-BAB3-6D5CB5B3BA1C_1_201_a-edited-1024x1024.jpeg" alt="" data-id="2168" data-full-url="http://localhost:8889/wp-content/uploads/2021/05/DED8A8E6-D2E6-45E0-BAB3-6D5CB5B3BA1C_1_201_a-edited.jpeg" data-link="http://localhost:8889/ded8a8e6-d2e6-45e0-bab3-6d5cb5b3ba1c_1_201_a-2/" class="wp-image-2168"/></figure></li><li class="blocks-gallery-item"><figure><img src="http://localhost:8889/wp-content/uploads/2021/05/DED8A8E6-D2E6-45E0-BAB3-6D5CB5B3BA1C_1_201_a-766x1024.jpeg" alt="" data-id="2167" data-full-url="http://localhost:8889/wp-content/uploads/2021/05/DED8A8E6-D2E6-45E0-BAB3-6D5CB5B3BA1C_1_201_a-scaled.jpeg" data-link="http://localhost:8889/home/ded8a8e6-d2e6-45e0-bab3-6d5cb5b3ba1c_1_201_a/" class="wp-image-2167"/></figure></li></ul></figure>
+<!-- /wp:gallery -->';
 
 		self::$post_ids['gallery'] = $factory->post->create(
 			[
@@ -260,6 +260,21 @@ class PostsTest extends TestCase {
 		$this->assertTrue( $data[0]['attrs']['imageCrop'] );
 		$this->assertEquals( 'none', $data[0]['attrs']['linkTo'] );
 		$this->assertEquals( 2, $data[0]['attrs']['columns'] );
+	}
+
+	/**
+	 *
+	 */
+	public function test_table() {
+		$object = $this->get_object( self::$post_ids['table'] );
+		$data   = Data\blocks_get_callback( $object );
+		$this->assertEquals( 'core/table', $data[0]['blockName'] );
+		$this->assertArrayHasKey( 'head', $data[0]['attrs'] );
+		$this->assertArrayHasKey( 'body', $data[0]['attrs'] );
+		$this->assertArrayHasKey( 'foot', $data[0]['attrs'] );
+		$this->assertArrayHasKey( 'cells', $data[0]['attrs']['head'][0] );
+		$this->assertArrayHasKey( 'cells', $data[0]['attrs']['body'][0] );
+		$this->assertArrayHasKey( 'cells', $data[0]['attrs']['foot'][0] );
 	}
 
 	/**
