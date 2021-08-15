@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, api, wp-json, rest-api
 Requires at least: 5.5
 Tested up to: 5.7
 Requires PHP: 7.0.0
-Stable tag: 0.3.1
+Stable tag: 0.3.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,8 +52,11 @@ An example of output, can be found in the screenshots.
 
 == Changelog ==
 
-= 0.3.1 =
+= 0.3.2 =
 * Update translations
+
+= 0.3.1 =
+* Hot fix.
 
 = 0.3.0 =
 * Improve support for block that have attributes that use query source type.

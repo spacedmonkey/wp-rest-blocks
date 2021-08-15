@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the REST API Blocks plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: REST API Blocks 0.3.1\n"
+"Project-Id-Version: REST API Blocks 0.3.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-rest-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"

@@ -61,8 +61,11 @@ Installation requires you to check the project out in plugin directory and do a 
 
 ## Changelog ##
 
-### 0.3.1 ###
+### 0.3.2 ###
 * Update translations
+
+### 0.3.1 ###
+* Hot fix.
 
 ### 0.3.0 ###
 
