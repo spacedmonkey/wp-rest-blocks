@@ -267,7 +267,7 @@ class PostsTest extends TestCase {
 	 */
 	public function test_table() {
 		$object = $this->get_object( self::$post_ids['table'] );
-		$data   = Data\blocks_get_callback( $object );
+		$data   = Posts\blocks_get_callback( $object );
 		$this->assertEquals( 'core/table', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'head', $data[0]['attrs'] );
 		$this->assertArrayHasKey( 'body', $data[0]['attrs'] );
