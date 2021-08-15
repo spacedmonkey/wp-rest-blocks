@@ -11,6 +11,28 @@ use WP_Block;
 use pQuery;
 
 /**
+ * Get blocks from html string.
+ *
+ * @param string $content Content to parse.
+ * @param int    $post_id Post int.
+ *
+ * @return array
+ */
+function get_blocks( $content, $post_id = 0 ) {
+	$output = [];
+	$blocks = parse_blocks( $content );
+
+	foreach ( $blocks as $block ) {
+		$block_data = handle_do_block( $block, $post_id );
+		if ( $block_data ) {
+			$output[] = $block_data;
+		}
+	}
+
+	return $output;
+}
+
+/**
  * Process a block, getting all extra fields.
  *
  * @param array $block Block data.
