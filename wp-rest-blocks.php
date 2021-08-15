@@ -7,7 +7,7 @@
  * Author URI:        https://www.spacedmonkey.com/
  * Text Domain:       wp-rest-blocks
  * Domain Path:       /languages
- * Version:           0.2.6
+ * Version:           0.3.0
  * Requires at least: 5.5
  * Requires PHP:      7.0
  *
