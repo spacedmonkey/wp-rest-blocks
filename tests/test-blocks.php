@@ -138,6 +138,24 @@ class BlocksTest extends TestCase {
 			]
 		);
 
+
+		$mixed_post_content = '
+		<!-- wp:columns -->
+		<div class="wp-block-columns"><!-- wp:column {"width":"40%"} -->
+		<div class="wp-block-column" style="flex-basis:40%"></div>
+		<!-- /wp:column -->
+
+		<!-- wp:column -->
+		<div class="wp-block-column"></div>
+		<!-- /wp:column --></div>
+		<!-- /wp:columns -->';
+
+		self::$post_ids['columns'] = $factory->post->create(
+			[
+				'post_content' => $mixed_post_content,
+			]
+		);
+
 		self::$post_ids['empty'] = $factory->post->create(
 			[
 				'post_content' => '',
@@ -358,6 +376,22 @@ class BlocksTest extends TestCase {
 		$this->assertArrayHasKey( 'content', $data[0]['attrs'] );
 
 		$this->assertEquals( '... like this one, which is separate from the above and right aligned.', $data[0]['attrs']['content'] );
+	}
+
+
+	/**
+	 *
+	 */
+	public function test_paragrap_columns() {
+		$object = $this->get_object( self::$post_ids['columns'] );
+		$data   = Data\blocks_get_callback( $object );
+		$this->assertEquals( 'core/columns', $data[0]['blockName'] );
+		$this->assertArrayHasKey( 'innerBlocks', $data[0] );
+		$this->assertArrayHasKey( 'blockName', $data[0]['innerBlocks'][0] );
+		$this->assertEquals( 'core/column', $data[0]['innerBlocks'][0]['blockName'] );
+		$this->assertArrayHasKey( 'attrs', $data[0]['innerBlocks'][0] );
+		$this->assertArrayHasKey( 'width', $data[0]['innerBlocks'][0]['attrs'] );
+		$this->assertEquals( '40%', $data[0]['innerBlocks'][0]['attrs']['width'] );
 	}
 
 
