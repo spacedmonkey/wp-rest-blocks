@@ -61,6 +61,11 @@ Installation requires you to check the project out in plugin directory and do a 
 
 ## Changelog ##
 
+### 0.3.0 ###
+
+* Improve support for block that have attributes that use query source type. 
+* Improve error handling for those that install this plugin without using composer. 
+
 ### 0.2.1 ###
 * Update dependency.
 
