@@ -5,7 +5,7 @@
 
 **Tags:** blocks, gutenberg
 
-**Requires at least:** 5.7
+**Requires at least:** 5.8
 
 **Tested up to:** 5.5
 
