@@ -37,6 +37,10 @@ function wp_rest_blocks_init() {
 
 	$types = array_filter( $post_types, 'use_block_editor_for_post_type' );
 
+	if ( ! $types ) {
+		return;
+	}
+
 	register_rest_field(
 		$types,
 		'has_blocks',

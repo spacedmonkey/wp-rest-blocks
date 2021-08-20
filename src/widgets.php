@@ -24,6 +24,10 @@ function bootstrap() {
  * @return void
  */
 function wp_rest_blocks_init() {
+	if ( ! function_exists( 'wp_use_widgets_block_editor' ) || ! wp_use_widgets_block_editor() ) {
+		return;
+	}
+
 	register_rest_field(
 		'widget',
 		'has_blocks',
