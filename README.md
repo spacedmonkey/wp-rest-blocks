@@ -13,9 +13,9 @@
 
 **Stable tag:** 0.3.2
 
-**License:** GPLv2 or later
+**License:** GPLv3 or later
 
-**License URI:** https://www.gnu.org/licenses/gpl-2.0.html
+**License URI:** https://www.gnu.org/licenses/gpl-3.0.en.html
 
 Add gutenberg blocks data into the post / page endpoints api.
 
