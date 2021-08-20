@@ -6,8 +6,8 @@ Requires at least: 5.5
 Tested up to: 5.8
 Requires PHP: 7.0.0
 Stable tag: 0.3.2
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
 Add gutenberg blocks data into the post / page REST API endpoints.
 
