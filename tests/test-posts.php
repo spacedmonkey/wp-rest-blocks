@@ -7,7 +7,7 @@
 
 namespace WP_REST_Blocks\Tests;
 
-use WP_REST_Blocks\Data;
+use WP_REST_Blocks\Posts;
 use Yoast\WPTestUtils\WPIntegration\TestCase;
 
 /**
@@ -15,7 +15,7 @@ use Yoast\WPTestUtils\WPIntegration\TestCase;
  *
  * @package WP_REST_Blocks\Tests
  */
-class BlocksTest extends TestCase {
+class PostsTest extends TestCase {
 	/**
 	 * Static variable for post object.
 	 *
@@ -202,7 +202,7 @@ class BlocksTest extends TestCase {
 	public function test_has_block() {
 		$object = $this->get_object( self::$post_ids['separator'] );
 
-		$this->assertTrue( Data\has_blocks_get_callback( $object ) );
+		$this->assertTrue( Posts\has_blocks_get_callback( $object ) );
 	}
 
 	/**
@@ -211,7 +211,7 @@ class BlocksTest extends TestCase {
 	public function test_get_blocks() {
 		$object = $this->get_object( self::$post_ids['separator'] );
 
-		$this->assertTrue( is_array( Data\blocks_get_callback( $object ) ) );
+		$this->assertTrue( is_array( Posts\blocks_get_callback( $object ) ) );
 	}
 
 	/**
@@ -219,11 +219,11 @@ class BlocksTest extends TestCase {
 	 */
 	public function test_empty_string() {
 		$object = $this->get_object( self::$post_ids['empty'] );
-		$data   = Data\blocks_get_callback( $object );
+		$data   = Posts\blocks_get_callback( $object );
 
 		$this->assertTrue( is_array( $data ) );
 		$this->assertTrue( empty( $data ) );
-		$this->assertFalse( Data\has_blocks_get_callback( $object ) );
+		$this->assertFalse( Posts\has_blocks_get_callback( $object ) );
 	}
 
 	/**
@@ -232,7 +232,7 @@ class BlocksTest extends TestCase {
 	public function test_multiple_blocks() {
 		$object = $this->get_object( self::$post_ids['multi'] );
 
-		$data = Data\blocks_get_callback( $object );
+		$data = Posts\blocks_get_callback( $object );
 		$this->assertTrue( is_array( $data ) );
 		$this->assertEquals( 5, count( $data ) );
 		$this->assertEquals( 'core/fake', $data[0]['blockName'] );
@@ -245,7 +245,7 @@ class BlocksTest extends TestCase {
 	public function test_multiple_blocks_attrs() {
 		$object = $this->get_object( self::$post_ids['multi'] );
 
-		$data = Data\blocks_get_callback( $object );
+		$data = Posts\blocks_get_callback( $object );
 		$this->assertEquals( 'core/fake_atts', $data[1]['blockName'] );
 		$this->assertEquals( 'b1', $data[1]['attrs']['value'] );
 		$this->assertArrayHasKey( 'value', $data[1]['attrs'] );
@@ -256,7 +256,7 @@ class BlocksTest extends TestCase {
 	 */
 	public function test_image_blocks_attrs() {
 		$object = $this->get_object( self::$post_ids['image'] );
-		$data   = Data\blocks_get_callback( $object );
+		$data   = Posts\blocks_get_callback( $object );
 		$this->assertEquals( 'core/image', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'url', $data[0]['attrs'] );
 		$this->assertArrayHasKey( 'alt', $data[0]['attrs'] );
@@ -271,7 +271,7 @@ class BlocksTest extends TestCase {
 	 */
 	public function test_gallery() {
 		$object = $this->get_object( self::$post_ids['gallery'] );
-		$data   = Data\blocks_get_callback( $object );
+		$data   = Posts\blocks_get_callback( $object );
 		$this->assertEquals( 'core/gallery', $data[0]['blockName'] );
 		$this->assertTrue( is_array( $data[0]['attrs']['ids'] ) );
 		$this->assertTrue( $data[0]['attrs']['imageCrop'] );
@@ -284,7 +284,7 @@ class BlocksTest extends TestCase {
 	 */
 	public function test_table() {
 		$object = $this->get_object( self::$post_ids['table'] );
-		$data   = Data\blocks_get_callback( $object );
+		$data   = Posts\blocks_get_callback( $object );
 		$this->assertEquals( 'core/table', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'head', $data[0]['attrs'] );
 		$this->assertArrayHasKey( 'body', $data[0]['attrs'] );
@@ -299,7 +299,7 @@ class BlocksTest extends TestCase {
 	 */
 	public function test_heading_blocks_attrs() {
 		$object = $this->get_object( self::$post_ids['heading'] );
-		$data   = Data\blocks_get_callback( $object );
+		$data   = Posts\blocks_get_callback( $object );
 
 		$this->assertEquals( 'core/heading', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'level', $data[0]['attrs'] );
@@ -318,7 +318,7 @@ class BlocksTest extends TestCase {
 	 */
 	public function test_button_blocks_attrs() {
 		$object = $this->get_object( self::$post_ids['button'] );
-		$data   = Data\blocks_get_callback( $object );
+		$data   = Posts\blocks_get_callback( $object );
 		$this->assertEquals( 'core/button', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'text', $data[0]['attrs'] );
 		$this->assertArrayHasKey( 'url', $data[0]['attrs'] );
@@ -336,7 +336,7 @@ class BlocksTest extends TestCase {
 	 */
 	public function test_audio_blocks_attrs() {
 		$object = $this->get_object( self::$post_ids['audio'] );
-		$data   = Data\blocks_get_callback( $object );
+		$data   = Posts\blocks_get_callback( $object );
 		$this->assertEquals( 'core/audio', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'src', $data[0]['attrs'] );
 
@@ -348,7 +348,7 @@ class BlocksTest extends TestCase {
 	 */
 	public function test_video_blocks_attrs() {
 		$object = $this->get_object( self::$post_ids['video'] );
-		$data   = Data\blocks_get_callback( $object );
+		$data   = Posts\blocks_get_callback( $object );
 		$this->assertEquals( 'core/video', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'src', $data[0]['attrs'] );
 
@@ -360,7 +360,7 @@ class BlocksTest extends TestCase {
 	 */
 	public function test_meta_blocks_attrs() {
 		$object = $this->get_object( self::$post_ids['meta_block'] );
-		$data   = Data\blocks_get_callback( $object );
+		$data   = Posts\blocks_get_callback( $object );
 		$this->assertArrayHasKey( 'test_meta', $data[0]['attrs'] );
 		$this->assertEquals( 99, $data[0]['attrs']['test_meta'] );
 	}
@@ -370,7 +370,7 @@ class BlocksTest extends TestCase {
 	 */
 	public function test_paragrap_blocks_attrs() {
 		$object = $this->get_object( self::$post_ids['paragraph'] );
-		$data   = Data\blocks_get_callback( $object );
+		$data   = Posts\blocks_get_callback( $object );
 		$this->assertEquals( 'core/paragraph', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'content', $data[0]['attrs'] );
 
@@ -383,7 +383,7 @@ class BlocksTest extends TestCase {
 	 */
 	public function test_paragrap_columns() {
 		$object = $this->get_object( self::$post_ids['columns'] );
-		$data   = Data\blocks_get_callback( $object );
+		$data   = Posts\blocks_get_callback( $object );
 		$this->assertEquals( 'core/columns', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'innerBlocks', $data[0] );
 		$this->assertArrayHasKey( 'blockName', $data[0]['innerBlocks'][0] );
