@@ -19,24 +19,28 @@ function bootstrap() {
 }
 
 /**
- * Add rest api fields.
+ * Get post types with editor.
  *
- * @return void
+ * @return array
  */
-function wp_rest_blocks_init() {
-	$post_types = get_post_types(
-		[
-			'show_in_rest' => true,
-		],
-		'names'
-	);
+function get_post_types_with_editor() {
+	$post_types = get_post_types( [ 'show_in_rest' => true ], 'names' );
+	$post_types = array_values( $post_types );
 
 	if ( ! function_exists( 'use_block_editor_for_post_type' ) ) {
 		require_once ABSPATH . 'wp-admin/includes/post.php';
 	}
 
-	$types = array_filter( $post_types, 'use_block_editor_for_post_type' );
+	return array_filter( $post_types, 'use_block_editor_for_post_type' );
+}
 
+/**
+ * Add rest api fields.
+ *
+ * @return void
+ */
+function wp_rest_blocks_init() {
+	$types = get_post_types_with_editor();
 	if ( ! $types ) {
 		return;
 	}
@@ -50,6 +54,8 @@ function wp_rest_blocks_init() {
 			'schema'          => [
 				'description' => __( 'Has blocks.', 'wp-rest-blocks' ),
 				'type'        => 'boolean',
+				'context'     => [ 'embed', 'view', 'edit' ],
+				'readonly'    => true,
 			],
 		]
 	);
@@ -63,6 +69,8 @@ function wp_rest_blocks_init() {
 			'schema'          => [
 				'description' => __( 'Blocks.', 'wp-rest-blocks' ),
 				'type'        => 'object',
+				'context'     => [ 'embed', 'view', 'edit' ],
+				'readonly'    => true,
 			],
 		]
 	);

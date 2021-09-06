@@ -37,6 +37,8 @@ function wp_rest_blocks_init() {
 			'schema'          => [
 				'description' => __( 'Has blocks.', 'wp-rest-blocks' ),
 				'type'        => 'boolean',
+				'context'     => [ 'embed', 'view', 'edit' ],
+				'readonly'    => true,
 			],
 		]
 	);
@@ -50,6 +52,8 @@ function wp_rest_blocks_init() {
 			'schema'          => [
 				'description' => __( 'Blocks.', 'wp-rest-blocks' ),
 				'type'        => 'object',
+				'context'     => [ 'embed', 'view', 'edit' ],
+				'readonly'    => true,
 			],
 		]
 	);

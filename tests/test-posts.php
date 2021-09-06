@@ -383,7 +383,7 @@ class PostsTest extends TestCase {
 	 */
 	public function test_paragrap_columns() {
 		$object = $this->get_object( self::$post_ids['columns'] );
-		$data   = Data\blocks_get_callback( $object );
+		$data   = Posts\blocks_get_callback( $object );
 		$this->assertEquals( 'core/columns', $data[0]['blockName'] );
 		$this->assertArrayHasKey( 'innerBlocks', $data[0] );
 		$this->assertArrayHasKey( 'blockName', $data[0]['innerBlocks'][0] );
