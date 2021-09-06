@@ -1,0 +1,52 @@
+# Copyright (C) 2021 Jonathan Harris
+# This file is distributed under the same license as the REST API Blocks plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: REST API Blocks 0.3.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-rest-blocks\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2021-08-15T19:27:05+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.5.0\n"
+"X-Domain: wp-rest-blocks\n"
+
+#. Plugin Name of the plugin
+msgid "REST API Blocks"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://github.com/spacedmonkey/wp-rest-blocks"
+msgstr ""
+
+#. Description of the plugin
+msgid "Add gutenberg blocks data into the post / page endpoints api."
+msgstr ""
+
+#. Author of the plugin
+msgid "Jonathan Harris"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://www.spacedmonkey.com/"
+msgstr ""
+
+#: src/blocks.php:48
+msgid "Has blocks."
+msgstr ""
+
+#: src/blocks.php:61
+msgid "Blocks."
+msgstr ""
+
+#. translators: %s: build commands.
+#: wp-rest-blocks.php:34
+msgid " Please run %s to finish installation."
+msgstr ""
+
+#: wp-rest-blocks.php:39
+msgid "REST API Blocks plugin could not be initialized."
+msgstr ""

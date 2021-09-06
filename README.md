@@ -5,17 +5,17 @@
 
 **Tags:** blocks, gutenberg
 
-**Requires at least:** 5.7
+**Requires at least:** 5.8
 
 **Tested up to:** 5.5
 
 **Requires PHP:** 7.0.0
 
-**Stable tag:** 0.2.6
+**Stable tag:** 0.3.2
 
-**License:** GPLv2 or later
+**License:** GPLv3 or later
 
-**License URI:** https://www.gnu.org/licenses/gpl-2.0.html
+**License URI:** https://www.gnu.org/licenses/gpl-3.0.en.html
 
 Add gutenberg blocks data into the post / page endpoints api.
 
@@ -61,10 +61,16 @@ Installation requires you to check the project out in plugin directory and do a 
 
 ## Changelog ##
 
+### 0.3.2 ###
+* Update translations
+
+### 0.3.1 ###
+* Hot fix.
+
 ### 0.3.0 ###
 
-* Improve support for block that have attributes that use query source type. 
-* Improve error handling for those that install this plugin without using composer. 
+* Improve support for block that have attributes that use query source type.
+* Improve error handling for those that install this plugin without using composer.
 
 ### 0.2.1 ###
 * Update dependency.
