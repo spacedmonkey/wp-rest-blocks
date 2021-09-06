@@ -216,16 +216,16 @@
     "packages-dev": [
         {
             "name": "antecedent/patchwork",
-            "version": "2.1.13",
+            "version": "2.1.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antecedent/patchwork.git",
-                "reference": "0158dbd62bd852b178307d17a5b43a9415ca391b"
+                "reference": "0430ceaac7f447f1778c199ec19d7e4362a6f961"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antecedent/patchwork/zipball/0158dbd62bd852b178307d17a5b43a9415ca391b",
-                "reference": "0158dbd62bd852b178307d17a5b43a9415ca391b",
+                "url": "https://api.github.com/repos/antecedent/patchwork/zipball/0430ceaac7f447f1778c199ec19d7e4362a6f961",
+                "reference": "0430ceaac7f447f1778c199ec19d7e4362a6f961",
                 "shasum": ""
             },
             "require": {
@@ -258,9 +258,9 @@
             ],
             "support": {
                 "issues": "https://github.com/antecedent/patchwork/issues",
-                "source": "https://github.com/antecedent/patchwork/tree/2.1.13"
+                "source": "https://github.com/antecedent/patchwork/tree/2.1.15"
             },
-            "time": "2021-08-15T16:32:48+00:00"
+            "time": "2021-08-22T08:00:13+00:00"
         },
         {
             "name": "brain/monkey",
@@ -2148,6 +2148,7 @@
                 "issues": "https://github.com/sebastianbergmann/resource-operations/issues",
                 "source": "https://github.com/sebastianbergmann/resource-operations/tree/master"
             },
+            "abandoned": true,
             "time": "2015-07-28T20:34:47+00:00"
         },
         {

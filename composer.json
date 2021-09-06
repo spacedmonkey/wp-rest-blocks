@@ -1,7 +1,7 @@
 {
   "name": "spacedmonkey/wp-rest-blocks",
   "type": "wordpress-plugin",
-  "description": "Add gutenberg blocks data into the post / page endpoints api.",
+  "description": "Add gutenberg blocks data into post / page / widget REST API endpoints.",
   "homepage": "http://wp-api.org/",
 	"license": "GPL-3.0-or-later",
   "authors": [

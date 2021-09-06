@@ -11,13 +11,13 @@
 
 **Requires PHP:** 7.0.0
 
-**Stable tag:** 0.3.2
+**Stable tag:** 0.4.0
 
 **License:** GPLv3 or later
 
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.en.html
 
-Add gutenberg blocks data into the post / page endpoints api.
+Add gutenberg blocks data into post / page / widget REST API endpoints.
 
 ## Description ##
 
@@ -60,6 +60,9 @@ For example output.
 Installation requires you to check the project out in plugin directory and do a `composer install`.
 
 ## Changelog ##
+
+### 0.4.0 ###
+* Added support for block based widget, added in WordPress 5.8. Block data is added to the /wp/v2/widgets endpoint.
 
 ### 0.3.2 ###
 * Update translations

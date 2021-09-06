@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the REST API Blocks plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: REST API Blocks 0.3.2\n"
+"Project-Id-Version: REST API Blocks 0.4.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-rest-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-09-06T17:52:03+00:00\n"
+"POT-Creation-Date: 2021-09-06T22:57:02+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: wp-rest-blocks\n"
@@ -23,7 +23,7 @@ msgid "https://github.com/spacedmonkey/wp-rest-blocks"
 msgstr ""
 
 #. Description of the plugin
-msgid "Add gutenberg blocks data into the post / page endpoints api."
+msgid "Add gutenberg blocks data into post / page / widget REST API endpoints."
 msgstr ""
 
 #. Author of the plugin
@@ -34,13 +34,13 @@ msgstr ""
 msgid "https://www.spacedmonkey.com/"
 msgstr ""
 
-#: src/posts.php:51
+#: src/posts.php:55
 #: src/widgets.php:38
 msgid "Has blocks."
 msgstr ""
 
-#: src/posts.php:64
-#: src/widgets.php:51
+#: src/posts.php:70
+#: src/widgets.php:53
 msgid "Blocks."
 msgstr ""
 
