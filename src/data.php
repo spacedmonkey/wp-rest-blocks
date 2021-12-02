@@ -29,13 +29,14 @@ function get_blocks( $content, $post_id = 0 ) {
 		$multisite_cache = is_multisite() && apply_filters( 'rest_api_blocks_multisite_cache', true );
 
 		if ( $multisite_cache ) {
-			$blocks = get_site_transient( $cache_key );
+			$output = get_site_transient( $cache_key );
 		} else {
-			$blocks = get_transient( $cache_key );
+			$output = get_transient( $cache_key );
 		}
 
-		if ( ! empty( $blocks ) && is_array( $blocks ) ) {
-			return $blocks;
+		if ( ! empty( $output ) && is_array( $output ) ) {
+			/** This filter is documented in at the end of this function */
+			return apply_filters( 'rest_api_blocks_output', $output, $content, $post_id, true );
 		}
 	}
 
@@ -53,13 +54,21 @@ function get_blocks( $content, $post_id = 0 ) {
 		$cache_expiration = apply_filters( 'rest_api_blocks_expiration', 0 );
 
 		if ( $multisite_cache ) {
-			set_site_transient( $cache_key, $blocks, $cache_expiration );
+			set_site_transient( $cache_key, $output, $cache_expiration );
 		} else {
-			set_transient( $cache_key, $blocks, $cache_expiration );
+			set_transient( $cache_key, $output, $cache_expiration );
 		}
 	}
 
-	return $output;
+	/**
+	 * Filter to allow plugins to change the parsed blocks.
+	 *
+	 * @param array $output   The parsed blocks.
+	 * @param string $content The content that is parsed.
+	 * @param int $post_id    The post id. Defaults to 0 if not parsing a post.
+	 * @param bool $cached    True if output is cached.
+	 */
+	return apply_filters( 'rest_api_blocks_output', $output, $content, $post_id, false );
 }
 
 /**
