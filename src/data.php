@@ -19,6 +19,26 @@ use pQuery;
  * @return array
  */
 function get_blocks( $content, $post_id = 0 ) {
+	$do_cache = apply_filters( 'rest_api_blocks_cache', true );
+
+	if ( $do_cache ) {
+		$cache_key = 'rest_api_blocks_' . md5( $content );
+		if ( $post_id !== 0 ) {
+			$cache_key .= '_' . md5( serialize( get_post_meta( $post_id ) ) );
+		}
+		$multisite_cache = is_multisite() && apply_filters( 'rest_api_blocks_multisite_cache', true );
+
+		if ( $multisite_cache ) {
+			$blocks = get_site_transient( $cache_key );
+		} else {
+			$blocks = get_transient( $cache_key );
+		}
+
+		if ( ! empty( $blocks ) && is_array( $blocks ) ) {
+			return $blocks;
+		}
+	}
+
 	$output = [];
 	$blocks = parse_blocks( $content );
 
@@ -26,6 +46,16 @@ function get_blocks( $content, $post_id = 0 ) {
 		$block_data = handle_do_block( $block, $post_id );
 		if ( $block_data ) {
 			$output[] = $block_data;
+		}
+	}
+
+	if ( $do_cache ) {
+		$cache_expiration = apply_filters( 'rest_api_blocks_expiration', 0 );
+
+		if ( $multisite_cache ) {
+			set_site_transient( $cache_key, $blocks, $cache_expiration );
+		} else {
+			set_transient( $cache_key, $blocks, $cache_expiration );
 		}
 	}
 
