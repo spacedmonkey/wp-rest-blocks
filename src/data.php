@@ -35,7 +35,7 @@ function get_blocks( $content, $post_id = 0 ) {
 		}
 
 		if ( ! empty( $output ) && is_array( $output ) ) {
-			/** This filter is documented in at the end of this function */
+			/** This filter is documented at the end of this function */
 			return apply_filters( 'rest_api_blocks_output', $output, $content, $post_id, true );
 		}
 	}
