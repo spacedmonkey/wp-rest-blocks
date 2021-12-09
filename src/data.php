@@ -119,7 +119,14 @@ function handle_do_block( array $block, $post_id = 0 ) {
 		}
 	}
 
-	return $block;
+	/**
+	 * Filter to allow plugins to change the parsed block.
+	 *
+	 * @param array $block The parsed block.
+	 * @param int $post_id The post id. Defaults to 0 if not parsing a post.
+	 * @param WP_Block $block_object The block object.
+	 */
+	return apply_filters( 'rest_api_handle_block', $block, $post_id, $block_object );
 }
 
 /**
