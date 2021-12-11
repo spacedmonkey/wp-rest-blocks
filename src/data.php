@@ -3,6 +3,7 @@
  * Data layer to process to block data.
  *
  * @package WP_REST_Blocks.
+ * @phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
  */
 
 namespace WP_REST_Blocks\Data;
@@ -23,7 +24,7 @@ function get_blocks( $content, $post_id = 0 ) {
 
 	if ( $do_cache ) {
 		$cache_key = 'rest_api_blocks_' . md5( $content );
-		if ( $post_id !== 0 ) {
+		if ( 0 !== $post_id ) {
 			$cache_key .= '_' . md5( serialize( get_post_meta( $post_id ) ) );
 		}
 		$multisite_cache = is_multisite() && apply_filters( 'rest_api_blocks_multisite_cache', true );
@@ -90,13 +91,13 @@ function handle_do_block( array $block, $post_id = 0 ) {
 		$attributes = $block_object->block_type->attributes;
 		$supports   = $block_object->block_type->supports;
 		if ( $supports && isset( $supports['anchor'] ) && $supports['anchor'] ) {
-				$attributes['anchor'] = [
-					'type'      => 'string',
-					'source'    => 'attribute',
-					'attribute' => 'id',
-					'selector'  => '*',
-					'default'   => '',
-				];
+			$attributes['anchor'] = [
+				'type'      => 'string',
+				'source'    => 'attribute',
+				'attribute' => 'id',
+				'selector'  => '*',
+				'default'   => '',
+			];
 		}
 
 		if ( $attributes ) {
