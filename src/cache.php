@@ -43,7 +43,7 @@ function populate_cache( $post_id, $post ) {
 	}
 
 	$blocks = get_blocks( $post->post_content, $post->ID );
-	update_post_meta( $post_id, POST_META, wp_json_encode( $blocks ) );
+	update_post_meta( $post_id, POST_META_KEY, wp_json_encode( $blocks ) );
 }
 
 /**
@@ -60,7 +60,7 @@ function load_from_cache( $data, $content, $post_id ) {
 		return $data;
 	}
 
-	$cache = get_post_meta( $post_id, POST_META, true );
+	$cache = get_post_meta( $post_id, POST_META_KEY, true );
 
 	if ( ! $cache ) {
 		return $data;
