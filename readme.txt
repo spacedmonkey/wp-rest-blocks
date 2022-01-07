@@ -51,6 +51,10 @@ An example of output, can be found in the screenshots.
 1. Add fields to the rest api.
 
 == Changelog ==
+
+= 0.5.0 =
+* Add support for new post types added in WordPress 5.9.
+
 = 0.4.0 =
 * Added support for block based widget, added in WordPress 5.8. Block data is added to the /wp/v2/widgets endpoint.
 
