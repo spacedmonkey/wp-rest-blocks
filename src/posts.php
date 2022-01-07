@@ -30,8 +30,11 @@ function get_post_types_with_editor() {
 	if ( ! function_exists( 'use_block_editor_for_post_type' ) ) {
 		require_once ABSPATH . 'wp-admin/includes/post.php';
 	}
+	$post_types   = array_filter( $post_types, 'use_block_editor_for_post_type' );
+	$post_types[] = 'wp_navigation';
+	$post_types   = array_filter( $post_types, 'post_type_exists' );
 
-	return array_filter( $post_types, 'use_block_editor_for_post_type' );
+	return $post_types;
 }
 
 /**
@@ -84,7 +87,11 @@ function wp_rest_blocks_init() {
  * @return bool
  */
 function has_blocks_get_callback( array $object ) {
-	$post = get_post( $object['id'] );
+	if ( isset( $object['content']['raw'] ) ) {
+		return has_blocks( $object['content']['raw'] );
+	}
+	$id   = ! empty( $object['wp_id'] ) ? $object['wp_id'] : $object['id'];
+	$post = get_post( $id );
 	if ( ! $post ) {
 		return false;
 	}
@@ -100,7 +107,12 @@ function has_blocks_get_callback( array $object ) {
  * @return array
  */
 function blocks_get_callback( array $object ) {
-	$post   = get_post( $object['id'] );
+	$id = ! empty( $object['wp_id'] ) ? $object['wp_id'] : $object['id'];
+	if ( isset( $object['content']['raw'] ) ) {
+		return get_blocks( $object['content']['raw'], $id );
+	}
+	$id     = ! empty( $object['wp_id'] ) ? $object['wp_id'] : $object['id'];
+	$post   = get_post( $id );
 	$output = [];
 	if ( ! $post ) {
 		return $output;
