@@ -33,7 +33,7 @@ function get_post_types_with_editor() {
 	$post_types   = array_filter( $post_types, 'use_block_editor_for_post_type' );
 	$post_types[] = 'wp_navigation';
 	$post_types   = array_filter( $post_types, 'post_type_exists' );
-	
+
 	return $post_types;
 }
 
