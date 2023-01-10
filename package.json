@@ -5,7 +5,7 @@
   "author": "Jonathan Harris",
   "devDependencies": {
     "grunt": "~1.5.3",
-    "grunt-wp-i18n": "~0.5.0",
+    "grunt-wp-i18n": "^1.0.3",
     "grunt-wp-readme-to-markdown": "~1.0.0",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.21",
@@ -13,11 +13,11 @@
     "underscore.string": "^3.3.5"
   },
   "dependencies": {},
-   "scripts": {
-     "lint:php": "composer phpcs",
-     "lint:php:fix": "composer phpcbf",
-     "test:php": "composer test",
-     "test:php:multisite": "composer test -- -c phpunit-multisite.xml.dist",
-     "test:php:help": "composer test --help"
-   }
+  "scripts": {
+    "lint:php": "composer phpcs",
+    "lint:php:fix": "composer phpcbf",
+    "test:php": "composer test",
+    "test:php:multisite": "composer test -- -c phpunit-multisite.xml.dist",
+    "test:php:help": "composer test --help"
+  }
 }
