@@ -3,7 +3,7 @@ Contributors: spacedmonkey
 Donate link: https://github.com/sponsors/spacedmonkey
 Tags: blocks, gutenberg, api, wp-json, rest-api
 Requires at least: 5.5
-Tested up to: 5.9
+Tested up to: 6.1
 Requires PHP: 7.0.0
 Stable tag: 0.5.0
 License: GPLv3 or later
