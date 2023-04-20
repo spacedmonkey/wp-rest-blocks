@@ -1,16 +1,17 @@
 {
   "name": "wp-rest-blocks",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "main": "Gruntfile.js",
   "author": "Jonathan Harris",
   "devDependencies": {
-    "grunt": "~1.5.3",
+    "@wordpress/scripts": "^26.2.0",
+    "grunt": "~1.6.1",
     "grunt-wp-i18n": "^1.0.3",
-    "grunt-wp-readme-to-markdown": "~1.0.0",
-    "js-yaml": "^3.13.1",
+    "grunt-wp-readme-to-markdown": "~2.1.0",
+    "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
-    "minimatch": "^3.0.2",
-    "underscore.string": "^3.3.5"
+    "minimatch": "^9.0.0",
+    "underscore.string": "^3.3.6"
   },
   "dependencies": {},
   "scripts": {
@@ -18,6 +19,12 @@
     "lint:php:fix": "composer phpcbf",
     "test:php": "composer test",
     "test:php:multisite": "composer test -- -c phpunit-multisite.xml.dist",
-    "test:php:help": "composer test --help"
+    "test:php:help": "composer test --help",
+    "format": "wp-scripts format",
+    "lint:css": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
+    "lint:md:docs": "wp-scripts lint-md-docs",
+    "lint:pkg-json": "wp-scripts lint-pkg-json",
+    "packages-update": "wp-scripts packages-update"
   }
 }
