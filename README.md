@@ -7,11 +7,11 @@
 
 **Requires at least:** 5.8
 
-**Tested up to:** 5.9
+**Tested up to:** 6.3
 
 **Requires PHP:** 7.0.0
 
-**Stable tag:** 0.5.0
+**Stable tag:** 1.0.0
 
 **License:** GPLv3 or later
 
@@ -27,7 +27,7 @@ A simple plugin to add block data in json format into the rest api. Once install
 For example output.
 ```
 "has_blocks": true,
-"blocks": [
+"block_data": [
   {
 	"blockName": "core/image",
 	"attrs": {
@@ -60,6 +60,10 @@ For example output.
 Installation requires you to check the project out in plugin directory and do a `composer install`.
 
 ## Changelog ##
+
+### 1.0.0 ###
+Breaking change!
+The field in the REST API is changed from `blocks` to `block_data`.
 
 ### 0.5.0 ###
 * Add support for new post types added in WordPress 5.9.
