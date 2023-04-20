@@ -1,46 +1,46 @@
 {
-  "name": "spacedmonkey/wp-rest-blocks",
-  "type": "wordpress-plugin",
-  "description": "Add gutenberg blocks data into post / page / widget REST API endpoints.",
-  "homepage": "http://wp-api.org/",
+	"name": "spacedmonkey/wp-rest-blocks",
+	"type": "wordpress-plugin",
+	"description": "Add gutenberg blocks data into post / page / widget REST API endpoints.",
+	"homepage": "http://wp-api.org/",
 	"license": "GPL-3.0-or-later",
-  "authors": [
-    {
-      "name": "Jonny Harris",
-      "homepage": "https://www.spacedmonkey.com/"
-    }
-  ],
-  "support": {
-    "issues": "https://github.com/spacedmonkey/wp-rest-blocks/issues"
-  },
-  "require": {
-    "composer/installers": "^1.10",
-    "php": "^7.0 || ^8.0",
-    "tburry/pquery": "^1.1"
-  },
-  "config": {
-    "discard-changes": true,
-    "platform": {
-      "php": "7.0"
-    },
-    "sort-packages": true,
-    "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true,
-      "composer/installers": true
-    }
-  },
-  "require-dev": {
-    "squizlabs/php_codesniffer": "^3.6",
-    "wp-coding-standards/wpcs": "^2.3",
-    "sirbrillig/phpcs-variable-analysis": "^2.11",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
-    "phpcompatibility/phpcompatibility-wp": "^2.1",
-    "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5",
-    "yoast/wp-test-utils": "^0.2.1"
-  },
-  "scripts": {
-    "phpcbf": "phpcbf",
-    "phpcs": "phpcs",
-    "test": "phpunit"
-  }
+	"authors": [
+		{
+			"name": "Jonny Harris",
+			"homepage": "https://www.spacedmonkey.com/"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/spacedmonkey/wp-rest-blocks/issues"
+	},
+	"require": {
+		"composer/installers": "^1.10",
+		"php": "^7.0 || ^8.0",
+		"tburry/pquery": "^1.1"
+	},
+	"config": {
+		"discard-changes": true,
+		"platform": {
+			"php": "7.0"
+		},
+		"sort-packages": true,
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"composer/installers": true
+		}
+	},
+	"require-dev": {
+		"squizlabs/php_codesniffer": "^3.6",
+		"wp-coding-standards/wpcs": "^2.3",
+		"sirbrillig/phpcs-variable-analysis": "^2.11",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+		"phpcompatibility/phpcompatibility-wp": "^2.1",
+		"phpunit/phpunit": "^5.7 || ^6.5 || ^7.5",
+		"yoast/wp-test-utils": "^0.2.1"
+	},
+	"scripts": {
+		"phpcbf": "phpcbf",
+		"phpcs": "phpcs",
+		"test": "phpunit"
+	}
 }
