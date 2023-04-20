@@ -19,8 +19,8 @@ if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
 // Give access to tests_add_filter() function.
 require_once $_tests_dir . '/includes/functions.php';
 
-require_once __DIR__ . '/../../../vendor/yoast/wp-test-utils/src/BrainMonkey/bootstrap.php';
-require_once __DIR__ . '/../../../vendor/autoload.php';
+require_once dirname( dirname( __FILE__ ) ) .  '/vendor/yoast/wp-test-utils/src/BrainMonkey/bootstrap.php';
+require_once dirname( dirname( __FILE__ ) ) .  '/vendor/autoload.php';
 
 /**
  * Manually load the plugin being tested.
