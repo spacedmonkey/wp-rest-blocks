@@ -65,7 +65,7 @@ function wp_rest_blocks_init() {
 
 	register_rest_field(
 		$types,
-		'blocks',
+		'block_data',
 		[
 			'get_callback'    => __NAMESPACE__ . '\\blocks_get_callback',
 			'update_callback' => null,
