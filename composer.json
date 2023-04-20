@@ -35,8 +35,7 @@
 		"sirbrillig/phpcs-variable-analysis": "^2.11",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7",
 		"phpcompatibility/phpcompatibility-wp": "^2.1",
-		"phpunit/phpunit": "^5.7 || ^6.5 || ^7.5",
-		"yoast/wp-test-utils": "^0.2.1"
+		"yoast/wp-test-utils": "^1.0.0"
 	},
 	"scripts": {
 		"phpcbf": "phpcbf",
