@@ -113,7 +113,7 @@ function get_attribute( $attribute, $html, $post_id = 0 ) {
 							$value[ $counter ][ $key ] = $current_value;
 						}
 					}
-					$counter ++;
+					++$counter;
 				}
 			}
 		} else {
