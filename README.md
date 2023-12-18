@@ -9,11 +9,11 @@ Stable tag: 1.0.1
 License: GPLv3 or later  
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
-![](assets/banner-1544x500.png)
-
-[![Build Status](https://travis-ci.com/spacedmonkey/wp-rest-blocks.svg?branch=master)](https://travis-ci.com/spacedmonkey/wp-rest-blocks)
+![](.wordpress-org/banner-1544x500.png)
 
 Add gutenberg blocks data into the post / page REST API endpoints.
+
+[![Build Status](https://travis-ci.com/spacedmonkey/wp-rest-blocks.svg?branch=master)](https://travis-ci.com/spacedmonkey/wp-rest-blocks)
 
 ## Description
 
