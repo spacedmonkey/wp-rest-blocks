@@ -46,6 +46,7 @@ For example output.
 	"rendered": "\n<figure class=\"wp-block-image is-resized\"><a class=\"jonny-123\" href=\"https://www.spacedmonkey.com/test-image\" target=\"_blank\" rel=\"noreferrer noopener\"><img src=\"https://www.spacedmonkey.com/wp-content/uploads/2018/12/test-image.jpg\" alt=\"Terminal de aeropuerto\" class=\"wp-image-147355\" width=\"582\" height=\"327\"/></a><figcaption>fsfsdfdsfdssfd</figcaption></figure>\n"
   }
 ],
+```
 
 ### Technical Notes
 
