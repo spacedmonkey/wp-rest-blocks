@@ -1,4 +1,4 @@
-#  REST API blocks
+# REST API blocks
 Contributors: spacedmonkey  
 Donate link: https://github.com/sponsors/spacedmonkey  
 Tags: blocks, gutenberg, api, wp-json, rest-api  
@@ -10,6 +10,8 @@ License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
 ![](assets/banner-1544x500.png)
+
+[![Build Status](https://travis-ci.com/spacedmonkey/wp-rest-blocks.svg?branch=master)](https://travis-ci.com/spacedmonkey/wp-rest-blocks)
 
 Add gutenberg blocks data into the post / page REST API endpoints.
 
@@ -52,33 +54,33 @@ An example of output, can be found in the screenshots.
 
 1. Add fields to the rest api.
 
-== Changelog ==
+## Changelog ##
 
-= 1.0.0 =
+### 1.0.0 ###
 Breaking change!
 The field in the REST API is changed from `blocks` to `block_data`.
 
-= 0.5.0 =
+### 0.5.0 ###
 * Add support for new post types added in WordPress 5.9.
 
-= 0.4.0 =
+### 0.4.0 ###
 * Added support for block based widget, added in WordPress 5.8. Block data is added to the /wp/v2/widgets endpoint.
 
-= 0.3.2 =
+### 0.3.2 ###
 * Update translations
 
-= 0.3.1 =
+### 0.3.1 ###
 * Hot fix.
 
-= 0.3.0 =
+### 0.3.0 ###
 * Improve support for block that have attributes that use query source type.
 * Improve error handling for those that install this plugin without using composer.
 
-= 0.2.1 =
+### 0.2.1 ###
 * Update dependency.
 
-= 0.2.0 =
+### 0.2.0 ###
 * Breaking change. Field names have changed and required WordPress 5.5+
 
-= 0.1.0 =
+### 0.1.0 ###
 * First version.
