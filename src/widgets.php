@@ -62,15 +62,15 @@ function wp_rest_blocks_init() {
 /**
  * Get widget
  *
- * @param array $object Object data.
+ * @param array $data_object Object data.
  *
  * @return mixed
  */
-function get_widget( array $object ) {
+function get_widget( array $data_object ) {
 	global $wp_widget_factory;
 
-	$widget_object = $wp_widget_factory->get_widget_object( $object['id_base'] );
-	$parsed_id     = wp_parse_widget_id( $object['id'] );
+	$widget_object = $wp_widget_factory->get_widget_object( $data_object['id_base'] );
+	$parsed_id     = wp_parse_widget_id( $data_object['id'] );
 	$all_instances = $widget_object->get_settings();
 
 	return $all_instances[ $parsed_id['number'] ];
@@ -79,16 +79,16 @@ function get_widget( array $object ) {
 /**
  * Callback to get if post content has block data.
  *
- * @param array $object Array of data rest api request.
+ * @param array $data_object Array of data rest api request.
  *
  * @return bool
  */
-function has_blocks_widget_get_callback( array $object ) {
-	if ( ! isset( $object['id_base'] ) || 'block' !== $object['id_base'] ) {
+function has_blocks_widget_get_callback( array $data_object ) {
+	if ( ! isset( $data_object['id_base'] ) || 'block' !== $data_object['id_base'] ) {
 		return false;
 	}
 
-	$instance = get_widget( $object );
+	$instance = get_widget( $data_object );
 	if ( ! isset( $instance['content'] ) || ! $instance['content'] ) {
 		return false;
 	}
@@ -99,16 +99,16 @@ function has_blocks_widget_get_callback( array $object ) {
 /**
  * Loop around all blocks and get block data.
  *
- * @param array $object Array of data rest api request.
+ * @param array $data_object Array of data rest api request.
  *
  * @return array
  */
-function blocks_widget_get_callback( array $object ) {
-	if ( ! has_blocks_widget_get_callback( $object ) ) {
+function blocks_widget_get_callback( array $data_object ) {
+	if ( ! has_blocks_widget_get_callback( $data_object ) ) {
 		return [];
 	}
 
-	$instance = get_widget( $object );
+	$instance = get_widget( $data_object );
 
 	return get_blocks( $instance['content'] );
 }

@@ -82,15 +82,15 @@ function wp_rest_blocks_init() {
 /**
  * Callback to get if post content has block data.
  *
- * @param array $object Array of data rest api request.
+ * @param array $data_object Array of data rest api request.
  *
  * @return bool
  */
-function has_blocks_get_callback( array $object ) {
-	if ( isset( $object['content']['raw'] ) ) {
-		return has_blocks( $object['content']['raw'] );
+function has_blocks_get_callback( array $data_object ) {
+	if ( isset( $data_object['content']['raw'] ) ) {
+		return has_blocks( $data_object['content']['raw'] );
 	}
-	$id   = ! empty( $object['wp_id'] ) ? $object['wp_id'] : $object['id'];
+	$id   = ! empty( $data_object['wp_id'] ) ? $data_object['wp_id'] : $data_object['id'];
 	$post = get_post( $id );
 	if ( ! $post ) {
 		return false;
@@ -102,16 +102,16 @@ function has_blocks_get_callback( array $object ) {
 /**
  * Loop around all blocks and get block data.
  *
- * @param array $object Array of data rest api request.
+ * @param array $data_object Array of data rest api request.
  *
  * @return array
  */
-function blocks_get_callback( array $object ) {
-	$id = ! empty( $object['wp_id'] ) ? $object['wp_id'] : $object['id'];
-	if ( isset( $object['content']['raw'] ) ) {
-		return get_blocks( $object['content']['raw'], $id );
+function blocks_get_callback( array $data_object ) {
+	$id = ! empty( $data_object['wp_id'] ) ? $data_object['wp_id'] : $data_object['id'];
+	if ( isset( $data_object['content']['raw'] ) ) {
+		return get_blocks( $data_object['content']['raw'], $id );
 	}
-	$id     = ! empty( $object['wp_id'] ) ? $object['wp_id'] : $object['id'];
+	$id     = ! empty( $data_object['wp_id'] ) ? $data_object['wp_id'] : $data_object['id'];
 	$post   = get_post( $id );
 	$output = [];
 	if ( ! $post ) {
