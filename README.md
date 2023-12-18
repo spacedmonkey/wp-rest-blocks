@@ -5,7 +5,7 @@ Tags: blocks, gutenberg, api, wp-json, rest-api
 Requires at least: 5.5  
 Tested up to: 6.4  
 Requires PHP: 7.0.0  
-Stable tag: 1.0.0  
+Stable tag: 1.0.1  
 License: GPLv3 or later  
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
@@ -55,6 +55,10 @@ An example of output, can be found in the screenshots.
 1. Add fields to the rest api.
 
 ## Changelog ##
+
+### 1.0.1 ###
+* Update coding standards to WP coding standards 3.0.1
+* Mark tested up to WP 6.4
 
 ### 1.0.0 ###
 Breaking change!
