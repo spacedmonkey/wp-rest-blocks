@@ -77,6 +77,14 @@ For example output.
 3. Upload the `wp-rest-blocks` directory to the `/wp-content/plugins/` directory
 4. Activate the plugin in the Plugin dashboard
 
+### Filters
+
+The plugin provides the following filters:
+
+* `rest_api_blocks_get_blocks` - Allows you to modify the block data array
+* `rest_api_blocks_handle_do_block` - Allows you to modify a single block
+* `rest_api_blocks_get_attribute` - Allows you to modify a single block attribute
+
 ## Screenshots
 
 1. Add fields to the rest api.

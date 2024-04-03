@@ -29,7 +29,7 @@ function get_blocks( $content, $post_id = 0 ) {
 		}
 	}
 
-	return $output;
+	return apply_filters( 'rest_api_blocks_get_blocks', $output );
 }
 
 /**
@@ -80,7 +80,7 @@ function handle_do_block( array $block, $post_id = 0 ) {
 		}
 	}
 
-	return $block;
+	return apply_filters('rest_api_blocks_handle_do_block', $block);
 }
 
 /**
@@ -144,5 +144,5 @@ function get_attribute( $attribute, $html, $post_id = 0 ) {
 		$value = rest_sanitize_value_from_schema( $value, $attribute );
 	}
 
-	return $value;
+	return apply_filters( 'rest_api_blocks_get_attribute', $value, $attribute, $html, $post_id );
 }
