@@ -1,12 +1,12 @@
 # REST API blocks
-Contributors: spacedmonkey  
-Donate link: https://github.com/sponsors/spacedmonkey  
-Tags: blocks, gutenberg, api, wp-json, rest-api  
-Requires at least: 5.5  
-Tested up to: 6.4  
-Requires PHP: 7.0.0  
-Stable tag: 1.0.1  
-License: GPLv3 or later  
+Contributors: spacedmonkey
+Donate link: https://github.com/sponsors/spacedmonkey
+Tags: blocks, gutenberg, api, wp-json, rest-api
+Requires at least: 5.5
+Tested up to: 6.5
+Requires PHP: 7.0.0
+Stable tag: 1.0.2
+License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
 ![](.wordpress-org/banner-1544x500.png)
