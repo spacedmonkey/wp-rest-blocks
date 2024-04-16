@@ -82,11 +82,6 @@ jobs:
                   php-version: '8.0'
                   tools: composer
 
-            - name: Install prefixed dependencies
-              run: |
-                  composer install --prefer-dist --no-suggest --no-progress --no-interaction
-                  rm -rf vendor/*
-
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
@@ -96,7 +91,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  composer install --prefer-dist --no-suggest --no-progress --no-interaction --no-scripts
+                  composer install --prefer-dist --no-suggest --no-progress --no-interaction --no-scripts --ignore-platform-reqs
                   composer dump-autoload --no-interaction
 
             - name: Shutdown default MySQL service
