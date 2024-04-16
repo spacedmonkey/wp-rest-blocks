@@ -91,6 +91,7 @@ jobs:
 
             - name: Install dependencies
               run: |
+                  composer update yoast/wp-test-utils --update-with-all-dependencies --ignore-platform-reqs --no-interaction
                   composer install --prefer-dist --no-suggest --no-progress --no-interaction --no-scripts --ignore-platform-reqs
                   composer dump-autoload --no-interaction
 
