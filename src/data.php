@@ -94,52 +94,50 @@ function handle_do_block( array $block, $post_id = 0 ) {
  */
 function get_attribute( $attribute, $html, $post_id = 0 ) {
 	$value = null;
-	if ( isset( $attribute['source'] ) ) {
-		if ( isset( $attribute['selector'] ) ) {
-			$dom = pQuery::parseStr( trim( $html ) );
-			if ( 'attribute' === $attribute['source'] ) {
-				$value = $dom->query( $attribute['selector'] )->attr( $attribute['attribute'] );
-			} elseif ( 'html' === $attribute['source'] ) {
-				$value = $dom->query( $attribute['selector'] )->html();
-			} elseif ( 'text' === $attribute['source'] ) {
-				$value = $dom->query( $attribute['selector'] )->text();
-			} elseif ( 'query' === $attribute['source'] && isset( $attribute['query'] ) ) {
-				$nodes   = $dom->query( $attribute['selector'] )->getIterator();
-				$counter = 0;
-				foreach ( $nodes as $node ) {
-					foreach ( $attribute['query'] as $key => $current_attribute ) {
-						$current_value = get_attribute( $current_attribute, $node->toString(), $post_id );
-						if ( null !== $current_value ) {
-							$value[ $counter ][ $key ] = $current_value;
-						}
-					}
-					++$counter;
-				}
-			}
-		} else {
-			$dom  = pQuery::parseStr( trim( $html ) );
-			$node = $dom->query();
-			if ( 'attribute' === $attribute['source'] ) {
-				$current_value = $node->attr( $attribute['attribute'] );
-				if ( null !== $current_value ) {
-					$value = $current_value;
-				}
-			} elseif ( 'html' === $attribute['source'] ) {
-				$value = $node->html();
-			} elseif ( 'text' === $attribute['source'] ) {
-				$value = $node->text();
-			}
-		}
+	$dom   = pQuery::parseStr( trim( $html ) );
+	$node  = isset( $attribute['selector'] ) ? $dom->query( $attribute['selector'] ) : $dom->query();
 
-		if ( $post_id && 'meta' === $attribute['source'] && isset( $attribute['meta'] ) ) {
-			$value = get_post_meta( $post_id, $attribute['meta'], true );
+	if ( isset( $attribute['source'] ) ) {
+		switch ( $attribute['source'] ) {
+			case 'attribute':
+				$value = $node->attr( $attribute['attribute'] );
+				break;
+			case 'html':
+			case 'rich-text':
+				$value = $node->html();
+				break;
+			case 'text':
+				$value = $node->text();
+				break;
+			case 'query':
+				if ( isset( $attribute['query'] ) ) {
+					$counter = 0;
+					$nodes   = $node->getIterator();
+					foreach ( $nodes as $v_node ) {
+						foreach ( $attribute['query'] as $key => $current_attribute ) {
+							$current_value = get_attribute( $current_attribute, $v_node->toString(), $post_id );
+							if ( null !== $current_value ) {
+								$value[ $counter ][ $key ] = $current_value;
+							}
+						}
+						++$counter;
+					}
+				}
+				break;
+			case 'meta':
+				if ( $post_id && isset( $attribute['meta'] ) ) {
+					$value = get_post_meta( $post_id, $attribute['meta'], true );
+				}
+				break;
 		}
 	}
 
+	// Assign default value if value is null and a default exists.
 	if ( is_null( $value ) && isset( $attribute['default'] ) ) {
 		$value = $attribute['default'];
 	}
 
+	// If attribute type is set and valid, sanitize value.
 	if ( isset( $attribute['type'] ) && rest_validate_value_from_schema( $value, $attribute ) ) {
 		$value = rest_sanitize_value_from_schema( $value, $attribute );
 	}
