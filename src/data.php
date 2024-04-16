@@ -137,8 +137,9 @@ function get_attribute( $attribute, $html, $post_id = 0 ) {
 		$value = $attribute['default'];
 	}
 
+	$allowed_types = [ 'array', 'object', 'string', 'number', 'integer', 'boolean', 'null' ];
 	// If attribute type is set and valid, sanitize value.
-	if ( isset( $attribute['type'] ) && rest_validate_value_from_schema( $value, $attribute ) ) {
+	if ( isset( $attribute['type'] ) && in_array( $attribute['type'], $allowed_types, true ) && rest_validate_value_from_schema( $value, $attribute ) ) {
 		$value = rest_sanitize_value_from_schema( $value, $attribute );
 	}
 
