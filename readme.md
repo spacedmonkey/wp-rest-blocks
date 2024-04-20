@@ -83,6 +83,11 @@ For example output.
 
 ## Changelog ##
 
+### 1.0.2 ###
+* Fix issue with WordPress 6.5
+* Update coding standards to WP coding standards 3.1.0
+* Mark tested up to WP 6.5
+
 ### 1.0.1 ###
 * Update coding standards to WP coding standards 3.0.1
 * Mark tested up to WP 6.4
