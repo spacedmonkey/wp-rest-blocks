@@ -7,7 +7,7 @@
  * Author URI:        https://www.spacedmonkey.com/
  * Text Domain:       wp-rest-blocks
  * Domain Path:       /languages
- * Version:           1.0.2
+ * Version:           1.1.0
  * Requires at least: 5.5
  * Requires PHP:      7.0
  *
@@ -23,7 +23,7 @@ if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
 }
 
-if ( ! class_exists( '\pQuery' ) ) {
+if ( ! class_exists( '\DiDom\Document' ) ) {
 	/**
 	 * Displays an admin notice about why the plugin is unable to load.
 	 *
