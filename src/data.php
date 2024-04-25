@@ -8,7 +8,7 @@
 namespace WP_REST_Blocks\Data;
 
 use WP_Block;
-use pQuery;
+use DiDom\Document;
 
 /**
  * Get blocks from html string.
@@ -94,8 +94,8 @@ function handle_do_block( array $block, $post_id = 0 ) {
  */
 function get_attribute( $attribute, $html, $post_id = 0 ) {
 	$value = null;
-	$dom   = pQuery::parseStr( trim( $html ) );
-	$node  = isset( $attribute['selector'] ) ? $dom->query( $attribute['selector'] ) : $dom->query();
+	$dom   = new Document($html);
+	$node  = isset( $attribute['selector'] ) ? $dom->find( $attribute['selector'] ) : $dom->find();
 
 	if ( isset( $attribute['source'] ) ) {
 		switch ( $attribute['source'] ) {

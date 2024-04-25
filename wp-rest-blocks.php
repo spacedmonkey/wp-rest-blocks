@@ -23,7 +23,7 @@ if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
 }
 
-if ( ! class_exists( '\pQuery' ) ) {
+if ( ! class_exists( '\DiDom' ) ) {
 	/**
 	 * Displays an admin notice about why the plugin is unable to load.
 	 *
