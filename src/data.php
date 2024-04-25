@@ -94,7 +94,7 @@ function handle_do_block( array $block, $post_id = 0 ) {
  */
 function get_attribute( $attribute, $html, $post_id = 0 ) {
 	$value = null;
-	$dom   = new Document($html);
+	$dom   = new Document( $html );
 	$node  = isset( $attribute['selector'] ) ? $dom->find( $attribute['selector'] ) : $dom->find();
 
 	if ( isset( $attribute['source'] ) ) {
