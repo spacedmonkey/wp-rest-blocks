@@ -94,10 +94,11 @@ function handle_do_block( array $block, $post_id = 0 ) {
  */
 function get_attribute( $attribute, $html, $post_id = 0 ) {
 	$value = null;
-	$dom   = pQuery::parseStr( trim( $html ) );
-	$node  = isset( $attribute['selector'] ) ? $dom->query( $attribute['selector'] ) : $dom->query();
 
 	if ( isset( $attribute['source'] ) ) {
+		$dom   = pQuery::parseStr( trim( $html ) );
+		$node  = isset( $attribute['selector'] ) ? $dom->query( $attribute['selector'] ) : $dom->query();
+		
 		switch ( $attribute['source'] ) {
 			case 'attribute':
 				$value = $node->attr( $attribute['attribute'] );
