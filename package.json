@@ -10,7 +10,7 @@
 		"grunt-wp-readme-to-markdown": "~2.1.0",
 		"js-yaml": "^4.1.0",
 		"lodash": "^4.17.21",
-		"minimatch": "^9.0.4",
+		"minimatch": "^9.0.5",
 		"underscore.string": "^3.3.6"
 	},
 	"scripts": {
