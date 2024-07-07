@@ -13,10 +13,16 @@
 	"support": {
 		"issues": "https://github.com/spacedmonkey/wp-rest-blocks/issues"
 	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/guyavatrade/pquery"
+		}
+	],
 	"require": {
 		"php": "^7.0 || ^8.0",
 		"composer/installers": "^1.10",
-		"tburry/pquery": "^1.1"
+		"guyavatrade/pquery": "^1.1"
 	},
 	"require-dev": {
 		"phpcompatibility/phpcompatibility-wp": "^2.1",
