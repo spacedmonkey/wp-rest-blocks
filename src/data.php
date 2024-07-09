@@ -41,6 +41,23 @@ function get_blocks( $content, $post_id = 0 ) {
  * @return array|false
  */
 function handle_do_block( array $block, $post_id = 0 ) {
+	// Sync Patterns: Parsing and processing the pattern inner blocks.
+	if ($block['blockName'] === 'core/block' && isset($block['attrs']['ref']) && !empty($block['attrs']['ref'])) {
+		$core_block = get_post($block['attrs']['ref']);
+
+		if ($core_block && 'wp_block' === $core_block->post_type) {
+			$blocks = parse_blocks($core_block->post_content);
+			$processed_blocks = [];
+			foreach ($blocks as $_block) {
+				$processed_block = handle_do_block($_block, $post_id);
+				if ($processed_block) {
+					$processed_blocks[] = $processed_block;
+				}
+			}
+			$block['innerBlocks'] = $processed_blocks;
+		}
+	}
+
 	if ( ! $block['blockName'] ) {
 		return false;
 	}
