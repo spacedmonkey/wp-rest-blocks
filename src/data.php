@@ -3,6 +3,7 @@
  * Data layer to process to block data.
  *
  * @package WP_REST_Blocks.
+ * @phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
  */
 
 namespace WP_REST_Blocks\Data;
@@ -19,6 +20,27 @@ use pQuery;
  * @return array
  */
 function get_blocks( $content, $post_id = 0 ) {
+	$do_cache = apply_filters( 'rest_api_blocks_cache', true );
+
+	if ( $do_cache ) {
+		$cache_key = 'rest_api_blocks_' . md5( $content );
+		if ( 0 !== $post_id ) {
+			$cache_key .= '_' . md5( serialize( get_post_meta( $post_id ) ) );
+		}
+		$multisite_cache = is_multisite() && apply_filters( 'rest_api_blocks_multisite_cache', true );
+
+		if ( $multisite_cache ) {
+			$output = get_site_transient( $cache_key );
+		} else {
+			$output = get_transient( $cache_key );
+		}
+
+		if ( ! empty( $output ) && is_array( $output ) ) {
+			/** This filter is documented at the end of this function */
+			return apply_filters( 'rest_api_blocks_output', $output, $content, $post_id, true );
+		}
+	}
+
 	$output = [];
 	$blocks = parse_blocks( $content );
 
@@ -29,7 +51,25 @@ function get_blocks( $content, $post_id = 0 ) {
 		}
 	}
 
-	return $output;
+	if ( $do_cache ) {
+		$cache_expiration = apply_filters( 'rest_api_blocks_expiration', 0 );
+
+		if ( $multisite_cache ) {
+			set_site_transient( $cache_key, $output, $cache_expiration );
+		} else {
+			set_transient( $cache_key, $output, $cache_expiration );
+		}
+	}
+
+	/**
+	 * Filter to allow plugins to change the parsed blocks.
+	 *
+	 * @param array $output   The parsed blocks.
+	 * @param string $content The content that is parsed.
+	 * @param int $post_id    The post id. Defaults to 0 if not parsing a post.
+	 * @param bool $cached    True if output is cached.
+	 */
+	return apply_filters( 'rest_api_blocks_output', $output, $content, $post_id, false );
 }
 
 /**
@@ -51,13 +91,13 @@ function handle_do_block( array $block, $post_id = 0 ) {
 		$attributes = $block_object->block_type->attributes;
 		$supports   = $block_object->block_type->supports;
 		if ( $supports && isset( $supports['anchor'] ) && $supports['anchor'] ) {
-				$attributes['anchor'] = [
-					'type'      => 'string',
-					'source'    => 'attribute',
-					'attribute' => 'id',
-					'selector'  => '*',
-					'default'   => '',
-				];
+			$attributes['anchor'] = [
+				'type'      => 'string',
+				'source'    => 'attribute',
+				'attribute' => 'id',
+				'selector'  => '*',
+				'default'   => '',
+			];
 		}
 
 		if ( $attributes ) {
@@ -80,7 +120,14 @@ function handle_do_block( array $block, $post_id = 0 ) {
 		}
 	}
 
-	return $block;
+	/**
+	 * Filter to allow plugins to change the parsed block.
+	 *
+	 * @param array $block The parsed block.
+	 * @param int $post_id The post id. Defaults to 0 if not parsing a post.
+	 * @param WP_Block $block_object The block object.
+	 */
+	return apply_filters( 'rest_api_handle_block', $block, $post_id, $block_object );
 }
 
 /**
