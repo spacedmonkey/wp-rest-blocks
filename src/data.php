@@ -20,6 +20,21 @@ use pQuery;
  */
 function get_blocks( $content, $post_id = 0 ) {
 	$output = [];
+
+	/**
+	 * Pre filter.
+	 *
+	 * @param null|array $pre_handle_blocks Defaults to null.
+	 * @param string $content Content to parse.
+	 * @param int    $post_id Post int.
+	 *
+	 * @return null|array
+	 */
+	$pre_handle_blocks = apply_filters( 'pre_handle_blocks_rest_blocks', null, $content, $post_id );
+	if ( null !== $pre_handle_blocks ) {
+		return $pre_handle_blocks;
+	}
+
 	$blocks = parse_blocks( $content );
 
 	foreach ( $blocks as $block ) {
