@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name:       REST API Blocks
+ * Plugin Name:       REST API Blocks (Edited by AVA)
  * Plugin URI:        https://github.com/spacedmonkey/wp-rest-blocks
- * Description:       Add gutenberg blocks data into post / page / widget REST API endpoints.
- * Author:            Jonathan Harris
+ * Description:       Add gutenberg blocks data into post / page / widget REST API endpoints. (Edited by AVA to support sync pattern and override content)
+ * Author:            Jonathan Harris (Edited by AVA)
  * Author URI:        https://www.spacedmonkey.com/
  * Text Domain:       wp-rest-blocks
  * Domain Path:       /languages
