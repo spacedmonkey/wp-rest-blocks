@@ -10,6 +10,25 @@ namespace WP_REST_Blocks\Data;
 use WP_Block;
 use pQuery;
 
+function merge_override_content($content_override, $blocks)
+{
+	foreach ($content_override as $key => $value) {
+		$content = $value['content'];
+
+		foreach ($blocks as &$block) {
+			if (isset($block['attrs']['metadata']['name'])) {
+				if ($block['attrs']['metadata']['name'] === $key) {
+					$block['attrs']['content'] = $content;
+				}
+			}
+			if (!empty($block['innerBlocks'])) {
+				$block['innerBlocks'] = merge_override_content($content_override, $block['innerBlocks']);
+			}
+		}
+	}
+	return $blocks;
+}
+
 /**
  * Get blocks from html string.
  *
@@ -43,18 +62,26 @@ function get_blocks( $content, $post_id = 0 ) {
 function handle_do_block( array $block, $post_id = 0 ) {
 	// Sync Patterns: Parsing and processing the pattern inner blocks.
 	if ($block['blockName'] === 'core/block' && isset($block['attrs']['ref']) && !empty($block['attrs']['ref'])) {
-		$core_block = get_post($block['attrs']['ref']);
+		$sync_pattern = get_post($block['attrs']['ref']);
 
-		if ($core_block && 'wp_block' === $core_block->post_type) {
-			$blocks = parse_blocks($core_block->post_content);
-			$processed_blocks = [];
-			foreach ($blocks as $_block) {
-				$processed_block = handle_do_block($_block, $post_id);
-				if ($processed_block) {
-					$processed_blocks[] = $processed_block;
+		$content_override = [];
+		if (isset($block['attrs']['content'])) {
+			$content_override = $block['attrs']['content'];
+		}
+
+		if ($sync_pattern && 'wp_block' === $sync_pattern->post_type) {
+			// parse the inner blocks
+			$block['innerBlocks'] = parse_blocks($sync_pattern->post_content);
+			// remove the empty blocks
+			$sync_inner_blocks = [];
+			foreach ($block['innerBlocks'] as $_block) {
+				if ($_block['blockName']) {
+					$sync_inner_blocks[] = $_block;
 				}
 			}
-			$block['innerBlocks'] = $processed_blocks;
+			$block['innerBlocks'] = $sync_inner_blocks;
+			// merge the content override
+			$block['innerBlocks'] = merge_override_content($content_override, $block['innerBlocks']);
 		}
 	}
 
