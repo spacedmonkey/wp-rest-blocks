@@ -12,21 +12,46 @@ use pQuery;
 
 function merge_override_content($content_override, $blocks)
 {
-	foreach ($content_override as $key => $value) {
-		$content = $value['content'];
+  foreach ($content_override as $key => $value) {
+    if (!isset($value['content']) && !isset($value['text']) && !isset($value['url'])) {
+      continue;
+    }
 
-		foreach ($blocks as &$block) {
-			if (isset($block['attrs']['metadata']['name'])) {
-				if ($block['attrs']['metadata']['name'] === $key) {
-					$block['attrs']['content'] = $content;
-				}
-			}
-			if (!empty($block['innerBlocks'])) {
-				$block['innerBlocks'] = merge_override_content($content_override, $block['innerBlocks']);
-			}
-		}
-	}
-	return $blocks;
+    foreach ($blocks as &$block) {
+      if (isset($block['attrs']['metadata']['name'])) {
+        if ($block['attrs']['metadata']['name'] === $key) {
+          if (isset($value['content'])) {
+            $block['attrs']['content'] = $value['content'];
+          }
+          if (isset($value['text'])) {
+            $block['attrs']['text'] = $value['text'];
+          }
+					if (isset($value['linkTarget'])) {
+						$block['attrs']['linkTarget'] = $value['linkTarget'];
+					}
+					if (isset($value['rel'])) {
+						$block['attrs']['rel'] = $value['rel'];
+					}
+          if (isset($value['url'])) {
+            $block['attrs']['url'] = $value['url'];
+          }
+          if (isset($value['id'])) {
+            $block['attrs']['id'] = $value['id'];
+          }
+          if (isset($value['alt'])) {
+            $block['attrs']['alt'] = $value['alt'];
+          }
+					if (isset($value['title'])) {
+						$block['attrs']['title'] = $value['title'];
+					}
+        }
+      }
+      if (!empty($block['innerBlocks'])) {
+        $block['innerBlocks'] = merge_override_content($content_override, $block['innerBlocks']);
+      }
+    }
+  }
+  return $blocks;
 }
 
 /**
