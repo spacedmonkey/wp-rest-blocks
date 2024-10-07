@@ -138,8 +138,9 @@ function handle_do_block( array $block, $post_id = 0 ) {
 		}
 	}
 
-	$block['rendered'] = $block_object->render();
-	$block['rendered'] = do_shortcode( $block['rendered'] );
+  // * Removed by Ava
+	// $block['rendered'] = $block_object->render();
+	// $block['rendered'] = do_shortcode( $block['rendered'] );
 	$block['attrs']    = $attr;
 	if ( ! empty( $block['innerBlocks'] ) ) {
 		$inner_blocks         = $block['innerBlocks'];
