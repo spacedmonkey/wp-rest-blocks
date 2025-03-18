@@ -10,6 +10,50 @@ namespace WP_REST_Blocks\Data;
 use WP_Block;
 use pQuery;
 
+function merge_override_content($content_override, $blocks)
+{
+  foreach ($content_override as $key => $value) {
+    if (!isset($value['content']) && !isset($value['text']) && !isset($value['url'])) {
+      continue;
+    }
+
+    foreach ($blocks as &$block) {
+      if (isset($block['attrs']['metadata']['name'])) {
+        if ($block['attrs']['metadata']['name'] === $key) {
+          if (isset($value['content'])) {
+            $block['attrs']['content'] = $value['content'];
+          }
+          if (isset($value['text'])) {
+            $block['attrs']['text'] = $value['text'];
+          }
+					if (isset($value['linkTarget'])) {
+						$block['attrs']['linkTarget'] = $value['linkTarget'];
+					}
+					if (isset($value['rel'])) {
+						$block['attrs']['rel'] = $value['rel'];
+					}
+          if (isset($value['url'])) {
+            $block['attrs']['url'] = $value['url'];
+          }
+          if (isset($value['id'])) {
+            $block['attrs']['id'] = $value['id'];
+          }
+          if (isset($value['alt'])) {
+            $block['attrs']['alt'] = $value['alt'];
+          }
+					if (isset($value['title'])) {
+						$block['attrs']['title'] = $value['title'];
+					}
+        }
+      }
+      if (!empty($block['innerBlocks'])) {
+        $block['innerBlocks'] = merge_override_content($content_override, $block['innerBlocks']);
+      }
+    }
+  }
+  return $blocks;
+}
+
 /**
  * Get blocks from html string.
  *
@@ -41,6 +85,31 @@ function get_blocks( $content, $post_id = 0 ) {
  * @return array|false
  */
 function handle_do_block( array $block, $post_id = 0 ) {
+	// Sync Patterns: Parsing and processing the pattern inner blocks.
+	if ($block['blockName'] === 'core/block' && isset($block['attrs']['ref']) && !empty($block['attrs']['ref'])) {
+		$sync_pattern = get_post($block['attrs']['ref']);
+
+		$content_override = [];
+		if (isset($block['attrs']['content'])) {
+			$content_override = $block['attrs']['content'];
+		}
+
+		if ($sync_pattern && 'wp_block' === $sync_pattern->post_type) {
+			// parse the inner blocks
+			$block['innerBlocks'] = parse_blocks($sync_pattern->post_content);
+			// remove the empty blocks
+			$sync_inner_blocks = [];
+			foreach ($block['innerBlocks'] as $_block) {
+				if ($_block['blockName']) {
+					$sync_inner_blocks[] = $_block;
+				}
+			}
+			$block['innerBlocks'] = $sync_inner_blocks;
+			// merge the content override
+			$block['innerBlocks'] = merge_override_content($content_override, $block['innerBlocks']);
+		}
+	}
+
 	if ( ! $block['blockName'] ) {
 		return false;
 	}
@@ -69,8 +138,20 @@ function handle_do_block( array $block, $post_id = 0 ) {
 		}
 	}
 
-	$block['rendered'] = $block_object->render();
-	$block['rendered'] = do_shortcode( $block['rendered'] );
+  // Process shortcodes
+  $is_supports_shortcode_for_blocks = $block['blockName'] === 'core/paragraph' || $block['blockName'] === 'core/heading';
+  if($is_supports_shortcode_for_blocks){
+    if (isset($attr['content'])) {
+      $attr['content'] = do_shortcode($attr['content']);
+    }
+    if (isset($attr['text'])) {
+      $attr['text'] = do_shortcode($attr['text']);
+    }
+  }
+
+  // * Removed by Ava
+	// $block['rendered'] = $block_object->render();
+	// $block['rendered'] = do_shortcode( $block['rendered'] );
 	$block['attrs']    = $attr;
 	if ( ! empty( $block['innerBlocks'] ) ) {
 		$inner_blocks         = $block['innerBlocks'];
