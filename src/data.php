@@ -138,6 +138,17 @@ function handle_do_block( array $block, $post_id = 0 ) {
 		}
 	}
 
+  // Process shortcodes
+  $is_supports_shortcode_for_blocks = $block['blockName'] === 'core/paragraph' || $block['blockName'] === 'core/heading';
+  if($is_supports_shortcode_for_blocks){
+    if (isset($attr['content'])) {
+      $attr['content'] = do_shortcode($attr['content']);
+    }
+    if (isset($attr['text'])) {
+      $attr['text'] = do_shortcode($attr['text']);
+    }
+  }
+
   // * Removed by Ava
 	// $block['rendered'] = $block_object->render();
 	// $block['rendered'] = do_shortcode( $block['rendered'] );
