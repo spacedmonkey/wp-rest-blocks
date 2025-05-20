@@ -46,6 +46,54 @@ function merge_override_content($content_override, $blocks)
 					}
         }
       }
+
+      // Handle background image override
+      if(isset($block['attrs']['className'])){
+        if( str_contains($block['attrs']['className'], 'background-image-override-target') ){
+          if ($key === 'Background Image Override') {
+            if(isset($block['attrs']['style']['background']['backgroundImage']['url'])){
+              $block['attrs']['style']['background']['backgroundImage']['url'] = $value['url'];
+              $block['attrs']['style']['background']['backgroundImage']['id'] = $value['id'];
+            }
+          }else if($key === 'Background Image Override Tablet'){
+            if(isset($block['attrs']['imageOnTablet'])){
+              $block['attrs']['imageOnTablet'] = $value['url'];
+              $block['attrs']['imageOnTabletId'] = $value['id'];
+            }
+          }else if($key === 'Background Image Override Laptop'){
+            if(isset($block['attrs']['imageOnLaptop'])){
+              $block['attrs']['imageOnLaptop'] = $value['url'];
+              $block['attrs']['imageOnLaptopId'] = $value['id'];
+            }
+          }else if($key === 'Background Image Override Desktop'){
+            if(isset($block['attrs']['imageOnDesktop'])){
+              $block['attrs']['imageOnDesktop'] = $value['url'];
+              $block['attrs']['imageOnDesktopId'] = $value['id'];
+            }
+          }else if($key === 'Background Image Override RTL'){
+            if(isset($block['attrs']['rtlBackgroundImage'])){
+              $block['attrs']['rtlBackgroundImage'] = $value['url'];
+              $block['attrs']['rtlBackgroundImageId'] = $value['id'];
+            }
+          }else if($key === 'Background Image Override Tablet RTL'){
+            if(isset($block['attrs']['rtlTabletBackgroundImage'])){
+              $block['attrs']['rtlTabletBackgroundImage'] = $value['url'];
+              $block['attrs']['rtlTabletBackgroundImageId'] = $value['id'];
+            }
+          }else if($key === 'Background Image Override Laptop RTL'){
+            if(isset($block['attrs']['rtlLaptopBackgroundImage'])){
+              $block['attrs']['rtlLaptopBackgroundImage'] = $value['url'];
+              $block['attrs']['rtlLaptopBackgroundImageId'] = $value['id'];
+            }
+          }else if($key === 'Background Image Override Desktop RTL'){
+            if(isset($block['attrs']['rtlDesktopBackgroundImage'])){
+              $block['attrs']['rtlDesktopBackgroundImage'] = $value['url'];
+              $block['attrs']['rtlDesktopBackgroundImageId'] = $value['id'];
+            }
+          }
+        }
+      }
+
       if (!empty($block['innerBlocks'])) {
         $block['innerBlocks'] = merge_override_content($content_override, $block['innerBlocks']);
       }
@@ -105,7 +153,7 @@ function handle_do_block( array $block, $post_id = 0 ) {
 				}
 			}
 			$block['innerBlocks'] = $sync_inner_blocks;
-			// merge the content override
+			// merge the content override to the inner blocks
 			$block['innerBlocks'] = merge_override_content($content_override, $block['innerBlocks']);
 		}
 	}
