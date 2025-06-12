@@ -10,6 +10,10 @@ namespace WP_REST_Blocks\Data;
 use WP_Block;
 use pQuery;
 
+// Ava custom functions
+// TODO: Extract all our code to separate files like this one.
+require_once __DIR__ . '/ava/manipulate-block-format-text-highlight/manipulate-block-format-text-highlight.php';
+
 function merge_override_content($content_override, $blocks)
 {
   foreach ($content_override as $key => $value) {
@@ -196,6 +200,8 @@ function handle_do_block( array $block, $post_id = 0 ) {
       $attr['text'] = do_shortcode($attr['text']);
     }
   }
+
+  manipulate_block_format_text_highlight($block, $attr);
 
   // * Removed by Ava
 	// $block['rendered'] = $block_object->render();
