@@ -74,25 +74,25 @@ function merge_override_content($content_override, $blocks)
               $block['attrs']['imageOnDesktop'] = $value['url'];
               $block['attrs']['imageOnDesktopId'] = $value['id'];
             }
-          }else if($key === 'Background Image Override RTL'){
-            if(isset($block['attrs']['rtlBackgroundImage'])){
-              $block['attrs']['rtlBackgroundImage'] = $value['url'];
-              $block['attrs']['rtlBackgroundImageId'] = $value['id'];
+          }else if($key === 'Background Image Override Mobile RTL'){
+            if(isset($block['attrs']['rtlImageOnMobile'])){
+              $block['attrs']['rtlImageOnMobile'] = $value['url'];
+              $block['attrs']['rtlImageOnMobileId'] = $value['id'];
             }
           }else if($key === 'Background Image Override Tablet RTL'){
-            if(isset($block['attrs']['rtlTabletBackgroundImage'])){
-              $block['attrs']['rtlTabletBackgroundImage'] = $value['url'];
-              $block['attrs']['rtlTabletBackgroundImageId'] = $value['id'];
+            if(isset($block['attrs']['rtlImageOnTablet'])){
+              $block['attrs']['rtlImageOnTablet'] = $value['url'];
+              $block['attrs']['rtlImageOnTabletId'] = $value['id'];
             }
           }else if($key === 'Background Image Override Laptop RTL'){
-            if(isset($block['attrs']['rtlLaptopBackgroundImage'])){
-              $block['attrs']['rtlLaptopBackgroundImage'] = $value['url'];
-              $block['attrs']['rtlLaptopBackgroundImageId'] = $value['id'];
+            if(isset($block['attrs']['rtlImageOnLaptop'])){
+              $block['attrs']['rtlImageOnLaptop'] = $value['url'];
+              $block['attrs']['rtlImageOnLaptopId'] = $value['id'];
             }
           }else if($key === 'Background Image Override Desktop RTL'){
-            if(isset($block['attrs']['rtlDesktopBackgroundImage'])){
-              $block['attrs']['rtlDesktopBackgroundImage'] = $value['url'];
-              $block['attrs']['rtlDesktopBackgroundImageId'] = $value['id'];
+            if(isset($block['attrs']['rtlImageOnDesktop'])){
+              $block['attrs']['rtlImageOnDesktop'] = $value['url'];
+              $block['attrs']['rtlImageOnDesktopId'] = $value['id'];
             }
           }
         }
