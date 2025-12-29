@@ -20,7 +20,6 @@ namespace WP_REST_Blocks;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
 if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
 }

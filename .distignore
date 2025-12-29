@@ -7,6 +7,9 @@
 .travis.yml
 .DS_Store
 .wordpress-org
+.wp-env.json
+.wp-env.override.json
+.wp-env-home
 composer.json
 composer.lock
 Thumbs.db

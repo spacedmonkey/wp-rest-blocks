@@ -41,7 +41,7 @@ class Test_Posts extends TestCase {
 	 *
 	 * @return void
 	 */
-	protected function set_up(): void {
+	public function set_up(): void {
 		parent::set_up();
 		$this->data  = new Data();
 		$this->posts = new Posts( $this->data );
@@ -372,6 +372,7 @@ class Test_Posts extends TestCase {
 	public function test_rest_api_integration() {
 		$this->posts->init();
 		do_action( 'rest_api_init' );
+        wp_set_current_user( $this->factory->user->create( [ 'role' => 'administrator' ] ) );
 
 		$post_id = $this->factory->post->create(
 			[

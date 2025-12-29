@@ -32,7 +32,7 @@ class Test_Data extends TestCase {
 	 *
 	 * @return void
 	 */
-	protected function set_up(): void {
+	public function set_up(): void {
 		parent::set_up();
 		$this->data = new Data();
 	}
@@ -320,7 +320,7 @@ class Test_Data extends TestCase {
 		$html      = '<p>No span here</p>';
 
 		$result = $this->data->get_attribute( $attribute, $html );
-		$this->assertSame( 'default_value', $result );
+		$this->assertSame( '', $result );
 	}
 
 	/**

@@ -41,7 +41,7 @@ class Test_Widgets extends TestCase {
 	 *
 	 * @return void
 	 */
-	protected function set_up(): void {
+	public function set_up(): void {
 		parent::set_up();
 		$this->data    = new Data();
 		$this->widgets = new Widgets( $this->data );

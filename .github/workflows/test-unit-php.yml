@@ -10,6 +10,7 @@ on:
             - 'composer.json'
             - 'composer.lock'
             - 'tests/**'
+            - '.wp-env.json'
         branches:
             - master
             - release/*
@@ -22,6 +23,7 @@ on:
             - 'composer.json'
             - 'composer.lock'
             - 'tests/**'
+            - '.wp-env.json'
             - '.github/workflows/tests-unit-php.yml'
 
 jobs:
@@ -29,17 +31,6 @@ jobs:
         name: 'PHP ${{ matrix.php }} - WP ${{ matrix.wp }}'
         runs-on: ubuntu-latest
         timeout-minutes: 60
-        services:
-            mysql:
-              image: mariadb:latest
-              env:
-                MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
-                MARIADB_DATABASE: wordpress_test
-                MARIADB_MYSQL_LOCALHOST_USER: 1
-                MARIADB_MYSQL_LOCALHOST_GRANTS: USAGE
-              ports:
-                - 3306
-              options: --health-cmd="healthcheck.sh --su-mysql --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=3
         continue-on-error: ${{ matrix.experimental == true }}
         strategy:
             matrix:
@@ -52,17 +43,20 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
-            - name: Install Subversion
-              run: sudo apt-get update && sudo apt-get install -y subversion
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 'lts/*'
+                  cache: 'npm'
 
             - name: Get Composer cache directory
               id: composer-cache
-              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+              run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
             - name: Setup Composer cache
-              uses: pat-s/always-upload-cache@v2.1.3
+              uses: actions/cache@v4
               with:
                   path: ${{ steps.composer-cache.outputs.dir }}
                   key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -70,37 +64,43 @@ jobs:
                       ${{ runner.os }}-composer-
                       ${{ runner.os }}-
 
-            - name: Setup PHP 8.0
-              uses: shivammathur/setup-php@d30ad8b1843ace22e6698ab99bbafaa747b6bd0d
-              with:
-                  php-version: '8.0'
-                  tools: composer
-
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php }}
                   extensions: mysql
-                  tools: composer, cs2pr
+                  coverage: none
+                  tools: composer
 
-            - name: Install dependencies
+            - name: Install PHP dependencies
               run: |
-                  composer install --prefer-dist --no-suggest --no-progress --no-interaction --no-scripts
+                  composer install --prefer-dist --no-suggest --no-progress --no-interaction
                   composer dump-autoload --no-interaction
 
-            - name: Shutdown default MySQL service
-              run: sudo service mysql stop
+            - name: Install Node dependencies
+              run: npm ci
 
-            - name: Verify MariaDB connection
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Set WordPress version in .wp-env.json
               run: |
-                  while ! mysqladmin ping -h"127.0.0.1" -P"${{ job.services.mysql.ports[3306] }}" --silent; do
-                    sleep 1
-                  done
+                  if [ "${{ matrix.wp }}" == "trunk" ]; then
+                    node -e "const fs = require('fs'); const config = JSON.parse(fs.readFileSync('.wp-env.json', 'utf8')); config.core = 'WordPress/WordPress#master'; fs.writeFileSync('.wp-env.json', JSON.stringify(config, null, 2));"
+                  else
+                    node -e "const fs = require('fs'); const config = JSON.parse(fs.readFileSync('.wp-env.json', 'utf8')); config.core = null; fs.writeFileSync('.wp-env.json', JSON.stringify(config, null, 2));"
+                  fi
 
-            - name: Set up tests
-              run: bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1:${{ job.services.mysql.ports['3306'] }} ${{ matrix.wp }} true
+            - name: Start wp-env
+              run: npm run env:start
 
             - name: Run tests
               run: |
                   npm run test:php
                   npm run test:php:multisite
+
+            - name: Stop wp-env
+              if: always()
+              run: npm run env:stop
+
+

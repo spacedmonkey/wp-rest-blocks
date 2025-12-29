@@ -11,3 +11,5 @@ coverage-html/
 *.sql
 *.tar.gz
 *.zip
+.wp-env-home/
+.wp-env.override.json
