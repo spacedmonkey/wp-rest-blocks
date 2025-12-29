@@ -26,6 +26,14 @@ on:
             - '.wp-env.json'
             - '.github/workflows/tests-unit-php.yml'
 
+# Cancel in-progress runs for the same workflow and branch/PR
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+
 jobs:
     unit-php:
         name: 'PHP ${{ matrix.php }} - WP ${{ matrix.wp }}'
@@ -33,6 +41,7 @@ jobs:
         timeout-minutes: 60
         continue-on-error: ${{ matrix.experimental == true }}
         strategy:
+            fail-fast: false
             matrix:
                 php: ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4']
                 wp: ['5.9.1']
@@ -51,31 +60,15 @@ jobs:
                   node-version: 'lts/*'
                   cache: 'npm'
 
-            - name: Get Composer cache directory
-              id: composer-cache
-              run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-            - name: Setup Composer cache
-              uses: actions/cache@v4
-              with:
-                  path: ${{ steps.composer-cache.outputs.dir }}
-                  key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-composer-
-                      ${{ runner.os }}-
-
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
+            - name: Setup PHP with Composer
+              uses: ./.github/actions/setup-php-composer
               with:
                   php-version: ${{ matrix.php }}
-                  extensions: mysql
-                  coverage: none
-                  tools: composer
+                  extensions: 'mysql'
+                  tools: 'composer'
 
-            - name: Install PHP dependencies
-              run: |
-                  composer install --prefer-dist --no-suggest --no-progress --no-interaction
-                  composer dump-autoload --no-interaction
+            - name: Dump autoload
+              run: composer dump-autoload --no-interaction
 
             - name: Install Node dependencies
               run: npm ci

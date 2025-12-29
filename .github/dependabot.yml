@@ -1,23 +1,47 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+# Dependabot configuration for keeping GitHub Actions up to date
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
 
 version: 2
 updates:
-  - package-ecosystem: composer
-    directory: '/'
-    schedule:
-      interval: weekly
-    open-pull-requests-limit: 10
-    labels:
-      - Dependencies
-      - PHP
-  - package-ecosystem: npm
-    directory: '/'
-    schedule:
-      interval: weekly
-    open-pull-requests-limit: 15
-    labels:
-      - Dependencies
-      - JavaScript
+    # Monitor GitHub Actions versions
+    - package-ecosystem: 'github-actions'
+      directory: '/'
+      schedule:
+          interval: 'weekly'
+          day: 'monday'
+      open-pull-requests-limit: 10
+      labels:
+          - 'dependencies'
+          - 'github-actions'
+      commit-message:
+          prefix: 'chore(deps)'
+          include: 'scope'
+
+    # Monitor Composer dependencies
+    - package-ecosystem: 'composer'
+      directory: '/'
+      schedule:
+          interval: 'weekly'
+          day: 'monday'
+      open-pull-requests-limit: 10
+      labels:
+          - 'dependencies'
+          - 'php'
+      commit-message:
+          prefix: 'chore(deps)'
+          include: 'scope'
+
+    # Monitor npm dependencies
+    - package-ecosystem: 'npm'
+      directory: '/'
+      schedule:
+          interval: 'weekly'
+          day: 'monday'
+      open-pull-requests-limit: 10
+      labels:
+          - 'dependencies'
+          - 'javascript'
+      commit-message:
+          prefix: 'chore(deps)'
+          include: 'scope'
+

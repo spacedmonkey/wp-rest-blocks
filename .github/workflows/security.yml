@@ -1,0 +1,70 @@
+name: Security Scanning
+
+on:
+    push:
+        branches:
+            - master
+    pull_request:
+    schedule:
+        # Run weekly on Monday at 00:00 UTC
+        - cron: '0 0 * * 1'
+    workflow_dispatch:
+
+# Cancel in-progress runs for the same workflow and branch/PR
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+    security-events: write
+
+jobs:
+    dependency-review:
+        name: Dependency Review
+        runs-on: ubuntu-latest
+        if: github.event_name == 'pull_request'
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Dependency Review
+              uses: actions/dependency-review-action@v4
+
+    composer-audit:
+        name: Composer Security Audit
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup PHP with Composer
+              uses: ./.github/actions/setup-php-composer
+              with:
+                  php-version: '7.4'
+
+            - name: Run Composer Audit
+              run: composer audit --format=plain
+
+    codeql:
+        name: CodeQL Analysis
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                language: ['javascript']
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Initialize CodeQL
+              uses: github/codeql-action/init@v3
+              with:
+                  languages: ${{ matrix.language }}
+
+            - name: Autobuild
+              uses: github/codeql-action/autobuild@v3
+
+            - name: Perform CodeQL Analysis
+              uses: github/codeql-action/analyze@v3
+
