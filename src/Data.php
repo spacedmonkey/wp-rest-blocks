@@ -53,16 +53,16 @@ class Data {
 	 * @return array|false
 	 */
 	public function handle_do_block( array $block, int $post_id = 0 ) {
-		if ( empty( $block['blockName'] ) ) {
+		if ( ! isset( $block['blockName'] ) || '' === $block['blockName'] ) {
 			return false;
 		}
 
 		$block_object = new WP_Block( $block );
 		$attr         = $block['attrs'] ?? [];
-		if ( $block_object && $block_object->block_type ) {
+		if ( null !== $block_object->block_type ) {
 			$attributes = $block_object->block_type->attributes;
 			$supports   = $block_object->block_type->supports;
-			if ( $supports && isset( $supports['anchor'] ) && $supports['anchor'] ) {
+			if ( null !== $supports && isset( $supports['anchor'] ) && $supports['anchor'] ) {
 					$attributes['anchor'] = [
 						'type'      => 'string',
 						'source'    => 'attribute',
@@ -72,7 +72,7 @@ class Data {
 					];
 			}
 
-			if ( $attributes ) {
+			if ( null !== $attributes ) {
 				foreach ( $attributes as $key => $attribute ) {
 					if ( ! isset( $attr[ $key ] ) ) {
 						$attr[ $key ] = $this->get_attribute( $attribute, $block_object->inner_html, $post_id );
@@ -84,7 +84,7 @@ class Data {
 		$block['rendered'] = $block_object->render();
 		$block['rendered'] = do_shortcode( $block['rendered'] );
 		$block['attrs']    = $attr;
-		if ( ! empty( $block['innerBlocks'] ) ) {
+		if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) && count( $block['innerBlocks'] ) > 0 ) {
 			$inner_blocks         = $block['innerBlocks'];
 			$block['innerBlocks'] = [];
 			foreach ( $inner_blocks as $_block ) {
@@ -127,7 +127,7 @@ class Data {
 
 		$allowed_types = [ 'array', 'object', 'string', 'number', 'integer', 'boolean', 'null' ];
 		// If attribute type is set and valid, sanitize value.
-		if ( isset( $attribute['type'] ) && in_array( $attribute['type'], $allowed_types, true ) && rest_validate_value_from_schema( $value, $attribute ) ) {
+		if ( isset( $attribute['type'] ) && in_array( $attribute['type'], $allowed_types, true ) ) {
 			$value = rest_sanitize_value_from_schema( $value, $attribute );
 		}
 
@@ -141,7 +141,7 @@ class Data {
 	 * @return mixed|null Meta value or null if not found.
 	 */
 	private function extract_value_from_meta( array $attribute, int $post_id ) {
-		if ( $post_id && isset( $attribute['meta'] ) ) {
+		if ( $post_id > 0 && isset( $attribute['meta'] ) ) {
 			return get_post_meta( $post_id, $attribute['meta'], true );
 		}
 		return null;
@@ -168,21 +168,21 @@ class Data {
 		}
 
 		// Get first element from array for non-query sources.
-		$single_node = ! empty( $node ) ? $node[0] : null;
+		$single_node = count( $node ) > 0 ? $node[0] : null;
 
 		switch ( $attribute['source'] ) {
 			case 'attribute':
-				$value = $single_node ? $single_node->getAttribute( $attribute['attribute'] ) : null;
+				$value = null !== $single_node ? $single_node->getAttribute( $attribute['attribute'] ) : null;
 				break;
 			case 'html':
 			case 'rich-text':
-				$value = $single_node ? $single_node->innerHtml() : null;
+				$value = null !== $single_node ? $single_node->innerHtml() : null;
 				break;
 			case 'text':
-				$value = $single_node ? $single_node->text() : null;
+				$value = null !== $single_node ? $single_node->text() : null;
 				break;
 			case 'query':
-				if ( isset( $attribute['query'] ) && ! empty( $node ) ) {
+				if ( isset( $attribute['query'] ) && count( $node ) > 0 ) {
 					$counter = 0;
 					foreach ( $node as $v_node ) {
 						foreach ( $attribute['query'] as $key => $current_attribute ) {

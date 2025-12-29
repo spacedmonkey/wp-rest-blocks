@@ -64,6 +64,7 @@ class Posts {
 		$post_types = array_values( $post_types );
 
 		if ( ! function_exists( 'use_block_editor_for_post_type' ) ) {
+			// phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
 			require_once ABSPATH . 'wp-admin/includes/post.php';
 		}
 		$post_types   = array_filter( $post_types, 'use_block_editor_for_post_type' );
@@ -80,7 +81,7 @@ class Posts {
 	 */
 	public function register_rest_fields(): void {
 		$types = $this->get_post_types_with_editor();
-		if ( empty( $types ) ) {
+		if ( 0 === count( $types ) ) {
 			return;
 		}
 
@@ -128,7 +129,7 @@ class Posts {
 		}
 		$id   = $this->get_post_id( $data_object );
 		$post = get_post( $id );
-		if ( ! $post ) {
+		if ( null === $post ) {
 			return false;
 		}
 
@@ -149,7 +150,7 @@ class Posts {
 		}
 
 		$post = get_post( $id );
-		if ( ! $post ) {
+		if ( null === $post ) {
 			return [];
 		}
 

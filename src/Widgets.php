@@ -114,7 +114,7 @@ class Widgets {
 		}
 
 		$instance = $this->get_widget( $data_object );
-		if ( empty( $instance['content'] ) ) {
+		if ( ! isset( $instance['content'] ) || '' === $instance['content'] ) {
 			return false;
 		}
 
