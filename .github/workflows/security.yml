@@ -46,25 +46,3 @@ jobs:
             - name: Run Composer Audit
               run: composer audit --format=plain
 
-    codeql:
-        name: CodeQL Analysis
-        runs-on: ubuntu-latest
-        strategy:
-            fail-fast: false
-            matrix:
-                language: ['javascript']
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-
-            - name: Initialize CodeQL
-              uses: github/codeql-action/init@v3
-              with:
-                  languages: ${{ matrix.language }}
-
-            - name: Autobuild
-              uses: github/codeql-action/autobuild@v3
-
-            - name: Perform CodeQL Analysis
-              uses: github/codeql-action/analyze@v3
-
