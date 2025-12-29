@@ -87,7 +87,7 @@ jobs:
               run: |
                   echo "WP_ENV_PHP_VERSION: $WP_ENV_PHP_VERSION"
                   echo "WP_ENV_CORE: $WP_ENV_CORE"
-                  npm run env:start
+                  npm run env:start -- --debug
               env:
                   WP_ENV_PHP_VERSION: ${{ matrix.php }}
                   WP_ENV_CORE: ${{ format('WordPress/WordPress#{0}', matrix.wp) }}
