@@ -46,8 +46,8 @@ class Data {
 
 	/**
 	 * Process a block, getting all extra fields.
-     *
-     * @SuppressWarnings("PHPMD.NPathComplexity")
+	 *
+	 * @SuppressWarnings("PHPMD.NPathComplexity")
 	 *
 	 * @param array $block Block data.
 	 * @param int   $post_id Post ID.
