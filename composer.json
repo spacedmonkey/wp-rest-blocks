@@ -14,7 +14,7 @@
 		"issues": "https://github.com/spacedmonkey/wp-rest-blocks/issues"
 	},
 	"require": {
-		"php": "^7.0 || ^8.0",
+		"php": "^7.2 || ^8.0",
 		"composer/installers": "^1.10",
 		"tburry/pquery": "^1.1"
 	},
@@ -23,6 +23,11 @@
 		"sirbrillig/phpcs-variable-analysis": "^2.11",
 		"wp-coding-standards/wpcs": "^3.0",
 		"yoast/wp-test-utils": "^1.2.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"WP_REST_Blocks\\": "src/"
+		}
 	},
 	"config": {
 		"allow-plugins": {

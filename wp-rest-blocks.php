@@ -9,15 +9,17 @@
  * Domain Path:       /languages
  * Version:           1.0.2
  * Requires at least: 5.5
- * Requires PHP:      7.0
+ * Requires PHP:      7.2
  *
  * @package         WP_REST_Blocks
  */
 
 namespace WP_REST_Blocks;
 
-use WP_REST_Blocks\Posts;
-use WP_REST_Blocks\Widgets;
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
@@ -38,7 +40,7 @@ if ( ! class_exists( '\pQuery' ) ) {
 		?>
 		<div class="notice notice-error">
 			<p><strong><?php esc_html_e( 'REST API Blocks plugin could not be initialized.', 'wp-rest-blocks' ); ?></strong></p>
-			<p><?php echo wp_kses( $message, [ 'code' => [] ] ); ?></p>
+			<p><?php echo wp_kses( $message, array( 'code' => array() ) ); ?></p>
 		</div>
 		<?php
 	}
@@ -47,9 +49,23 @@ if ( ! class_exists( '\pQuery' ) ) {
 	return;
 }
 
-require_once __DIR__ . '/src/data.php';
-require_once __DIR__ . '/src/posts.php';
-require_once __DIR__ . '/src/widgets.php';
 
-Posts\bootstrap();
-Widgets\bootstrap();
+/**
+ * Initialize the plugin.
+ *
+ * @return void
+ */
+function init_plugin() {
+	// Create shared Data instance.
+	$data = new Data();
+
+	// Inject Data dependency into Posts and Widgets.
+	$posts   = new Posts( $data );
+	$widgets = new Widgets( $data );
+
+	// Initialize components.
+	$posts->init();
+	$widgets->init();
+}
+
+add_action( 'plugins_loaded', __NAMESPACE__ . '\init_plugin' );
