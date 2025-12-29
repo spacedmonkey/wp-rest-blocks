@@ -31,8 +31,8 @@ jobs:
                   REPO: ${{ github.repository }}
               run: |
                   mkdir dist
-                  echo "DIST=${PWD}/dist" >> $GITHUB_OUTPUT
-                  echo "PACKAGE=${REPO##*/}" >> $GITHUB_OUTPUT
+                  echo "DIST=${PWD}/dist" >> "$GITHUB_OUTPUT"
+                  echo "PACKAGE=${REPO##*/}" >> "$GITHUB_OUTPUT"
 
             - name: PHP version
               run: php --version
