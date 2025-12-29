@@ -56,10 +56,11 @@
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<!-- Value: replace the text domain used. -->
-			<property name="text_domain" type="array" value="wp-rest-blocks"/>
+			<property name="text_domain" type="array">
+				<element value="wp-rest-blocks"/>
+			</property>
 		</properties>
-	</rule>
+  	</rule>
 	<rule ref="WordPress.WhiteSpace.ControlStructureSpacing">
 		<properties>
 			<property name="blank_line_check" value="true"/>
