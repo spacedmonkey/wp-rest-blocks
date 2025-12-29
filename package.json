@@ -1,18 +1,12 @@
 {
 	"name": "wp-rest-blocks",
 	"version": "1.0.0",
-	"main": "Gruntfile.js",
+	"main": "index.js",
 	"author": "Jonathan Harris",
 	"devDependencies": {
-		"@wordpress/env": "^10.11.0",
-		"@wordpress/scripts": "^28.2.0",
-		"grunt": "~1.6.1",
-		"grunt-wp-i18n": "^1.0.3",
-		"grunt-wp-readme-to-markdown": "~2.1.0",
-		"js-yaml": "^4.1.0",
-		"lodash": "^4.17.21",
-		"minimatch": "^9.0.5",
-		"underscore.string": "^3.3.6"
+		"@wordpress/env": "^10.37.0",
+		"@wordpress/i18n": "^6.10.0",
+		"@wordpress/scripts": "^31.2.0"
 	},
 	"scripts": {
 		"wp-env": "wp-env",
@@ -29,6 +23,7 @@
 		"test:php:multisite": "wp-env run tests-cli --env-cwd=wp-content/plugins/wp-rest-blocks vendor/bin/phpunit -c phpunit-multisite.xml.dist",
 		"test:php:watch": "wp-env run tests-cli --env-cwd=wp-content/plugins/wp-rest-blocks vendor/bin/phpunit --testdox --watch",
 		"test:setup": "npm run env:start && wp-env run tests-cli 'wp plugin activate wp-rest-blocks'",
+		"make-pot": "wp-env run cli wp i18n make-pot . languages/wp-rest-blocks.pot --domain=wp-rest-blocks",
 		"format": "wp-scripts format",
 		"lint:css": "wp-scripts lint-style",
 		"lint:js": "wp-scripts lint-js",
