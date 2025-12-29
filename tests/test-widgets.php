@@ -173,35 +173,35 @@ class Test_Widgets extends TestCase {
 	/**
 	 * Test get_has_blocks with non-block widget.
 	 *
-	 * @covers ::get_has_blocks
+	 * @covers ::has_blocks
 	 */
 	public function test_get_has_blocks_non_block_widget() {
 		$data_object = [
 			'id_base' => 'calendar',
 		];
 
-		$result = $this->widgets->get_has_blocks( $data_object );
+		$result = $this->widgets->has_blocks( $data_object );
 		$this->assertFalse( $result );
 	}
 
 	/**
 	 * Test get_has_blocks without id_base.
 	 *
-	 * @covers ::get_has_blocks
+	 * @covers ::has_blocks
 	 */
 	public function test_get_has_blocks_no_id_base() {
 		$data_object = [
 			'id' => 'some-widget-1',
 		];
 
-		$result = $this->widgets->get_has_blocks( $data_object );
+		$result = $this->widgets->has_blocks( $data_object );
 		$this->assertFalse( $result );
 	}
 
 	/**
 	 * Test get_has_blocks with block widget containing blocks.
 	 *
-	 * @covers ::get_has_blocks
+	 * @covers ::has_blocks
 	 * @covers ::get_widget
 	 */
 	public function test_get_has_blocks_with_blocks() {
@@ -230,14 +230,14 @@ class Test_Widgets extends TestCase {
 			'id_base' => 'block',
 		];
 
-		$result = $this->widgets->get_has_blocks( $data_object );
+		$result = $this->widgets->has_blocks( $data_object );
 		$this->assertTrue( $result );
 	}
 
 	/**
 	 * Test get_has_blocks with empty content.
 	 *
-	 * @covers ::get_has_blocks
+	 * @covers ::has_blocks
 	 * @covers ::get_widget
 	 */
 	public function test_get_has_blocks_empty_content() {
@@ -266,7 +266,7 @@ class Test_Widgets extends TestCase {
 			'id_base' => 'block',
 		];
 
-		$result = $this->widgets->get_has_blocks( $data_object );
+		$result = $this->widgets->has_blocks( $data_object );
 		$this->assertFalse( $result );
 	}
 
@@ -274,7 +274,7 @@ class Test_Widgets extends TestCase {
 	 * Test get_block_data when has_blocks returns false.
 	 *
 	 * @covers ::get_block_data
-	 * @covers ::get_has_blocks
+	 * @covers ::has_blocks
 	 */
 	public function test_get_block_data_no_blocks() {
 		$data_object = [
@@ -290,7 +290,7 @@ class Test_Widgets extends TestCase {
 	 * Test get_block_data with blocks.
 	 *
 	 * @covers ::get_block_data
-	 * @covers ::get_has_blocks
+	 * @covers ::has_blocks
 	 * @covers ::get_widget
 	 */
 	public function test_get_block_data_with_blocks() {

@@ -151,7 +151,7 @@ class Test_Posts extends TestCase {
 	/**
 	 * Test get_has_blocks with content raw.
 	 *
-	 * @covers ::get_has_blocks
+	 * @covers ::has_blocks
 	 */
 	public function test_get_has_blocks_with_content_raw() {
 		$data_object = [
@@ -161,14 +161,14 @@ class Test_Posts extends TestCase {
 			],
 		];
 
-		$result = $this->posts->get_has_blocks( $data_object );
+		$result = $this->posts->has_blocks( $data_object );
 		$this->assertTrue( $result );
 	}
 
 	/**
 	 * Test get_has_blocks with content raw without blocks.
 	 *
-	 * @covers ::get_has_blocks
+	 * @covers ::has_blocks
 	 */
 	public function test_get_has_blocks_no_blocks() {
 		$data_object = [
@@ -178,14 +178,14 @@ class Test_Posts extends TestCase {
 			],
 		];
 
-		$result = $this->posts->get_has_blocks( $data_object );
+		$result = $this->posts->has_blocks( $data_object );
 		$this->assertFalse( $result );
 	}
 
 	/**
 	 * Test get_has_blocks with post ID.
 	 *
-	 * @covers ::get_has_blocks
+	 * @covers ::has_blocks
 	 */
 	public function test_get_has_blocks_with_post_id() {
 		$post_id = $this->factory->post->create(
@@ -198,14 +198,14 @@ class Test_Posts extends TestCase {
 			'id' => $post_id,
 		];
 
-		$result = $this->posts->get_has_blocks( $data_object );
+		$result = $this->posts->has_blocks( $data_object );
 		$this->assertTrue( $result );
 	}
 
 	/**
 	 * Test get_has_blocks with wp_id.
 	 *
-	 * @covers ::get_has_blocks
+	 * @covers ::has_blocks
 	 */
 	public function test_get_has_blocks_with_wp_id() {
 		$post_id = $this->factory->post->create(
@@ -219,21 +219,21 @@ class Test_Posts extends TestCase {
 			'id'    => 999,
 		];
 
-		$result = $this->posts->get_has_blocks( $data_object );
+		$result = $this->posts->has_blocks( $data_object );
 		$this->assertTrue( $result );
 	}
 
 	/**
 	 * Test get_has_blocks with non-existent post.
 	 *
-	 * @covers ::get_has_blocks
+	 * @covers ::has_blocks
 	 */
 	public function test_get_has_blocks_nonexistent_post() {
 		$data_object = [
 			'id' => 999999,
 		];
 
-		$result = $this->posts->get_has_blocks( $data_object );
+		$result = $this->posts->has_blocks( $data_object );
 		$this->assertFalse( $result );
 	}
 
@@ -366,7 +366,7 @@ class Test_Posts extends TestCase {
 	 * Test REST API endpoint integration.
 	 *
 	 * @covers ::register_rest_fields
-	 * @covers ::get_has_blocks
+	 * @covers ::has_blocks
 	 * @covers ::get_block_data
 	 */
 	public function test_rest_api_integration() {

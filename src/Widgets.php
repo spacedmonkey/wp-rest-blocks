@@ -57,7 +57,7 @@ class Widgets {
 			'widget',
 			'has_blocks',
 			[
-				'get_callback'    => [ $this, 'get_has_blocks' ],
+				'get_callback'    => [ $this, 'has_blocks' ],
 				'update_callback' => null,
 				'schema'          => [
 					'description' => __( 'Has blocks.', 'wp-rest-blocks' ),
@@ -108,7 +108,7 @@ class Widgets {
 	 *
 	 * @return bool
 	 */
-	public function get_has_blocks( array $data_object ): bool {
+	public function has_blocks( array $data_object ): bool {
 		if ( ! isset( $data_object['id_base'] ) || 'block' !== $data_object['id_base'] ) {
 			return false;
 		}
@@ -129,7 +129,7 @@ class Widgets {
 	 * @return array
 	 */
 	public function get_block_data( array $data_object ): array {
-		if ( ! $this->get_has_blocks( $data_object ) ) {
+		if ( ! $this->has_blocks( $data_object ) ) {
 			return [];
 		}
 

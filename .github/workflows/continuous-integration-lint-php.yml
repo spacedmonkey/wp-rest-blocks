@@ -49,3 +49,6 @@ jobs:
             - name: Detect PHPStan issues
               run: vendor/bin/phpstan analyse --error-format=checkstyle | cs2pr --graceful-warnings
 
+            - name: Detect PHP Mess Detector issues
+              run: vendor/bin/phpmd wp-rest-blocks.php,src text phpmd.xml.dist --reportfile phpmd-report.xml && cat phpmd-report.xml | cs2pr --graceful-warnings
+

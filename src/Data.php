@@ -101,6 +101,8 @@ class Data {
 	/**
 	 * Get attribute.
 	 *
+	 * @SuppressWarnings(PHPMD.ElseExpression)
+	 *
 	 * @param array  $attribute Attributes.
 	 * @param string $html HTML string.
 	 * @param int    $post_id Post Number. Default 0.
@@ -112,7 +114,7 @@ class Data {
 
 		if ( isset( $attribute['source'] ) ) {
 			// Return early for meta source - no Document needed.
-			if ( 'meta' === $attribute['source'] ) {
+			if ( 'meta' !== $attribute['source'] ) {
 				$value = $this->extract_value_from_meta( $attribute, $post_id );
 			} else {
 				// Extract value from HTML using Document.

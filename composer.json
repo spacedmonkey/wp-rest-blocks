@@ -21,6 +21,7 @@
 	"require-dev": {
 		"ergebnis/composer-normalize": "^2.48",
 		"phpcompatibility/phpcompatibility-wp": "^2.1",
+		"phpmd/phpmd": "^2.15",
 		"phpstan/extension-installer": "^1.4",
 		"phpstan/phpstan": "^2.1",
 		"phpstan/phpstan-deprecation-rules": "^2.0",
@@ -49,6 +50,7 @@
 	"scripts": {
 		"phpcbf": "phpcbf",
 		"phpcs": "phpcs",
+		"phpmd": "phpmd wp-rest-blocks.php,src text phpmd.xml.dist --color",
 		"phpstan": "phpstan analyse --memory-limit=2048M",
 		"test": "phpunit"
 	}
