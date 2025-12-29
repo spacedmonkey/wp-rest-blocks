@@ -13,3 +13,4 @@ coverage-html/
 *.zip
 .wp-env-home/
 .wp-env.override.json
+.phpunit.result.cache

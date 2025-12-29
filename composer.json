@@ -14,9 +14,9 @@
 		"issues": "https://github.com/spacedmonkey/wp-rest-blocks/issues"
 	},
 	"require": {
-		"php": "^7.2 || ^8.0",
+		"php": "^7.3 || ^8.0",
 		"composer/installers": "^1.10",
-		"tburry/pquery": "^1.1"
+		"imangazaliev/didom": "^2.0"
 	},
 	"require-dev": {
 		"phpcompatibility/phpcompatibility-wp": "^2.1",

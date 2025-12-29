@@ -9,8 +9,9 @@ declare(strict_types=1);
 
 namespace WP_REST_Blocks;
 
+use DiDom\Exceptions\InvalidSelectorException;
 use WP_Block;
-use pQuery;
+use DiDom\Document;
 
 /**
  * Class Data
@@ -108,41 +109,14 @@ class Data {
 	 */
 	public function get_attribute( array $attribute, string $html, int $post_id = 0 ) {
 		$value = null;
-		$dom   = pQuery::parseStr( trim( $html ) );
-		$node  = isset( $attribute['selector'] ) ? $dom->query( $attribute['selector'] ) : $dom->query();
 
 		if ( isset( $attribute['source'] ) ) {
-			switch ( $attribute['source'] ) {
-				case 'attribute':
-					$value = $node->attr( $attribute['attribute'] );
-					break;
-				case 'html':
-				case 'rich-text':
-					$value = $node->html();
-					break;
-				case 'text':
-					$value = $node->text();
-					break;
-				case 'query':
-					if ( isset( $attribute['query'] ) ) {
-						$counter = 0;
-						$nodes   = $node->getIterator();
-						foreach ( $nodes as $v_node ) {
-							foreach ( $attribute['query'] as $key => $current_attribute ) {
-								$current_value = $this->get_attribute( $current_attribute, $v_node->toString(), $post_id );
-								if ( null !== $current_value ) {
-									$value[ $counter ][ $key ] = $current_value;
-								}
-							}
-							++$counter;
-						}
-					}
-					break;
-				case 'meta':
-					if ( $post_id && isset( $attribute['meta'] ) ) {
-						$value = get_post_meta( $post_id, $attribute['meta'], true );
-					}
-					break;
+			// Return early for meta source - no Document needed.
+			if ( 'meta' === $attribute['source'] ) {
+				$value = $this->extract_value_from_meta( $attribute, $post_id );
+			} else {
+				// Extract value from HTML using Document.
+				$value = $this->extract_value_from_html( $attribute, $html, $post_id );
 			}
 		}
 
@@ -155,6 +129,72 @@ class Data {
 		// If attribute type is set and valid, sanitize value.
 		if ( isset( $attribute['type'] ) && in_array( $attribute['type'], $allowed_types, true ) && rest_validate_value_from_schema( $value, $attribute ) ) {
 			$value = rest_sanitize_value_from_schema( $value, $attribute );
+		}
+
+		return $value;
+	}
+	/**
+	 * Extract value from post meta.
+	 *
+	 * @param array $attribute Attribute configuration.
+	 * @param int   $post_id   Post ID.
+	 * @return mixed|null Meta value or null if not found.
+	 */
+	private function extract_value_from_meta( array $attribute, int $post_id ) {
+		if ( $post_id && isset( $attribute['meta'] ) ) {
+			return get_post_meta( $post_id, $attribute['meta'], true );
+		}
+		return null;
+	}
+
+
+	/**
+	 * Extract value from HTML based on attribute source.
+	 *
+	 * @param array  $attribute Attributes.
+	 * @param string $html HTML string.
+	 * @param int    $post_id Post Number. Default 0.
+	 *
+	 * @return mixed
+	 */
+	private function extract_value_from_html( array $attribute, string $html, int $post_id = 0 ) {
+		$value = null;
+		try {
+			$dom = new Document( trim( $html ) );
+
+			$node = isset( $attribute['selector'] ) ? $dom->find( $attribute['selector'] ) : [ $dom->first( '*' ) ];
+		} catch ( InvalidSelectorException $e ) {
+			return null;
+		}
+
+		// Get first element from array for non-query sources.
+		$single_node = ! empty( $node ) ? $node[0] : null;
+
+		switch ( $attribute['source'] ) {
+			case 'attribute':
+				$value = $single_node ? $single_node->getAttribute( $attribute['attribute'] ) : null;
+				break;
+			case 'html':
+			case 'rich-text':
+				$value = $single_node ? $single_node->innerHtml() : null;
+				break;
+			case 'text':
+				$value = $single_node ? $single_node->text() : null;
+				break;
+			case 'query':
+				if ( isset( $attribute['query'] ) && ! empty( $node ) ) {
+					$counter = 0;
+					foreach ( $node as $v_node ) {
+						foreach ( $attribute['query'] as $key => $current_attribute ) {
+							$current_value = $this->get_attribute( $current_attribute, $v_node->html(), $post_id );
+							if ( null !== $current_value ) {
+								$value[ $counter ][ $key ] = $current_value;
+							}
+						}
+						++$counter;
+					}
+				}
+				break;
 		}
 
 		return $value;
