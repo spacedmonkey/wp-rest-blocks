@@ -35,13 +35,10 @@ jobs:
         strategy:
             matrix:
                 php: ['7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4']
-                wp: ['latest']
+                wp: ['5.9.1']
                 include:
-                    - php: '7.4'
-                      wp: 'trunk'
-                      experimental: true
                     - php: '8.5'
-                      wp: 'latest'
+                      wp: 'master'
                       experimental: true
 
         steps:
@@ -87,10 +84,13 @@ jobs:
               uses: docker/setup-buildx-action@v3
 
             - name: Start wp-env
-              run: npm run env:start
+              run: |
+                  echo "WP_ENV_PHP_VERSION: $WP_ENV_PHP_VERSION"
+                  echo "WP_ENV_CORE: $WP_ENV_CORE"
+                  npm run env:start
               env:
                   WP_ENV_PHP_VERSION: ${{ matrix.php }}
-                  WP_ENV_CORE: ${{ matrix.wp == 'trunk' && 'WordPress/WordPress#master' || null }}
+                  WP_ENV_CORE: ${{ format('WordPress/WordPress#{0}', matrix.wp) }}
 
             - name: Run tests
               run: |
