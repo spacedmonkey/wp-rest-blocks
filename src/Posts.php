@@ -44,6 +44,17 @@ class Posts {
 	}
 
 	/**
+	 * Get post ID from data object.
+	 *
+	 * @param array $data_object Array of data rest api request.
+	 *
+	 * @return int|null
+	 */
+	private function get_post_id( array $data_object ): ?int {
+		return $data_object['wp_id'] ?? $data_object['id'] ?? null;
+	}
+
+	/**
 	 * Get post types with editor.
 	 *
 	 * @return array
@@ -115,7 +126,7 @@ class Posts {
 		if ( isset( $data_object['content']['raw'] ) ) {
 			return has_blocks( $data_object['content']['raw'] );
 		}
-		$id   = $data_object['wp_id'] ?? $data_object['id'];
+		$id   = $this->get_post_id( $data_object );
 		$post = get_post( $id );
 		if ( ! $post ) {
 			return false;
@@ -132,7 +143,7 @@ class Posts {
 	 * @return array
 	 */
 	public function get_block_data( array $data_object ): array {
-		$id = $data_object['wp_id'] ?? $data_object['id'];
+		$id = $this->get_post_id( $data_object );
 		if ( isset( $data_object['content']['raw'] ) ) {
 			return $this->data->get_blocks( $data_object['content']['raw'], $id );
 		}
