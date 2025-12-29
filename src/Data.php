@@ -46,6 +46,8 @@ class Data {
 
 	/**
 	 * Process a block, getting all extra fields.
+     *
+     * @SuppressWarnings("PHPMD.NPathComplexity")
 	 *
 	 * @param array $block Block data.
 	 * @param int   $post_id Post ID.
@@ -101,7 +103,7 @@ class Data {
 	/**
 	 * Get attribute.
 	 *
-	 * @SuppressWarnings(PHPMD.ElseExpression)
+	 * @SuppressWarnings("PHPMD.ElseExpression")
 	 *
 	 * @param array  $attribute Attributes.
 	 * @param string $html HTML string.

@@ -19,9 +19,7 @@
     </rule>
     <rule ref="rulesets/codesize.xml">
         <exclude name="CyclomaticComplexity" />
-        <exclude name="ExcessiveClassComplexity" />
-        <exclude name="NPathComplexity" />
-    </rule>
+   </rule>
     <rule ref="rulesets/design.xml/ExitExpression" />
     <rule ref="rulesets/design.xml/EvalExpression" />
     <rule ref="rulesets/design.xml/GotoStatement" />
