@@ -64,7 +64,7 @@ class Test_Posts extends TestCase {
 	 */
 	public function test_init_registers_hooks() {
 		$this->posts->init();
-		$this->assertSame( 10, has_action( 'rest_api_init', array( $this->posts, 'register_rest_fields' ) ) );
+		$this->assertSame( 10, has_action( 'rest_api_init', [ $this->posts, 'register_rest_fields' ] ) );
 	}
 
 	/**
@@ -97,10 +97,10 @@ class Test_Posts extends TestCase {
 	public function test_get_post_types_with_editor_filters_by_rest() {
 		register_post_type(
 			'test_no_rest',
-			array(
-				'public'        => true,
-				'show_in_rest'  => false,
-			)
+			[
+				'public'       => true,
+				'show_in_rest' => false,
+			]
 		);
 
 		$types = $this->posts->get_post_types_with_editor();
@@ -118,13 +118,13 @@ class Test_Posts extends TestCase {
 	public function test_register_rest_fields_no_post_types() {
 		// Mock a scenario where no post types are returned.
 		$posts = $this->getMockBuilder( Posts::class )
-			->setConstructorArgs( array( $this->data ) )
-			->onlyMethods( array( 'get_post_types_with_editor' ) )
+			->setConstructorArgs( [ $this->data ] )
+			->onlyMethods( [ 'get_post_types_with_editor' ] )
 			->getMock();
 
 		$posts->expects( $this->once() )
 			->method( 'get_post_types_with_editor' )
-			->willReturn( array() );
+			->willReturn( [] );
 
 		$posts->register_rest_fields();
 		// If it doesn't throw an error, the test passes.
@@ -139,7 +139,7 @@ class Test_Posts extends TestCase {
 	 */
 	public function test_register_rest_fields() {
 		global $wp_rest_additional_fields;
-		$wp_rest_additional_fields = array();
+		$wp_rest_additional_fields = [];
 
 		$this->posts->register_rest_fields();
 
@@ -154,12 +154,12 @@ class Test_Posts extends TestCase {
 	 * @covers ::get_has_blocks
 	 */
 	public function test_get_has_blocks_with_content_raw() {
-		$data_object = array(
+		$data_object = [
 			'id'      => 1,
-			'content' => array(
+			'content' => [
 				'raw' => '<!-- wp:paragraph --><p>Test</p><!-- /wp:paragraph -->',
-			),
-		);
+			],
+		];
 
 		$result = $this->posts->get_has_blocks( $data_object );
 		$this->assertTrue( $result );
@@ -171,12 +171,12 @@ class Test_Posts extends TestCase {
 	 * @covers ::get_has_blocks
 	 */
 	public function test_get_has_blocks_no_blocks() {
-		$data_object = array(
+		$data_object = [
 			'id'      => 1,
-			'content' => array(
+			'content' => [
 				'raw' => '<p>Plain HTML without blocks</p>',
-			),
-		);
+			],
+		];
 
 		$result = $this->posts->get_has_blocks( $data_object );
 		$this->assertFalse( $result );
@@ -189,14 +189,14 @@ class Test_Posts extends TestCase {
 	 */
 	public function test_get_has_blocks_with_post_id() {
 		$post_id = $this->factory->post->create(
-			array(
+			[
 				'post_content' => '<!-- wp:paragraph --><p>Test</p><!-- /wp:paragraph -->',
-			)
+			]
 		);
 
-		$data_object = array(
+		$data_object = [
 			'id' => $post_id,
-		);
+		];
 
 		$result = $this->posts->get_has_blocks( $data_object );
 		$this->assertTrue( $result );
@@ -209,15 +209,15 @@ class Test_Posts extends TestCase {
 	 */
 	public function test_get_has_blocks_with_wp_id() {
 		$post_id = $this->factory->post->create(
-			array(
+			[
 				'post_content' => '<!-- wp:paragraph --><p>Test</p><!-- /wp:paragraph -->',
-			)
+			]
 		);
 
-		$data_object = array(
+		$data_object = [
 			'wp_id' => $post_id,
 			'id'    => 999,
-		);
+		];
 
 		$result = $this->posts->get_has_blocks( $data_object );
 		$this->assertTrue( $result );
@@ -229,9 +229,9 @@ class Test_Posts extends TestCase {
 	 * @covers ::get_has_blocks
 	 */
 	public function test_get_has_blocks_nonexistent_post() {
-		$data_object = array(
+		$data_object = [
 			'id' => 999999,
-		);
+		];
 
 		$result = $this->posts->get_has_blocks( $data_object );
 		$this->assertFalse( $result );
@@ -243,12 +243,12 @@ class Test_Posts extends TestCase {
 	 * @covers ::get_block_data
 	 */
 	public function test_get_block_data_with_content_raw() {
-		$data_object = array(
+		$data_object = [
 			'id'      => 1,
-			'content' => array(
+			'content' => [
 				'raw' => '<!-- wp:paragraph --><p>Test</p><!-- /wp:paragraph -->',
-			),
-		);
+			],
+		];
 
 		$result = $this->posts->get_block_data( $data_object );
 		$this->assertIsArray( $result );
@@ -263,14 +263,14 @@ class Test_Posts extends TestCase {
 	 */
 	public function test_get_block_data_with_post_id() {
 		$post_id = $this->factory->post->create(
-			array(
+			[
 				'post_content' => '<!-- wp:paragraph --><p>Test content</p><!-- /wp:paragraph -->',
-			)
+			]
 		);
 
-		$data_object = array(
+		$data_object = [
 			'id' => $post_id,
-		);
+		];
 
 		$result = $this->posts->get_block_data( $data_object );
 		$this->assertIsArray( $result );
@@ -285,15 +285,15 @@ class Test_Posts extends TestCase {
 	 */
 	public function test_get_block_data_with_wp_id() {
 		$post_id = $this->factory->post->create(
-			array(
+			[
 				'post_content' => '<!-- wp:paragraph --><p>Test</p><!-- /wp:paragraph -->',
-			)
+			]
 		);
 
-		$data_object = array(
+		$data_object = [
 			'wp_id' => $post_id,
 			'id'    => 999,
-		);
+		];
 
 		$result = $this->posts->get_block_data( $data_object );
 		$this->assertIsArray( $result );
@@ -306,9 +306,9 @@ class Test_Posts extends TestCase {
 	 * @covers ::get_block_data
 	 */
 	public function test_get_block_data_nonexistent_post() {
-		$data_object = array(
+		$data_object = [
 			'id' => 999999,
-		);
+		];
 
 		$result = $this->posts->get_block_data( $data_object );
 		$this->assertIsArray( $result );
@@ -322,15 +322,15 @@ class Test_Posts extends TestCase {
 	 */
 	public function test_get_block_data_multiple_blocks() {
 		$post_id = $this->factory->post->create(
-			array(
+			[
 				'post_content' => '<!-- wp:paragraph --><p>First</p><!-- /wp:paragraph -->'
 					. '<!-- wp:paragraph --><p>Second</p><!-- /wp:paragraph -->',
-			)
+			]
 		);
 
-		$data_object = array(
+		$data_object = [
 			'id' => $post_id,
-		);
+		];
 
 		$result = $this->posts->get_block_data( $data_object );
 		$this->assertIsArray( $result );
@@ -344,16 +344,16 @@ class Test_Posts extends TestCase {
 	 */
 	public function test_get_block_data_nested_blocks() {
 		$post_id = $this->factory->post->create(
-			array(
+			[
 				'post_content' => '<!-- wp:group --><div class="wp-block-group">'
 					. '<!-- wp:paragraph --><p>Nested</p><!-- /wp:paragraph -->'
 					. '</div><!-- /wp:group -->',
-			)
+			]
 		);
 
-		$data_object = array(
+		$data_object = [
 			'id' => $post_id,
-		);
+		];
 
 		$result = $this->posts->get_block_data( $data_object );
 		$this->assertIsArray( $result );
@@ -374,9 +374,9 @@ class Test_Posts extends TestCase {
 		do_action( 'rest_api_init' );
 
 		$post_id = $this->factory->post->create(
-			array(
+			[
 				'post_content' => '<!-- wp:paragraph --><p>REST API Test</p><!-- /wp:paragraph -->',
-			)
+			]
 		);
 
 		$request = new WP_REST_Request( 'GET', '/wp/v2/posts/' . $post_id );
@@ -390,4 +390,3 @@ class Test_Posts extends TestCase {
 		$this->assertIsArray( $data['block_data'] );
 	}
 }
-

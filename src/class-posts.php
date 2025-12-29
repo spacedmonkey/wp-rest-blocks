@@ -40,7 +40,7 @@ class Posts {
 	 * @return void
 	 */
 	public function init(): void {
-		add_action( 'rest_api_init', array( $this, 'register_rest_fields' ) );
+		add_action( 'rest_api_init', [ $this, 'register_rest_fields' ] );
 	}
 
 	/**
@@ -49,7 +49,7 @@ class Posts {
 	 * @return array
 	 */
 	public function get_post_types_with_editor(): array {
-		$post_types = get_post_types( array( 'show_in_rest' => true ), 'names' );
+		$post_types = get_post_types( [ 'show_in_rest' => true ], 'names' );
 		$post_types = array_values( $post_types );
 
 		if ( ! function_exists( 'use_block_editor_for_post_type' ) ) {
@@ -76,31 +76,31 @@ class Posts {
 		register_rest_field(
 			$types,
 			'has_blocks',
-			array(
-				'get_callback'    => array( $this, 'get_has_blocks' ),
+			[
+				'get_callback'    => [ $this, 'get_has_blocks' ],
 				'update_callback' => null,
-				'schema'          => array(
+				'schema'          => [
 					'description' => __( 'Has blocks.', 'wp-rest-blocks' ),
 					'type'        => 'boolean',
-					'context'     => array( 'embed', 'view', 'edit' ),
+					'context'     => [ 'embed', 'view', 'edit' ],
 					'readonly'    => true,
-				),
-			)
+				],
+			]
 		);
 
 		register_rest_field(
 			$types,
 			'block_data',
-			array(
-				'get_callback'    => array( $this, 'get_block_data' ),
+			[
+				'get_callback'    => [ $this, 'get_block_data' ],
 				'update_callback' => null,
-				'schema'          => array(
+				'schema'          => [
 					'description' => __( 'Blocks.', 'wp-rest-blocks' ),
 					'type'        => 'object',
-					'context'     => array( 'embed', 'view', 'edit' ),
+					'context'     => [ 'embed', 'view', 'edit' ],
 					'readonly'    => true,
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -139,7 +139,7 @@ class Posts {
 
 		$post = get_post( $id );
 		if ( ! $post ) {
-			return array();
+			return [];
 		}
 
 		return $this->data->get_blocks( $post->post_content, $post->ID );

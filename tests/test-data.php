@@ -124,10 +124,10 @@ class Test_Data extends TestCase {
 	 * @covers ::handle_do_block
 	 */
 	public function test_handle_do_block_empty_block_name() {
-		$block = array(
+		$block = [
 			'blockName' => '',
-			'attrs'     => array(),
-		);
+			'attrs'     => [],
+		];
 
 		$result = $this->data->handle_do_block( $block );
 		$this->assertFalse( $result );
@@ -139,13 +139,13 @@ class Test_Data extends TestCase {
 	 * @covers ::handle_do_block
 	 */
 	public function test_handle_do_block_valid_block() {
-		$block = array(
-			'blockName'   => 'core/paragraph',
-			'attrs'       => array(),
-			'innerBlocks' => array(),
-			'innerHTML'   => '<p>Test</p>',
-			'innerContent' => array( '<p>Test</p>' ),
-		);
+		$block = [
+			'blockName'    => 'core/paragraph',
+			'attrs'        => [],
+			'innerBlocks'  => [],
+			'innerHTML'    => '<p>Test</p>',
+			'innerContent' => [ '<p>Test</p>' ],
+		];
 
 		$result = $this->data->handle_do_block( $block );
 		$this->assertIsArray( $result );
@@ -159,13 +159,13 @@ class Test_Data extends TestCase {
 	 * @covers ::handle_do_block
 	 */
 	public function test_handle_do_block_with_attrs() {
-		$block = array(
-			'blockName'   => 'core/paragraph',
-			'attrs'       => array( 'align' => 'center' ),
-			'innerBlocks' => array(),
-			'innerHTML'   => '<p>Test</p>',
-			'innerContent' => array( '<p>Test</p>' ),
-		);
+		$block = [
+			'blockName'    => 'core/paragraph',
+			'attrs'        => [ 'align' => 'center' ],
+			'innerBlocks'  => [],
+			'innerHTML'    => '<p>Test</p>',
+			'innerContent' => [ '<p>Test</p>' ],
+		];
 
 		$result = $this->data->handle_do_block( $block );
 		$this->assertIsArray( $result );
@@ -179,18 +179,18 @@ class Test_Data extends TestCase {
 	 * @covers ::handle_do_block
 	 */
 	public function test_handle_do_block_with_invalid_inner_blocks() {
-		$block = array(
-			'blockName'   => 'core/group',
-			'attrs'       => array(),
-			'innerBlocks' => array(
-				array(
+		$block = [
+			'blockName'    => 'core/group',
+			'attrs'        => [],
+			'innerBlocks'  => [
+				[
 					'blockName' => '',
-					'attrs'     => array(),
-				),
-			),
-			'innerHTML'   => '<div></div>',
-			'innerContent' => array( '<div></div>' ),
-		);
+					'attrs'     => [],
+				],
+			],
+			'innerHTML'    => '<div></div>',
+			'innerContent' => [ '<div></div>' ],
+		];
 
 		$result = $this->data->handle_do_block( $block );
 		$this->assertIsArray( $result );
@@ -204,10 +204,10 @@ class Test_Data extends TestCase {
 	 * @covers ::get_attribute
 	 */
 	public function test_get_attribute_text_source() {
-		$attribute = array(
-			'source' => 'text',
+		$attribute = [
+			'source'   => 'text',
 			'selector' => 'p',
-		);
+		];
 		$html      = '<p>Test text</p>';
 
 		$result = $this->data->get_attribute( $attribute, $html );
@@ -220,10 +220,10 @@ class Test_Data extends TestCase {
 	 * @covers ::get_attribute
 	 */
 	public function test_get_attribute_html_source() {
-		$attribute = array(
-			'source' => 'html',
+		$attribute = [
+			'source'   => 'html',
 			'selector' => 'div',
-		);
+		];
 		$html      = '<div><strong>Bold text</strong></div>';
 
 		$result = $this->data->get_attribute( $attribute, $html );
@@ -236,11 +236,11 @@ class Test_Data extends TestCase {
 	 * @covers ::get_attribute
 	 */
 	public function test_get_attribute_attribute_source() {
-		$attribute = array(
+		$attribute = [
 			'source'    => 'attribute',
 			'selector'  => 'a',
 			'attribute' => 'href',
-		);
+		];
 		$html      = '<a href="https://example.com">Link</a>';
 
 		$result = $this->data->get_attribute( $attribute, $html );
@@ -253,15 +253,15 @@ class Test_Data extends TestCase {
 	 * @covers ::get_attribute
 	 */
 	public function test_get_attribute_query_source() {
-		$attribute = array(
+		$attribute = [
 			'source'   => 'query',
 			'selector' => 'li',
-			'query'    => array(
-				'content' => array(
+			'query'    => [
+				'content' => [
 					'source' => 'text',
-				),
-			),
-		);
+				],
+			],
+		];
 		$html      = '<ul><li>Item 1</li><li>Item 2</li></ul>';
 
 		$result = $this->data->get_attribute( $attribute, $html );
@@ -280,10 +280,10 @@ class Test_Data extends TestCase {
 		$post_id = $this->factory->post->create();
 		update_post_meta( $post_id, 'test_meta', 'meta_value' );
 
-		$attribute = array(
+		$attribute = [
 			'source' => 'meta',
 			'meta'   => 'test_meta',
-		);
+		];
 		$html      = '<p>Test</p>';
 
 		$result = $this->data->get_attribute( $attribute, $html, $post_id );
@@ -296,10 +296,10 @@ class Test_Data extends TestCase {
 	 * @covers ::get_attribute
 	 */
 	public function test_get_attribute_meta_source_no_post_id() {
-		$attribute = array(
+		$attribute = [
 			'source' => 'meta',
 			'meta'   => 'test_meta',
-		);
+		];
 		$html      = '<p>Test</p>';
 
 		$result = $this->data->get_attribute( $attribute, $html, 0 );
@@ -312,11 +312,11 @@ class Test_Data extends TestCase {
 	 * @covers ::get_attribute
 	 */
 	public function test_get_attribute_default_value() {
-		$attribute = array(
-			'source'  => 'text',
+		$attribute = [
+			'source'   => 'text',
 			'selector' => 'span',
-			'default' => 'default_value',
-		);
+			'default'  => 'default_value',
+		];
 		$html      = '<p>No span here</p>';
 
 		$result = $this->data->get_attribute( $attribute, $html );
@@ -329,11 +329,11 @@ class Test_Data extends TestCase {
 	 * @covers ::get_attribute
 	 */
 	public function test_get_attribute_type_validation() {
-		$attribute = array(
+		$attribute = [
 			'source'   => 'text',
 			'selector' => 'p',
 			'type'     => 'string',
-		);
+		];
 		$html      = '<p>Test string</p>';
 
 		$result = $this->data->get_attribute( $attribute, $html );
@@ -347,10 +347,10 @@ class Test_Data extends TestCase {
 	 * @covers ::get_attribute
 	 */
 	public function test_get_attribute_rich_text_source() {
-		$attribute = array(
+		$attribute = [
 			'source'   => 'rich-text',
 			'selector' => 'div',
-		);
+		];
 		$html      = '<div><em>Italic</em> text</div>';
 
 		$result = $this->data->get_attribute( $attribute, $html );
@@ -363,9 +363,9 @@ class Test_Data extends TestCase {
 	 * @covers ::get_attribute
 	 */
 	public function test_get_attribute_no_selector() {
-		$attribute = array(
+		$attribute = [
 			'source' => 'text',
-		);
+		];
 		$html      = 'Plain text';
 
 		$result = $this->data->get_attribute( $attribute, $html );
@@ -378,15 +378,15 @@ class Test_Data extends TestCase {
 	 * @covers ::get_attribute
 	 */
 	public function test_get_attribute_empty_query_result() {
-		$attribute = array(
+		$attribute = [
 			'source'   => 'query',
 			'selector' => 'li',
-			'query'    => array(
-				'content' => array(
+			'query'    => [
+				'content' => [
 					'source' => 'text',
-				),
-			),
-		);
+				],
+			],
+		];
 		$html      = '<div>No list items</div>';
 
 		$result = $this->data->get_attribute( $attribute, $html );
@@ -400,9 +400,12 @@ class Test_Data extends TestCase {
 	 * @covers ::handle_do_block
 	 */
 	public function test_get_blocks_with_shortcodes() {
-		add_shortcode( 'test_shortcode', function() {
-			return 'Shortcode output';
-		} );
+		add_shortcode(
+			'test_shortcode',
+			function () {
+				return 'Shortcode output';
+			}
+		);
 
 		$content = '<!-- wp:paragraph --><p>[test_shortcode]</p><!-- /wp:paragraph -->';
 		$result  = $this->data->get_blocks( $content );
@@ -414,4 +417,3 @@ class Test_Data extends TestCase {
 		remove_shortcode( 'test_shortcode' );
 	}
 }
-

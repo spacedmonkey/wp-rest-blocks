@@ -40,7 +40,7 @@ if ( ! class_exists( '\pQuery' ) ) {
 		?>
 		<div class="notice notice-error">
 			<p><strong><?php esc_html_e( 'REST API Blocks plugin could not be initialized.', 'wp-rest-blocks' ); ?></strong></p>
-			<p><?php echo wp_kses( $message, array( 'code' => array() ) ); ?></p>
+			<p><?php echo wp_kses( $message, [ 'code' => [] ] ); ?></p>
 		</div>
 		<?php
 	}

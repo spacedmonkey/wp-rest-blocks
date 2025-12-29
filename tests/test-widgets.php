@@ -64,7 +64,7 @@ class Test_Widgets extends TestCase {
 	 */
 	public function test_init_registers_hooks() {
 		$this->widgets->init();
-		$this->assertSame( 10, has_action( 'rest_api_init', array( $this->widgets, 'register_rest_fields' ) ) );
+		$this->assertSame( 10, has_action( 'rest_api_init', [ $this->widgets, 'register_rest_fields' ] ) );
 	}
 
 	/**
@@ -96,7 +96,7 @@ class Test_Widgets extends TestCase {
 		add_filter( 'use_widgets_block_editor', '__return_true' );
 
 		global $wp_rest_additional_fields;
-		$wp_rest_additional_fields = array();
+		$wp_rest_additional_fields = [];
 
 		$this->widgets->register_rest_fields();
 
@@ -127,20 +127,20 @@ class Test_Widgets extends TestCase {
 
 		// Set up widget instance.
 		$widget_id = 'block-2';
-		$instance  = array(
+		$instance  = [
 			'content' => '<!-- wp:paragraph --><p>Widget content</p><!-- /wp:paragraph -->',
-		);
+		];
 
 		// Save widget settings.
-		$widget_object = $wp_widget_factory->widgets['WP_Widget_Block'];
-		$all_instances = $widget_object->get_settings();
+		$widget_object    = $wp_widget_factory->widgets['WP_Widget_Block'];
+		$all_instances    = $widget_object->get_settings();
 		$all_instances[2] = $instance;
 		update_option( $widget_object->option_name, $all_instances );
 
-		$data_object = array(
+		$data_object = [
 			'id'      => $widget_id,
 			'id_base' => 'block',
-		);
+		];
 
 		$result = $this->widgets->get_widget( $data_object );
 		$this->assertIsArray( $result );
@@ -161,10 +161,10 @@ class Test_Widgets extends TestCase {
 			$wp_widget_factory->widgets['WP_Widget_Block'] = new WP_Widget_Block();
 		}
 
-		$data_object = array(
+		$data_object = [
 			'id'      => 'block-999',
 			'id_base' => 'block',
-		);
+		];
 
 		$result = $this->widgets->get_widget( $data_object );
 		$this->assertIsArray( $result );
@@ -176,9 +176,9 @@ class Test_Widgets extends TestCase {
 	 * @covers ::get_has_blocks
 	 */
 	public function test_get_has_blocks_non_block_widget() {
-		$data_object = array(
+		$data_object = [
 			'id_base' => 'calendar',
-		);
+		];
 
 		$result = $this->widgets->get_has_blocks( $data_object );
 		$this->assertFalse( $result );
@@ -190,9 +190,9 @@ class Test_Widgets extends TestCase {
 	 * @covers ::get_has_blocks
 	 */
 	public function test_get_has_blocks_no_id_base() {
-		$data_object = array(
+		$data_object = [
 			'id' => 'some-widget-1',
-		);
+		];
 
 		$result = $this->widgets->get_has_blocks( $data_object );
 		$this->assertFalse( $result );
@@ -216,19 +216,19 @@ class Test_Widgets extends TestCase {
 
 		// Set up widget with blocks.
 		$widget_id = 'block-3';
-		$instance  = array(
+		$instance  = [
 			'content' => '<!-- wp:paragraph --><p>Test blocks</p><!-- /wp:paragraph -->',
-		);
+		];
 
-		$widget_object = $wp_widget_factory->widgets['WP_Widget_Block'];
-		$all_instances = $widget_object->get_settings();
+		$widget_object    = $wp_widget_factory->widgets['WP_Widget_Block'];
+		$all_instances    = $widget_object->get_settings();
 		$all_instances[3] = $instance;
 		update_option( $widget_object->option_name, $all_instances );
 
-		$data_object = array(
+		$data_object = [
 			'id'      => $widget_id,
 			'id_base' => 'block',
-		);
+		];
 
 		$result = $this->widgets->get_has_blocks( $data_object );
 		$this->assertTrue( $result );
@@ -252,19 +252,19 @@ class Test_Widgets extends TestCase {
 
 		// Set up widget with empty content.
 		$widget_id = 'block-4';
-		$instance  = array(
+		$instance  = [
 			'content' => '',
-		);
+		];
 
-		$widget_object = $wp_widget_factory->widgets['WP_Widget_Block'];
-		$all_instances = $widget_object->get_settings();
+		$widget_object    = $wp_widget_factory->widgets['WP_Widget_Block'];
+		$all_instances    = $widget_object->get_settings();
 		$all_instances[4] = $instance;
 		update_option( $widget_object->option_name, $all_instances );
 
-		$data_object = array(
+		$data_object = [
 			'id'      => $widget_id,
 			'id_base' => 'block',
-		);
+		];
 
 		$result = $this->widgets->get_has_blocks( $data_object );
 		$this->assertFalse( $result );
@@ -277,9 +277,9 @@ class Test_Widgets extends TestCase {
 	 * @covers ::get_has_blocks
 	 */
 	public function test_get_block_data_no_blocks() {
-		$data_object = array(
+		$data_object = [
 			'id_base' => 'calendar',
-		);
+		];
 
 		$result = $this->widgets->get_block_data( $data_object );
 		$this->assertIsArray( $result );
@@ -305,19 +305,19 @@ class Test_Widgets extends TestCase {
 
 		// Set up widget with blocks.
 		$widget_id = 'block-5';
-		$instance  = array(
+		$instance  = [
 			'content' => '<!-- wp:paragraph --><p>Widget block data</p><!-- /wp:paragraph -->',
-		);
+		];
 
-		$widget_object = $wp_widget_factory->widgets['WP_Widget_Block'];
-		$all_instances = $widget_object->get_settings();
+		$widget_object    = $wp_widget_factory->widgets['WP_Widget_Block'];
+		$all_instances    = $widget_object->get_settings();
 		$all_instances[5] = $instance;
 		update_option( $widget_object->option_name, $all_instances );
 
-		$data_object = array(
+		$data_object = [
 			'id'      => $widget_id,
 			'id_base' => 'block',
-		);
+		];
 
 		$result = $this->widgets->get_block_data( $data_object );
 		$this->assertIsArray( $result );
@@ -343,20 +343,20 @@ class Test_Widgets extends TestCase {
 
 		// Set up widget with multiple blocks.
 		$widget_id = 'block-6';
-		$instance  = array(
+		$instance  = [
 			'content' => '<!-- wp:paragraph --><p>First</p><!-- /wp:paragraph -->'
 				. '<!-- wp:paragraph --><p>Second</p><!-- /wp:paragraph -->',
-		);
+		];
 
-		$widget_object = $wp_widget_factory->widgets['WP_Widget_Block'];
-		$all_instances = $widget_object->get_settings();
+		$widget_object    = $wp_widget_factory->widgets['WP_Widget_Block'];
+		$all_instances    = $widget_object->get_settings();
 		$all_instances[6] = $instance;
 		update_option( $widget_object->option_name, $all_instances );
 
-		$data_object = array(
+		$data_object = [
 			'id'      => $widget_id,
 			'id_base' => 'block',
-		);
+		];
 
 		$result = $this->widgets->get_block_data( $data_object );
 		$this->assertIsArray( $result );
@@ -381,21 +381,21 @@ class Test_Widgets extends TestCase {
 
 		// Set up widget with nested blocks.
 		$widget_id = 'block-7';
-		$instance  = array(
+		$instance  = [
 			'content' => '<!-- wp:group --><div class="wp-block-group">'
 				. '<!-- wp:paragraph --><p>Nested</p><!-- /wp:paragraph -->'
 				. '</div><!-- /wp:group -->',
-		);
+		];
 
-		$widget_object = $wp_widget_factory->widgets['WP_Widget_Block'];
-		$all_instances = $widget_object->get_settings();
+		$widget_object    = $wp_widget_factory->widgets['WP_Widget_Block'];
+		$all_instances    = $widget_object->get_settings();
 		$all_instances[7] = $instance;
 		update_option( $widget_object->option_name, $all_instances );
 
-		$data_object = array(
+		$data_object = [
 			'id'      => $widget_id,
 			'id_base' => 'block',
-		);
+		];
 
 		$result = $this->widgets->get_block_data( $data_object );
 		$this->assertIsArray( $result );
@@ -403,4 +403,3 @@ class Test_Widgets extends TestCase {
 		$this->assertArrayHasKey( 'innerBlocks', $result[0] );
 	}
 }
-

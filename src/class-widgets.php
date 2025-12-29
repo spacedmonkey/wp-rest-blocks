@@ -40,7 +40,7 @@ class Widgets {
 	 * @return void
 	 */
 	public function init(): void {
-		add_action( 'rest_api_init', array( $this, 'register_rest_fields' ) );
+		add_action( 'rest_api_init', [ $this, 'register_rest_fields' ] );
 	}
 
 	/**
@@ -56,31 +56,31 @@ class Widgets {
 		register_rest_field(
 			'widget',
 			'has_blocks',
-			array(
-				'get_callback'    => array( $this, 'get_has_blocks' ),
+			[
+				'get_callback'    => [ $this, 'get_has_blocks' ],
 				'update_callback' => null,
-				'schema'          => array(
+				'schema'          => [
 					'description' => __( 'Has blocks.', 'wp-rest-blocks' ),
 					'type'        => 'boolean',
-					'context'     => array( 'embed', 'view', 'edit' ),
+					'context'     => [ 'embed', 'view', 'edit' ],
 					'readonly'    => true,
-				),
-			)
+				],
+			]
 		);
 
 		register_rest_field(
 			'widget',
 			'block_data',
-			array(
-				'get_callback'    => array( $this, 'get_block_data' ),
+			[
+				'get_callback'    => [ $this, 'get_block_data' ],
 				'update_callback' => null,
-				'schema'          => array(
+				'schema'          => [
 					'description' => __( 'Blocks.', 'wp-rest-blocks' ),
 					'type'        => 'object',
-					'context'     => array( 'embed', 'view', 'edit' ),
+					'context'     => [ 'embed', 'view', 'edit' ],
 					'readonly'    => true,
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -98,7 +98,7 @@ class Widgets {
 		$parsed_id     = wp_parse_widget_id( $data_object['id'] );
 		$all_instances = $widget_object->get_settings();
 
-		return $all_instances[ $parsed_id['number'] ] ?? array();
+		return $all_instances[ $parsed_id['number'] ] ?? [];
 	}
 
 	/**
@@ -130,7 +130,7 @@ class Widgets {
 	 */
 	public function get_block_data( array $data_object ): array {
 		if ( ! $this->get_has_blocks( $data_object ) ) {
-			return array();
+			return [];
 		}
 
 		$instance = $this->get_widget( $data_object );

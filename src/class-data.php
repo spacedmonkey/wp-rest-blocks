@@ -30,12 +30,12 @@ class Data {
 	 * @return array
 	 */
 	public function get_blocks( string $content, int $post_id = 0 ): array {
-		$output = array();
+		$output = [];
 		$blocks = parse_blocks( $content );
 
 		foreach ( $blocks as $block ) {
 			$block_data = $this->handle_do_block( $block, $post_id );
-			if ( $block_data !== false ) {
+			if ( false !== $block_data ) {
 				$output[] = $block_data;
 			}
 		}
@@ -57,18 +57,18 @@ class Data {
 		}
 
 		$block_object = new WP_Block( $block );
-		$attr         = $block['attrs'] ?? array();
+		$attr         = $block['attrs'] ?? [];
 		if ( $block_object && $block_object->block_type ) {
 			$attributes = $block_object->block_type->attributes;
 			$supports   = $block_object->block_type->supports;
 			if ( $supports && isset( $supports['anchor'] ) && $supports['anchor'] ) {
-					$attributes['anchor'] = array(
+					$attributes['anchor'] = [
 						'type'      => 'string',
 						'source'    => 'attribute',
 						'attribute' => 'id',
 						'selector'  => '*',
 						'default'   => '',
-					);
+					];
 			}
 
 			if ( $attributes ) {
@@ -85,10 +85,10 @@ class Data {
 		$block['attrs']    = $attr;
 		if ( ! empty( $block['innerBlocks'] ) ) {
 			$inner_blocks         = $block['innerBlocks'];
-			$block['innerBlocks'] = array();
+			$block['innerBlocks'] = [];
 			foreach ( $inner_blocks as $_block ) {
 				$inner_result = $this->handle_do_block( $_block, $post_id );
-				if ( $inner_result !== false ) {
+				if ( false !== $inner_result ) {
 					$block['innerBlocks'][] = $inner_result;
 				}
 			}
@@ -151,7 +151,7 @@ class Data {
 			$value = $attribute['default'];
 		}
 
-		$allowed_types = array( 'array', 'object', 'string', 'number', 'integer', 'boolean', 'null' );
+		$allowed_types = [ 'array', 'object', 'string', 'number', 'integer', 'boolean', 'null' ];
 		// If attribute type is set and valid, sanitize value.
 		if ( isset( $attribute['type'] ) && in_array( $attribute['type'], $allowed_types, true ) && rest_validate_value_from_schema( $value, $attribute ) ) {
 			$value = rest_sanitize_value_from_schema( $value, $attribute );
