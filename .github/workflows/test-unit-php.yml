@@ -83,16 +83,11 @@ jobs:
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
 
-            - name: Set WordPress version in .wp-env.json
-              run: |
-                  if [ "${{ matrix.wp }}" == "trunk" ]; then
-                    node -e "const fs = require('fs'); const config = JSON.parse(fs.readFileSync('.wp-env.json', 'utf8')); config.core = 'WordPress/WordPress#master'; fs.writeFileSync('.wp-env.json', JSON.stringify(config, null, 2));"
-                  else
-                    node -e "const fs = require('fs'); const config = JSON.parse(fs.readFileSync('.wp-env.json', 'utf8')); config.core = null; fs.writeFileSync('.wp-env.json', JSON.stringify(config, null, 2));"
-                  fi
-
             - name: Start wp-env
               run: npm run env:start
+              env:
+                  WP_ENV_PHP_VERSION: ${{ matrix.php }}
+                  WP_ENV_CORE: ${{ matrix.wp == 'trunk' && 'WordPress/WordPress#master' || null }}
 
             - name: Run tests
               run: |
