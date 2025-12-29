@@ -116,7 +116,7 @@ class Data {
 
 		if ( isset( $attribute['source'] ) ) {
 			// Return early for meta source - no Document needed.
-			if ( 'meta' !== $attribute['source'] ) {
+			if ( 'meta' === $attribute['source'] ) {
 				$value = $this->extract_value_from_meta( $attribute, $post_id );
 			} else {
 				// Extract value from HTML using Document.
