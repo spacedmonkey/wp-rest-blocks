@@ -9,7 +9,7 @@
  * Domain Path:       /languages
  * Version:           2.0.0
  * Requires at least: 5.9
- * Requires PHP:      7.2
+ * Requires PHP:      7.3
  *
  * @package         WP_REST_Blocks
  */
