@@ -47,6 +47,10 @@ class Data {
 					],
 					'innerBlocks'  => [
 						'type'        => 'array',
+						'items'       => [
+							'type'                 => 'object',
+							'additionalProperties' => true,
+						],
 						'description' => __( 'Inner blocks.', 'wp-rest-blocks' ),
 					],
 					'innerHTML'    => [
@@ -55,6 +59,9 @@ class Data {
 					],
 					'innerContent' => [
 						'type'        => 'array',
+						'items'       => [
+							'type' => 'string',
+						],
 						'description' => __( 'Inner content.', 'wp-rest-blocks' ),
 					],
 					'rendered'     => [
