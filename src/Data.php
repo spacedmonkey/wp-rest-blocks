@@ -23,6 +23,50 @@ use DiDom\Document;
 class Data {
 
 	/**
+	 * Get REST API schema for block data field.
+	 *
+	 * @return array
+	 */
+	public function get_block_data_schema(): array {
+		return [
+			'description' => __( 'Blocks.', 'wp-rest-blocks' ),
+			'type'        => 'array',
+			'context'     => [ 'embed', 'view', 'edit' ],
+			'readonly'    => true,
+			'items'       => [
+				'type'       => 'object',
+				'properties' => [
+					'blockName'    => [
+						'type'        => 'string',
+						'description' => __( 'Block name.', 'wp-rest-blocks' ),
+					],
+					'attrs'        => [
+						'type'                 => 'object',
+						'description'          => __( 'Block attributes.', 'wp-rest-blocks' ),
+						'additionalProperties' => true,
+					],
+					'innerBlocks'  => [
+						'type'        => 'array',
+						'description' => __( 'Inner blocks.', 'wp-rest-blocks' ),
+					],
+					'innerHTML'    => [
+						'type'        => 'string',
+						'description' => __( 'Inner HTML.', 'wp-rest-blocks' ),
+					],
+					'innerContent' => [
+						'type'        => 'array',
+						'description' => __( 'Inner content.', 'wp-rest-blocks' ),
+					],
+					'rendered'     => [
+						'type'        => 'string',
+						'description' => __( 'Rendered block output.', 'wp-rest-blocks' ),
+					],
+				],
+			],
+		];
+	}
+
+	/**
 	 * Get blocks from html string.
 	 *
 	 * @param string $content Content to parse.
@@ -86,6 +130,11 @@ class Data {
 		$block['rendered'] = $block_object->render();
 		$block['rendered'] = do_shortcode( $block['rendered'] );
 		$block['attrs']    = $attr;
+
+		if ( is_array( $block['innerContent'] ) && count( $block['innerContent'] ) > 0 ) {
+			$block['innerContent'] = array_values( array_filter( $block['innerContent'], 'is_string' ) );
+		}
+
 		if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) && count( $block['innerBlocks'] ) > 0 ) {
 			$inner_blocks         = $block['innerBlocks'];
 			$block['innerBlocks'] = [];

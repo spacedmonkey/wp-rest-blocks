@@ -74,12 +74,7 @@ class Widgets {
 			[
 				'get_callback'    => [ $this, 'get_block_data' ],
 				'update_callback' => null,
-				'schema'          => [
-					'description' => __( 'Blocks.', 'wp-rest-blocks' ),
-					'type'        => 'object',
-					'context'     => [ 'embed', 'view', 'edit' ],
-					'readonly'    => true,
-				],
+				'schema'          => $this->data->get_block_data_schema(),
 			]
 		);
 	}
