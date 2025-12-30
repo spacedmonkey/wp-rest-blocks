@@ -43,8 +43,44 @@ abstract class REST_Blocks {
 	 *
 	 * @return void
 	 */
-	abstract public function register_rest_fields(): void;
+	/**
+	 * Add rest api fields.
+	 *
+	 * @return void
+	 */
+	public function register_rest_fields(): void {
+		if ( ! $this->is_feature_enabled() ) {
+			return;
+		}
+		$types = $this->get_types();
 
+		register_rest_field(
+			$types,
+			'has_blocks',
+			[
+				'get_callback'    => [ $this, 'has_blocks' ],
+				'update_callback' => null,
+				'schema'          => $this->get_has_blocks_schema(),
+			]
+		);
+
+		register_rest_field(
+			$types,
+			'block_data',
+			[
+				'get_callback'    => [ $this, 'get_block_data' ],
+				'update_callback' => null,
+				'schema'          => $this->get_block_data_schema(),
+			]
+		);
+	}
+
+	/**
+	 * Retrieve a list of supported types.
+	 *
+	 * @return array
+	 */
+	abstract public function get_types(): array;
 
 	/**
 	 * Retrieves block data based on the provided data object.

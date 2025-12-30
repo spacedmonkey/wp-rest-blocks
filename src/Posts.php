@@ -34,7 +34,7 @@ class Posts extends REST_Blocks {
 	 *
 	 * @return array
 	 */
-	public function get_post_types_with_editor(): array {
+	public function get_types(): array {
 		$post_types = get_post_types( [ 'show_in_rest' => true ], 'names' );
 		$post_types = array_values( $post_types );
 
@@ -55,40 +55,8 @@ class Posts extends REST_Blocks {
 	 * @return bool
 	 */
 	public function is_feature_enabled(): bool {
-		$types = $this->get_post_types_with_editor();
+		$types = $this->get_types();
 		return count( $types ) > 0;
-	}
-
-	/**
-	 * Add rest api fields.
-	 *
-	 * @return void
-	 */
-	public function register_rest_fields(): void {
-		if ( ! $this->is_feature_enabled() ) {
-			return;
-		}
-		$types = $this->get_post_types_with_editor();
-
-		register_rest_field(
-			$types,
-			'has_blocks',
-			[
-				'get_callback'    => [ $this, 'has_blocks' ],
-				'update_callback' => null,
-				'schema'          => $this->get_has_blocks_schema(),
-			]
-		);
-
-		register_rest_field(
-			$types,
-			'block_data',
-			[
-				'get_callback'    => [ $this, 'get_block_data' ],
-				'update_callback' => null,
-				'schema'          => $this->get_block_data_schema(),
-			]
-		);
 	}
 
 	/**
