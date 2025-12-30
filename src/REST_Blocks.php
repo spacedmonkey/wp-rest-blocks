@@ -60,7 +60,12 @@ abstract class REST_Blocks {
 			[
 				'get_callback'    => [ $this, 'has_blocks' ],
 				'update_callback' => null,
-				'schema'          => $this->get_has_blocks_schema(),
+				'schema'          => [
+					'description' => __( 'Has blocks.', 'wp-rest-blocks' ),
+					'type'        => 'boolean',
+					'context'     => [ 'embed', 'view', 'edit' ],
+					'readonly'    => true,
+				],
 			]
 		);
 
@@ -70,7 +75,49 @@ abstract class REST_Blocks {
 			[
 				'get_callback'    => [ $this, 'get_block_data' ],
 				'update_callback' => null,
-				'schema'          => $this->get_block_data_schema(),
+				'schema'          => [
+					'description' => __( 'Blocks.', 'wp-rest-blocks' ),
+					'type'        => 'array',
+					'context'     => [ 'embed', 'view', 'edit' ],
+					'readonly'    => true,
+					'items'       => [
+						'type'       => 'object',
+						'properties' => [
+							'blockName'    => [
+								'type'        => 'string',
+								'description' => __( 'Block name.', 'wp-rest-blocks' ),
+							],
+							'attrs'        => [
+								'type'                 => 'object',
+								'description'          => __( 'Block attributes.', 'wp-rest-blocks' ),
+								'additionalProperties' => true,
+							],
+							'innerBlocks'  => [
+								'type'        => 'array',
+								'items'       => [
+									'type'                 => 'object',
+									'additionalProperties' => true,
+								],
+								'description' => __( 'Inner blocks.', 'wp-rest-blocks' ),
+							],
+							'innerHTML'    => [
+								'type'        => 'string',
+								'description' => __( 'Inner HTML.', 'wp-rest-blocks' ),
+							],
+							'innerContent' => [
+								'type'        => 'array',
+								'items'       => [
+									'type' => 'string',
+								],
+								'description' => __( 'Inner content.', 'wp-rest-blocks' ),
+							],
+							'rendered'     => [
+								'type'        => 'string',
+								'description' => __( 'Rendered block output.', 'wp-rest-blocks' ),
+							],
+						],
+					],
+				],
 			]
 		);
 	}
@@ -105,69 +152,4 @@ abstract class REST_Blocks {
 	 * @return bool
 	 */
 	abstract public function is_feature_enabled(): bool;
-
-	/**
-	 * Get REST API schema for block data field.
-	 *
-	 * @return array
-	 */
-	public function get_block_data_schema(): array {
-		return [
-			'description' => __( 'Blocks.', 'wp-rest-blocks' ),
-			'type'        => 'array',
-			'context'     => [ 'embed', 'view', 'edit' ],
-			'readonly'    => true,
-			'items'       => [
-				'type'       => 'object',
-				'properties' => [
-					'blockName'    => [
-						'type'        => 'string',
-						'description' => __( 'Block name.', 'wp-rest-blocks' ),
-					],
-					'attrs'        => [
-						'type'                 => 'object',
-						'description'          => __( 'Block attributes.', 'wp-rest-blocks' ),
-						'additionalProperties' => true,
-					],
-					'innerBlocks'  => [
-						'type'        => 'array',
-						'items'       => [
-							'type'                 => 'object',
-							'additionalProperties' => true,
-						],
-						'description' => __( 'Inner blocks.', 'wp-rest-blocks' ),
-					],
-					'innerHTML'    => [
-						'type'        => 'string',
-						'description' => __( 'Inner HTML.', 'wp-rest-blocks' ),
-					],
-					'innerContent' => [
-						'type'        => 'array',
-						'items'       => [
-							'type' => 'string',
-						],
-						'description' => __( 'Inner content.', 'wp-rest-blocks' ),
-					],
-					'rendered'     => [
-						'type'        => 'string',
-						'description' => __( 'Rendered block output.', 'wp-rest-blocks' ),
-					],
-				],
-			],
-		];
-	}
-
-	/**
-	 * Get REST API schema for has blocks field.
-	 *
-	 * @return array
-	 */
-	public function get_has_blocks_schema(): array {
-		return [
-			'description' => __( 'Has blocks.', 'wp-rest-blocks' ),
-			'type'        => 'boolean',
-			'context'     => [ 'embed', 'view', 'edit' ],
-			'readonly'    => true,
-		];
-	}
 }
