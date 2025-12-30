@@ -6,7 +6,7 @@
  * @coversDefaultClass \WP_REST_Blocks\Data
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace WP_REST_Blocks\Tests;
 
@@ -23,9 +23,8 @@ class Test_Data extends TestCase {
 	/**
 	 * Data instance.
 	 *
-	 * @var Data
 	 */
-	private $data;
+	private Data $data;
 
 	/**
 	 * Set up test.
@@ -1223,7 +1222,7 @@ class Test_Data extends TestCase {
 	public function test_get_blocks_with_shortcodes() {
 		add_shortcode(
 			'test_shortcode',
-			function () {
+			static function () {
 				return 'Shortcode output';
 			}
 		);

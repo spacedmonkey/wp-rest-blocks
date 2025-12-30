@@ -26,11 +26,16 @@
 
 	<rule ref="Squiz.Commenting.FileComment.Missing">
 		<exclude-pattern>tests</exclude-pattern>
+		<exclude-pattern>wp-rest-blocks.php</exclude-pattern>
 	</rule>
 
 	<rule ref="Squiz.Commenting.FunctionComment">
 		<exclude-pattern>tests</exclude-pattern>
 	</rule>
+
+	<rule ref="PSR12.Files.FileHeader.IncorrectOrder">
+    	<exclude-pattern>wp-rest-blocks.php</exclude-pattern>
+    </rule>
 
 	<rule ref="WordPress-Core">
 		<exclude name="Generic.Arrays.DisallowShortArraySyntax" />
@@ -39,6 +44,7 @@
 
 	<rule ref="WordPress-Docs">
     	<exclude-pattern>tests/*</exclude-pattern>
+    	<exclude name="Squiz.Commenting.VariableComment.MissingVar" />
 	</rule>
 
 	<rule ref="WordPress-Extra">
@@ -74,4 +80,37 @@
 	<rule ref="PHPCompatibilityWP" />
 
 	<rule ref="Generic.Arrays.DisallowLongArraySyntax.Found" />
+
+  <!-- Checks whether the nullablity ? symbol is present before each nullable and optional parameter. -->
+  <rule
+    ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"
+  />
+  <!-- Enforce no space between closing brace and colon of return typehint. -->
+  <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing">
+    <properties>
+      <property name="spacesCountBeforeColon" value="0" />
+    </properties>
+  </rule>
+  <!-- Checks that there's no whitespace between a nullability symbol and a typehint. -->
+  <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing" />
+  <!-- Enforces using shorthand scalar typehint variants in phpDocs. -->
+  <rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints" />
+  <!-- Reports useless @var annotation for constants because the type of constant is always clear. -->
+  <rule ref="SlevomatCodingStandard.TypeHints.UselessConstantTypeHint" />
+
+  <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
+      <exclude-pattern>wp-rest-blocks.php</exclude-pattern>
+  </rule>
+
+  <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+      <exclude-pattern>wp-rest-blocks.php</exclude-pattern>
+       <properties>
+        <property name="enableMixedTypeHint" value="false" />
+        <property name="enableUnionTypeHint" value="false" />
+        <property name="enableIntersectionTypeHint" value="false" />
+        <property name="enableStandaloneNullTrueFalseTypeHints" value="false" />
+      </properties>
+  </rule>
+
+  <rule ref="SlevomatCodingStandard.Functions.StaticClosure" />
 </ruleset>

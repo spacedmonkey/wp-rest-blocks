@@ -6,7 +6,7 @@
  * @coversDefaultClass \WP_REST_Blocks\Posts
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace WP_REST_Blocks\Tests;
 
@@ -25,16 +25,14 @@ class Test_Posts extends TestCase {
 	/**
 	 * Posts instance.
 	 *
-	 * @var Posts
 	 */
-	private $posts;
+	private Posts $posts;
 
 	/**
 	 * Data instance.
 	 *
-	 * @var Data
 	 */
-	private $data;
+	private Data $data;
 
 	/**
 	 * Set up test.

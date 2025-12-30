@@ -5,7 +5,7 @@
  * @package WP_REST_Blocks.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace WP_REST_Blocks;
 

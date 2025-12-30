@@ -1,5 +1,13 @@
 <?php
 /**
+ * Bootstrap file for running PHPUnit tests with @wordpress/env
+ *
+ * @package Wp_Rest_Blocks
+ */
+
+declare(strict_types = 1);
+
+/**
  * PHPUnit bootstrap file for @wordpress/env
  *
  * @package Wp_Rest_Blocks
