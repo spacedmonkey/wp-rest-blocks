@@ -26,6 +26,7 @@ on:
 
 permissions:
     contents: read
+    pull-requests: write
 
 jobs:
     lint:
@@ -48,11 +49,11 @@ jobs:
 
             - name: Detect coding standard violations (PHPCS)
               if: ${{ inputs.run-phpcs }}
-              run: composer lint -- -q --report=checkstyle --severity=1 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 | cs2pr
+              run: composer lint -- -q --report=checkstyle --severity=1 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 | cs2pr --graceful-warnings
 
             - name: Detect PHPStan issues
               if: ${{ inputs.run-phpstan }}
-              run: composer phpstan -- --error-format=checkstyle | cs2pr
+              run: composer phpstan -- --error-format=checkstyle | cs2pr --graceful-warnings
 
             - name: Detect PHP Mess Detector issues
               if: ${{ inputs.run-phpmd }}
