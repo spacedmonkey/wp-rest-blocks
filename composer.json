@@ -48,8 +48,8 @@
 		"sort-packages": true
 	},
 	"scripts": {
-		"phpcbf": "phpcbf",
-		"phpcs": "phpcs",
+		"lint": "phpcs .",
+		"lint:fix": "phpcbf .",
 		"phpmd": "phpmd wp-rest-blocks.php,src text phpmd.xml.dist --color",
 		"phpstan": "phpstan analyse --memory-limit=2048M",
 		"test": "phpunit"
