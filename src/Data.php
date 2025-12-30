@@ -211,8 +211,7 @@ class Data {
 			case 'query':
 				if ( isset( $attribute['query'] ) && count( $node ) > 0 ) {
 					$counter = 0;
-					foreach ( $node as $v_node ) {
-						foreach ( $attribute['query'] as $key => $current_attribute ) {
+					foreach ( $node as $v_node ) {foreach ( $attribute['query'] as $key => $current_attribute ) {
 							$current_value = $this->get_attribute( $current_attribute, $v_node->html(), $post_id );
 							if ( null !== $current_value ) {
 								$value[ $counter ][ $key ] = $current_value;

@@ -48,7 +48,7 @@ jobs:
 
             - name: Detect coding standard violations (PHPCS)
               if: ${{ inputs.run-phpcs }}
-              run: composer lint -- --report=checkstyle | cs2pr --graceful-warnings
+              run: composer lint -- -q --report=checkstyle | cs2pr --graceful-warnings
 
             - name: Detect PHPStan issues
               if: ${{ inputs.run-phpstan }}
