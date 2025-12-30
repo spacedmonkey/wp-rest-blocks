@@ -1,116 +1,116 @@
 <?xml version="1.0"?>
 <ruleset name="WordPress Coding Standards based custom ruleset for your plugin">
-	<description>Generally-applicable sniffs for WordPress plugins.</description>
+    <description>Generally-applicable sniffs for WordPress plugins.</description>
 
-	<!-- What to scan -->
-	<file>.</file>
-	<exclude-pattern>/vendor/</exclude-pattern>
-	<exclude-pattern>/node_modules/</exclude-pattern>
+    <!-- What to scan -->
+    <file>.</file>
+    <exclude-pattern>/vendor/</exclude-pattern>
+    <exclude-pattern>/node_modules/</exclude-pattern>
 
-	<!-- How to scan -->
-	<!-- Usage instructions: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage -->
-	<!-- Annotated ruleset: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
-	<arg value="sp"/> <!-- Show sniff and progress -->
-	<arg name="basepath" value="./"/><!-- Strip the file paths down to the relevant bit -->
-	<arg name="colors"/>
-	<arg name="extensions" value="php"/>
-	<arg name="parallel" value="8"/><!-- Enables parallel processing when available for faster results. -->
+    <!-- How to scan -->
+    <!-- Usage instructions: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage -->
+    <!-- Annotated ruleset: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
+    <arg value="sp"/> <!-- Show sniff and progress -->
+    <arg name="basepath" value="./"/><!-- Strip the file paths down to the relevant bit -->
+    <arg name="colors"/>
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="8"/><!-- Enables parallel processing when available for faster results. -->
 
-	<!-- Rules: WordPress Coding Standards -->
-	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards -->
-	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties -->
-	<config name="minimum_supported_wp_version" value="5.5"/>
-	<rule ref="WordPress">
+    <!-- Rules: WordPress Coding Standards -->
+    <!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards -->
+    <!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties -->
+    <config name="minimum_supported_wp_version" value="5.5"/>
+    <rule ref="WordPress">
 
-	</rule>
-
-	<rule ref="Squiz.Commenting.FileComment.Missing">
-		<exclude-pattern>tests</exclude-pattern>
-		<exclude-pattern>wp-rest-blocks.php</exclude-pattern>
-	</rule>
-
-	<rule ref="Squiz.Commenting.FunctionComment">
-		<exclude-pattern>tests</exclude-pattern>
-	</rule>
-
-	<rule ref="PSR12.Files.FileHeader.IncorrectOrder">
-    	<exclude-pattern>wp-rest-blocks.php</exclude-pattern>
     </rule>
 
-	<rule ref="WordPress-Core">
-		<exclude name="Generic.Arrays.DisallowShortArraySyntax" />
-		<exclude name="Universal.Arrays.DisallowShortArraySyntax.Found" />
-	</rule>
-
-	<rule ref="WordPress-Docs">
-    	<exclude-pattern>tests/*</exclude-pattern>
-    	<exclude name="Squiz.Commenting.VariableComment.MissingVar" />
-	</rule>
-
-	<rule ref="WordPress-Extra">
-		<exclude name="WordPress.Files.FileName" />
-		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
-	</rule>
-
-	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
-		<exclude-pattern>test</exclude-pattern>
+    <rule ref="Squiz.Commenting.FileComment.Missing">
+        <exclude-pattern>tests</exclude-pattern>
+        <exclude-pattern>wp-rest-blocks.php</exclude-pattern>
     </rule>
 
-	<rule ref="Generic.Commenting.DocComment">
-		<exclude-pattern>test</exclude-pattern>
-	</rule>
+    <rule ref="Squiz.Commenting.FunctionComment">
+        <exclude-pattern>tests</exclude-pattern>
+    </rule>
 
-	<rule ref="WordPress.WP.I18n">
-		<properties>
-			<property name="text_domain" type="array">
-				<element value="wp-rest-blocks"/>
-			</property>
-		</properties>
-  	</rule>
-	<rule ref="WordPress.WhiteSpace.ControlStructureSpacing">
-		<properties>
-			<property name="blank_line_check" value="true"/>
-		</properties>
-	</rule>
+    <rule ref="PSR12.Files.FileHeader.IncorrectOrder">
+        <exclude-pattern>wp-rest-blocks.php</exclude-pattern>
+    </rule>
 
-	<rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis" />
+    <rule ref="WordPress-Core">
+        <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+        <exclude name="Universal.Arrays.DisallowShortArraySyntax.Found"/>
+    </rule>
 
-	<!-- Check for cross-version support for PHP 7.4 and higher. -->
-	<config name="testVersion" value="7.4-" />
-	<rule ref="PHPCompatibilityWP" />
+    <rule ref="WordPress-Docs">
+        <exclude-pattern>tests/*</exclude-pattern>
+        <exclude name="Squiz.Commenting.VariableComment.MissingVar"/>
+    </rule>
 
-	<rule ref="Generic.Arrays.DisallowLongArraySyntax.Found" />
+    <rule ref="WordPress-Extra">
+        <exclude name="WordPress.Files.FileName"/>
+        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+    </rule>
 
-  <!-- Checks whether the nullablity ? symbol is present before each nullable and optional parameter. -->
-  <rule
-    ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"
-  />
-  <!-- Enforce no space between closing brace and colon of return typehint. -->
-  <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing">
-    <properties>
-      <property name="spacesCountBeforeColon" value="0" />
-    </properties>
-  </rule>
-  <!-- Checks that there's no whitespace between a nullability symbol and a typehint. -->
-  <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing" />
-  <!-- Enforces using shorthand scalar typehint variants in phpDocs. -->
-  <rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints" />
-  <!-- Reports useless @var annotation for constants because the type of constant is always clear. -->
-  <rule ref="SlevomatCodingStandard.TypeHints.UselessConstantTypeHint" />
+    <rule ref="WordPress.Files.FileName.InvalidClassFileName">
+        <exclude-pattern>test</exclude-pattern>
+    </rule>
 
-  <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
-      <exclude-pattern>wp-rest-blocks.php</exclude-pattern>
-  </rule>
+    <rule ref="Generic.Commenting.DocComment">
+        <exclude-pattern>test</exclude-pattern>
+    </rule>
 
-  <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
-      <exclude-pattern>wp-rest-blocks.php</exclude-pattern>
-       <properties>
-        <property name="enableMixedTypeHint" value="false" />
-        <property name="enableUnionTypeHint" value="false" />
-        <property name="enableIntersectionTypeHint" value="false" />
-        <property name="enableStandaloneNullTrueFalseTypeHints" value="false" />
-      </properties>
-  </rule>
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="wp-rest-blocks"/>
+            </property>
+        </properties>
+    </rule>
+    <rule ref="WordPress.WhiteSpace.ControlStructureSpacing">
+        <properties>
+            <property name="blank_line_check" value="true"/>
+        </properties>
+    </rule>
 
-  <rule ref="SlevomatCodingStandard.Functions.StaticClosure" />
+    <rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis"/>
+
+    <!-- Check for cross-version support for PHP 7.4 and higher. -->
+    <config name="testVersion" value="7.4-"/>
+    <rule ref="PHPCompatibilityWP"/>
+
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax.Found"/>
+
+    <!-- Checks whether the nullablity ? symbol is present before each nullable and optional parameter. -->
+    <rule
+            ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"
+    />
+    <!-- Enforce no space between closing brace and colon of return typehint. -->
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing">
+        <properties>
+            <property name="spacesCountBeforeColon" value="0"/>
+        </properties>
+    </rule>
+    <!-- Checks that there's no whitespace between a nullability symbol and a typehint. -->
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing"/>
+    <!-- Enforces using shorthand scalar typehint variants in phpDocs. -->
+    <rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints"/>
+    <!-- Reports useless @var annotation for constants because the type of constant is always clear. -->
+    <rule ref="SlevomatCodingStandard.TypeHints.UselessConstantTypeHint"/>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
+        <exclude-pattern>wp-rest-blocks.php</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+        <exclude-pattern>wp-rest-blocks.php</exclude-pattern>
+        <properties>
+            <property name="enableMixedTypeHint" value="false"/>
+            <property name="enableUnionTypeHint" value="false"/>
+            <property name="enableIntersectionTypeHint" value="false"/>
+            <property name="enableStandaloneNullTrueFalseTypeHints" value="false"/>
+        </properties>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Functions.StaticClosure"/>
 </ruleset>
