@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace WP_REST_Blocks;
 
+use DiDom\Element;
 use DiDom\Exceptions\InvalidSelectorException;
 use WP_Block;
 use DiDom\Document;
@@ -25,12 +26,12 @@ class Data {
 	/**
 	 * Get blocks from html string.
 	 *
-	 * @param string $content Content to parse.
-	 * @param int    $post_id Post int.
+	 * @param string   $content Content to parse.
+	 * @param int|null $post_id Post int.
 	 *
 	 * @return array
 	 */
-	public function get_blocks( string $content, int $post_id = 0 ): array {
+	public function get_blocks( string $content, ?int $post_id = null ): array {
 		$blocks = parse_blocks( $content );
 
 		return $this->process_blocks( $blocks, $post_id );
@@ -39,12 +40,12 @@ class Data {
 	/**
 	 * Process multiple blocks and filter out invalid ones.
 	 *
-	 * @param array $blocks Array of blocks to process.
-	 * @param int   $post_id Post ID.
+	 * @param array    $blocks Array of blocks to process.
+	 * @param int|null $post_id Post ID.
 	 *
 	 * @return array Array of processed valid blocks.
 	 */
-	private function process_blocks( array $blocks, int $post_id = 0 ): array {
+	private function process_blocks( array $blocks, ?int $post_id = null ): array {
 		return array_filter(
 			array_map(
 				fn( $block ) => $this->handle_do_block( $block, $post_id ),
@@ -58,12 +59,12 @@ class Data {
 	/**
 	 * Process a block, getting all extra fields.
 	 *
-	 * @param array $block Block data.
-	 * @param int   $post_id Post ID.
+	 * @param array    $block Block data.
+	 * @param int|null $post_id Post ID.
 	 *
 	 * @return array|false
 	 */
-	public function handle_do_block( array $block, int $post_id = 0 ) {
+	public function handle_do_block( array $block, ?int $post_id = null ) {
 		if ( ! isset( $block['blockName'] ) || '' === $block['blockName'] ) {
 			return false;
 		}
@@ -90,11 +91,11 @@ class Data {
 	 *
 	 * @param WP_Block $block_object The block object.
 	 * @param array    $block An associative array representing the block.
-	 * @param int      $post_id Post ID associated with the block.
+	 * @param int|null $post_id Post ID associated with the block.
 	 *
 	 * @return array The processed block attributes.
 	 */
-	private function get_block_attrs( WP_Block $block_object, array $block, int $post_id ): array {
+	private function get_block_attrs( WP_Block $block_object, array $block, ?int $post_id = null ): array {
 		$attr = $block['attrs'] ?? [];
 		if ( null === $block_object->block_type ) {
 			return $attr;
@@ -128,13 +129,13 @@ class Data {
 	 *
 	 * @SuppressWarnings("PHPMD.ElseExpression")
 	 *
-	 * @param array  $attribute Attributes.
-	 * @param string $html HTML string.
-	 * @param int    $post_id Post Number. Default 0.
+	 * @param array    $attribute Attributes.
+	 * @param string   $html HTML string.
+	 * @param int|null $post_id Post Number. Default 0.
 	 *
 	 * @return mixed
 	 */
-	public function get_attribute( array $attribute, string $html, int $post_id = 0 ) {
+	public function get_attribute( array $attribute, string $html, ?int $post_id = null ) {
 		$value = null;
 
 		if ( isset( $attribute['source'] ) ) {
@@ -160,14 +161,15 @@ class Data {
 
 		return $value;
 	}
+
 	/**
 	 * Extract value from post meta.
 	 *
-	 * @param array $attribute Attribute configuration.
-	 * @param int   $post_id   Post ID.
+	 * @param array    $attribute Attribute configuration.
+	 * @param int|null $post_id Post ID.
 	 * @return mixed|null Meta value or null if not found.
 	 */
-	private function extract_value_from_meta( array $attribute, int $post_id ) {
+	private function extract_value_from_meta( array $attribute, ?int $post_id ) {
 		if ( $post_id > 0 && isset( $attribute['meta'] ) ) {
 			return get_post_meta( $post_id, $attribute['meta'], true );
 		}
@@ -178,13 +180,13 @@ class Data {
 	/**
 	 * Extract value from HTML based on attribute source.
 	 *
-	 * @param array  $attribute Attributes.
-	 * @param string $html HTML string.
-	 * @param int    $post_id Post Number. Default 0.
+	 * @param array    $attribute Attributes.
+	 * @param string   $html HTML string.
+	 * @param int|null $post_id Post Number. Default 0.
 	 *
 	 * @return mixed
 	 */
-	private function extract_value_from_html( array $attribute, string $html, int $post_id = 0 ) {
+	private function extract_value_from_html( array $attribute, string $html, ?int $post_id = null ) {
 		$value = null;
 		try {
 			$dom = new Document( trim( $html ) );
@@ -199,20 +201,23 @@ class Data {
 
 		switch ( $attribute['source'] ) {
 			case 'attribute':
-				$value = null !== $single_node ? $single_node->getAttribute( $attribute['attribute'] ) : null;
+				$value = $single_node instanceof Element ? $single_node->getAttribute( $attribute['attribute'] ) : null;
 				break;
 			case 'html':
 			case 'rich-text':
-				$value = null !== $single_node ? $single_node->innerHtml() : null;
+				$value = $single_node instanceof Element ? $single_node->innerHtml() : null;
 				break;
 			case 'text':
-				$value = null !== $single_node ? $single_node->text() : null;
+				$value = $single_node instanceof Element ? $single_node->text() : null;
 				break;
 			case 'query':
 				if ( isset( $attribute['query'] ) && count( $node ) > 0 ) {
 					$counter = 0;
 					foreach ( $node as $v_node ) {
 						foreach ( $attribute['query'] as $key => $current_attribute ) {
+							if ( ! ( $v_node instanceof Element ) ) {
+								continue;
+							}
 							$current_value = $this->get_attribute( $current_attribute, $v_node->html(), $post_id );
 							if ( null !== $current_value ) {
 								$value[ $counter ][ $key ] = $current_value;

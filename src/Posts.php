@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace WP_REST_Blocks;
 
+use WP_Post;
+
 /**
  * Class Posts
  *
@@ -93,7 +95,7 @@ class Posts extends REST_Blocks {
 		}
 
 		$post = get_post( $id );
-		if ( null === $post ) {
+		if ( ! ( $post instanceof WP_Post ) ) {
 			return [];
 		}
 

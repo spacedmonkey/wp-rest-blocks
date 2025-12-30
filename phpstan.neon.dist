@@ -1,7 +1,8 @@
 parameters:
-    level: 5
+    level: 9
     paths:
         - wp-rest-blocks.php
         - src/
     ignoreErrors:
         - '#Path in require_once\(\) ".*wp-admin/includes/post\.php" is not a file or it does not exist#'
+        - identifier: missingType.iterableValue
