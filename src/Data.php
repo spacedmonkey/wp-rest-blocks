@@ -23,57 +23,6 @@ use DiDom\Document;
 class Data {
 
 	/**
-	 * Get REST API schema for block data field.
-	 *
-	 * @return array
-	 */
-	public function get_block_data_schema(): array {
-		return [
-			'description' => __( 'Blocks.', 'wp-rest-blocks' ),
-			'type'        => 'array',
-			'context'     => [ 'embed', 'view', 'edit' ],
-			'readonly'    => true,
-			'items'       => [
-				'type'       => 'object',
-				'properties' => [
-					'blockName'    => [
-						'type'        => 'string',
-						'description' => __( 'Block name.', 'wp-rest-blocks' ),
-					],
-					'attrs'        => [
-						'type'                 => 'object',
-						'description'          => __( 'Block attributes.', 'wp-rest-blocks' ),
-						'additionalProperties' => true,
-					],
-					'innerBlocks'  => [
-						'type'        => 'array',
-						'items'       => [
-							'type'                 => 'object',
-							'additionalProperties' => true,
-						],
-						'description' => __( 'Inner blocks.', 'wp-rest-blocks' ),
-					],
-					'innerHTML'    => [
-						'type'        => 'string',
-						'description' => __( 'Inner HTML.', 'wp-rest-blocks' ),
-					],
-					'innerContent' => [
-						'type'        => 'array',
-						'items'       => [
-							'type' => 'string',
-						],
-						'description' => __( 'Inner content.', 'wp-rest-blocks' ),
-					],
-					'rendered'     => [
-						'type'        => 'string',
-						'description' => __( 'Rendered block output.', 'wp-rest-blocks' ),
-					],
-				],
-			],
-		];
-	}
-
-	/**
 	 * Get blocks from html string.
 	 *
 	 * @param string $content Content to parse.

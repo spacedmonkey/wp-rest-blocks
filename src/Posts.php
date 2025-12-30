@@ -16,32 +16,7 @@ namespace WP_REST_Blocks;
  *
  * @package WP_REST_Blocks
  */
-class Posts {
-
-	/**
-	 * Data processor instance.
-	 *
-	 * @var Data
-	 */
-	private $data;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param Data $data Data processor instance.
-	 */
-	public function __construct( Data $data ) {
-		$this->data = $data;
-	}
-
-	/**
-	 * Initialize the class and register hooks.
-	 *
-	 * @return void
-	 */
-	public function init(): void {
-		add_action( 'rest_api_init', [ $this, 'register_rest_fields' ] );
-	}
+class Posts extends REST_Blocks {
 
 	/**
 	 * Get post ID from data object.
@@ -75,15 +50,25 @@ class Posts {
 	}
 
 	/**
+	 * Determines if a specific feature is enabled.
+	 *
+	 * @return bool
+	 */
+	public function is_feature_enabled(): bool {
+		$types = $this->get_post_types_with_editor();
+		return count( $types ) > 0;
+	}
+
+	/**
 	 * Add rest api fields.
 	 *
 	 * @return void
 	 */
 	public function register_rest_fields(): void {
-		$types = $this->get_post_types_with_editor();
-		if ( 0 === count( $types ) ) {
+		if ( ! $this->is_feature_enabled() ) {
 			return;
 		}
+		$types = $this->get_post_types_with_editor();
 
 		register_rest_field(
 			$types,
@@ -91,12 +76,7 @@ class Posts {
 			[
 				'get_callback'    => [ $this, 'has_blocks' ],
 				'update_callback' => null,
-				'schema'          => [
-					'description' => __( 'Has blocks.', 'wp-rest-blocks' ),
-					'type'        => 'boolean',
-					'context'     => [ 'embed', 'view', 'edit' ],
-					'readonly'    => true,
-				],
+				'schema'          => $this->get_has_blocks_schema(),
 			]
 		);
 
@@ -106,7 +86,7 @@ class Posts {
 			[
 				'get_callback'    => [ $this, 'get_block_data' ],
 				'update_callback' => null,
-				'schema'          => $this->data->get_block_data_schema(),
+				'schema'          => $this->get_block_data_schema(),
 			]
 		);
 	}

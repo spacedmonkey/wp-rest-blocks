@@ -16,31 +16,18 @@ namespace WP_REST_Blocks;
  *
  * @package WP_REST_Blocks
  */
-class Widgets {
+class Widgets extends REST_Blocks {
 
 	/**
-	 * Data processor instance.
+	 * Determines if a specific feature is enabled.
 	 *
-	 * @var Data
+	 * @return bool
 	 */
-	private $data;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param Data $data Data processor instance.
-	 */
-	public function __construct( Data $data ) {
-		$this->data = $data;
-	}
-
-	/**
-	 * Initialize the class and register hooks.
-	 *
-	 * @return void
-	 */
-	public function init(): void {
-		add_action( 'rest_api_init', [ $this, 'register_rest_fields' ] );
+	public function is_feature_enabled(): bool {
+		if ( ! function_exists( 'wp_use_widgets_block_editor' ) ) {
+			return false;
+		}
+		return wp_use_widgets_block_editor();
 	}
 
 	/**
@@ -49,7 +36,7 @@ class Widgets {
 	 * @return void
 	 */
 	public function register_rest_fields(): void {
-		if ( ! function_exists( 'wp_use_widgets_block_editor' ) || ! wp_use_widgets_block_editor() ) {
+		if ( ! $this->is_feature_enabled() ) {
 			return;
 		}
 
@@ -59,12 +46,7 @@ class Widgets {
 			[
 				'get_callback'    => [ $this, 'has_blocks' ],
 				'update_callback' => null,
-				'schema'          => [
-					'description' => __( 'Has blocks.', 'wp-rest-blocks' ),
-					'type'        => 'boolean',
-					'context'     => [ 'embed', 'view', 'edit' ],
-					'readonly'    => true,
-				],
+				'schema'          => $this->get_has_blocks_schema(),
 			]
 		);
 
@@ -74,7 +56,7 @@ class Widgets {
 			[
 				'get_callback'    => [ $this, 'get_block_data' ],
 				'update_callback' => null,
-				'schema'          => $this->data->get_block_data_schema(),
+				'schema'          => $this->get_block_data_schema(),
 			]
 		);
 	}
