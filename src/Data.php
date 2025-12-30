@@ -31,23 +31,32 @@ class Data {
 	 * @return array
 	 */
 	public function get_blocks( string $content, int $post_id = 0 ): array {
-		$output = [];
 		$blocks = parse_blocks( $content );
 
-		foreach ( $blocks as $block ) {
-			$block_data = $this->handle_do_block( $block, $post_id );
-			if ( false !== $block_data ) {
-				$output[] = $block_data;
-			}
-		}
-
-		return $output;
+		return $this->process_blocks( $blocks, $post_id );
 	}
 
 	/**
-	 * Process a block, getting all extra fields.
+	 * Process multiple blocks and filter out invalid ones.
 	 *
-	 * @SuppressWarnings("PHPMD.NPathComplexity")
+	 * @param array $blocks Array of blocks to process.
+	 * @param int   $post_id Post ID.
+	 *
+	 * @return array Array of processed valid blocks.
+	 */
+	private function process_blocks( array $blocks, int $post_id = 0 ): array {
+		return array_filter(
+			array_map(
+				fn( $block ) => $this->handle_do_block( $block, $post_id ),
+				$blocks
+			),
+			static fn( $block_data ) => false !== $block_data
+		);
+	}
+
+
+	/**
+	 * Process a block, getting all extra fields.
 	 *
 	 * @param array $block Block data.
 	 * @param int   $post_id Post ID.
@@ -60,49 +69,58 @@ class Data {
 		}
 
 		$block_object = new WP_Block( $block );
-		$attr         = $block['attrs'] ?? [];
-		if ( null !== $block_object->block_type ) {
-			$attributes = $block_object->block_type->attributes;
-			$supports   = $block_object->block_type->supports;
-			if ( null !== $supports && isset( $supports['anchor'] ) && $supports['anchor'] ) {
-					$attributes['anchor'] = [
-						'type'      => 'string',
-						'source'    => 'attribute',
-						'attribute' => 'id',
-						'selector'  => '*',
-						'default'   => '',
-					];
-			}
-
-			if ( null !== $attributes ) {
-				foreach ( $attributes as $key => $attribute ) {
-					if ( ! isset( $attr[ $key ] ) ) {
-						$attr[ $key ] = $this->get_attribute( $attribute, $block_object->inner_html, $post_id );
-					}
-				}
-			}
-		}
 
 		$block['rendered'] = $block_object->render();
 		$block['rendered'] = do_shortcode( $block['rendered'] );
-		$block['attrs']    = $attr;
+		$block['attrs']    = $this->get_block_attrs( $block_object, $block, $post_id );
 
 		if ( is_array( $block['innerContent'] ) && count( $block['innerContent'] ) > 0 ) {
 			$block['innerContent'] = array_values( array_filter( $block['innerContent'], 'is_string' ) );
 		}
 
 		if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) && count( $block['innerBlocks'] ) > 0 ) {
-			$inner_blocks         = $block['innerBlocks'];
-			$block['innerBlocks'] = [];
-			foreach ( $inner_blocks as $_block ) {
-				$inner_result = $this->handle_do_block( $_block, $post_id );
-				if ( false !== $inner_result ) {
-					$block['innerBlocks'][] = $inner_result;
+			$block['innerBlocks'] = $this->process_blocks( $block['innerBlocks'], $post_id );
+		}
+
+		return $block;
+	}
+
+	/**
+	 * Retrieves block attributes.
+	 *
+	 * @param WP_Block $block_object The block object.
+	 * @param array    $block An associative array representing the block.
+	 * @param int      $post_id Post ID associated with the block.
+	 *
+	 * @return array The processed block attributes.
+	 */
+	private function get_block_attrs( WP_Block $block_object, array $block, int $post_id ): array {
+		$attr = $block['attrs'] ?? [];
+		if ( null === $block_object->block_type ) {
+			return $attr;
+		}
+
+		$attributes = $block_object->block_type->attributes;
+		$supports   = $block_object->block_type->supports;
+		if ( null !== $supports && isset( $supports['anchor'] ) && $supports['anchor'] ) {
+			$attributes['anchor'] = [
+				'type'      => 'string',
+				'source'    => 'attribute',
+				'attribute' => 'id',
+				'selector'  => '*',
+				'default'   => '',
+			];
+		}
+
+		if ( null !== $attributes ) {
+			foreach ( $attributes as $key => $attribute ) {
+				if ( ! isset( $attr[ $key ] ) ) {
+					$attr[ $key ] = $this->get_attribute( $attribute, $block_object->inner_html, $post_id );
 				}
 			}
 		}
 
-		return $block;
+		return $attr;
 	}
 
 	/**
