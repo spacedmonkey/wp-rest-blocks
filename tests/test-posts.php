@@ -68,33 +68,33 @@ class Test_Posts extends TestCase {
 	}
 
 	/**
-	 * Test get_post_types_with_editor returns array.
+	 * Test get_types returns array.
 	 *
-	 * @covers ::get_post_types_with_editor
+	 * @covers ::get_types
 	 */
-	public function test_get_post_types_with_editor() {
-		$types = $this->posts->get_post_types_with_editor();
+	public function test_get_types() {
+		$types = $this->posts->get_types();
 		$this->assertIsArray( $types );
 		$this->assertContains( 'post', $types );
 		$this->assertContains( 'page', $types );
 	}
 
 	/**
-	 * Test get_post_types_with_editor includes wp_navigation.
+	 * Test get_types includes wp_navigation.
 	 *
-	 * @covers ::get_post_types_with_editor
+	 * @covers ::get_types
 	 */
-	public function test_get_post_types_with_editor_includes_navigation() {
-		$types = $this->posts->get_post_types_with_editor();
+	public function test_get_types_includes_navigation() {
+		$types = $this->posts->get_types();
 		$this->assertContains( 'wp_navigation', $types );
 	}
 
 	/**
-	 * Test get_post_types_with_editor filters by show_in_rest.
+	 * Test get_types filters by show_in_rest.
 	 *
-	 * @covers ::get_post_types_with_editor
+	 * @covers ::get_types
 	 */
-	public function test_get_post_types_with_editor_filters_by_rest() {
+	public function test_get_types_filters_by_rest() {
 		register_post_type(
 			'test_no_rest',
 			[
@@ -103,7 +103,7 @@ class Test_Posts extends TestCase {
 			]
 		);
 
-		$types = $this->posts->get_post_types_with_editor();
+		$types = $this->posts->get_types();
 		$this->assertNotContains( 'test_no_rest', $types );
 
 		unregister_post_type( 'test_no_rest' );
@@ -113,17 +113,17 @@ class Test_Posts extends TestCase {
 	 * Test register_rest_fields with no post types.
 	 *
 	 * @covers ::register_rest_fields
-	 * @covers ::get_post_types_with_editor
+	 * @covers ::get_types
 	 */
 	public function test_register_rest_fields_no_post_types() {
 		// Mock a scenario where no post types are returned.
 		$posts = $this->getMockBuilder( Posts::class )
 			->setConstructorArgs( [ $this->data ] )
-			->onlyMethods( [ 'get_post_types_with_editor' ] )
+			->onlyMethods( [ 'get_types' ] )
 			->getMock();
 
 		$posts->expects( $this->once() )
-			->method( 'get_post_types_with_editor' )
+			->method( 'get_types' )
 			->willReturn( [] );
 
 		$posts->register_rest_fields();
@@ -135,7 +135,7 @@ class Test_Posts extends TestCase {
 	 * Test register_rest_fields registers fields.
 	 *
 	 * @covers ::register_rest_fields
-	 * @covers ::get_post_types_with_editor
+	 * @covers ::get_types
 	 */
 	public function test_register_rest_fields() {
 		global $wp_rest_additional_fields;
