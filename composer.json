@@ -27,6 +27,7 @@
 		"phpstan/phpstan-deprecation-rules": "^2.0",
 		"phpstan/phpstan-strict-rules": "^2.0",
 		"sirbrillig/phpcs-variable-analysis": "^2.11",
+		"slevomat/coding-standard": "^8.22",
 		"swissspidy/phpstan-no-private": "^1.0",
 		"szepeviktor/phpstan-wordpress": "^2.0",
 		"wp-coding-standards/wpcs": "^3.0",
