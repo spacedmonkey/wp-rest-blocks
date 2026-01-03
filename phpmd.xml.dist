@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<ruleset name="Spacedmonkey PHPMD Ruleset for WordPress"
+         xmlns="http://pmd.sf.net/ruleset/1.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd" xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+    <description>PHPMD Ruleset for WordPress</description>
+
+    <file name="." extensions="php"/>
+
+    <exclude-pattern>/node_modules/*</exclude-pattern>
+    <exclude-pattern>/vendor/*</exclude-pattern>
+    <exclude-pattern>/tests/*</exclude-pattern>
+
+    <!-- Inspired from https://gist.github.com/GaryJones/52b88024fd02a662233e -->
+    <rule ref="rulesets/cleancode.xml" />
+    <rule ref="rulesets/cleancode.xml/MissingImport">
+        <properties>
+            <property name="ignore-global" value="true" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml">
+        <exclude name="CyclomaticComplexity" />
+   </rule>
+    <rule ref="rulesets/design.xml/ExitExpression" />
+    <rule ref="rulesets/design.xml/EvalExpression" />
+    <rule ref="rulesets/design.xml/GotoStatement" />
+    <rule ref="rulesets/design.xml/NumberOfChildren" />
+    <rule ref="rulesets/design.xml/DepthOfInheritance" />
+    <rule ref="rulesets/design.xml/CouplingBetweenObjects" />
+    <rule ref="rulesets/naming.xml/ShortVariable">
+        <properties>
+            <property name="minimum" value="2" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/LongVariable">
+        <properties>
+            <property name="maximum" value="35" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/ShortMethodName">
+        <properties>
+            <property name="minimum" value="2" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/ConstructorWithNameAsEnclosingClass" />
+    <rule ref="rulesets/naming.xml/ConstantNamingConventions" />
+    <rule ref="rulesets/naming.xml/BooleanGetMethodName" />
+    <rule ref="rulesets/unusedcode.xml" />
+</ruleset>

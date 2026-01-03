@@ -4,7 +4,10 @@ on:
     release:
         types:
             - created
-            - updated
+            - edited
+
+permissions:
+    contents: write
 
 jobs:
     build:
@@ -12,14 +15,14 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
+            - name: Setup PHP with Composer
+              uses: ./.github/actions/setup-php-composer
               with:
-                  php-version: '7.0'
-                  coverage: none
-                  tools: composer, cs2pr
+                  php-version: '7.4'
+                  composer-args: '--no-progress --no-dev --optimize-autoloader'
+                  tools: 'composer'
 
             - name: Setup Workflow Context
               id: workflow
@@ -28,29 +31,14 @@ jobs:
                   REPO: ${{ github.repository }}
               run: |
                   mkdir dist
-                  echo ::set-output name=DIST::${PWD}/dist
-                  echo ::set-output name=PACKAGE::${REPO##*/}
+                  echo "DIST=${PWD}/dist" >> "$GITHUB_OUTPUT"
+                  echo "PACKAGE=${REPO##*/}" >> "$GITHUB_OUTPUT"
 
             - name: PHP version
               run: php --version
 
             - name: Validate composer.json and composer.lock
               run: composer validate
-
-            - name: Get Composer Cache Directory
-              id: composer-cache
-              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-            - name: Cache Composer vendor directory
-              uses: actions/cache@v2
-              with:
-                  path: ${{ steps.composer-cache.outputs.dir }}
-                  key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-composer-
-
-            - name: Install PHP Dependencies
-              run: composer install --no-progress --no-dev --optimize-autoloader
 
             - name: Prepare files
               run: rsync -r --exclude-from=.distignore . ${{ steps.workflow.outputs.DIST }}/${{ steps.workflow.outputs.PACKAGE }}
@@ -64,11 +52,7 @@ jobs:
               run: zip -r ${{ steps.workflow.outputs.PACKAGE }}.zip .
 
             - name: Upload Release Asset
-              uses: actions/upload-release-asset@v1
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              uses: softprops/action-gh-release@v2
               with:
-                  upload_url: https://uploads.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}/assets{?name,label}
-                  asset_path: ${{ steps.workflow.outputs.DIST }}/${{ steps.workflow.outputs.PACKAGE }}.zip
-                  asset_name: ${{ steps.workflow.outputs.PACKAGE }}.zip
-                  asset_content_type: application/zip
+                  files: ${{ steps.workflow.outputs.DIST }}/${{ steps.workflow.outputs.PACKAGE }}.zip
+                  fail_on_unmatched_files: true

@@ -14,27 +14,45 @@
 		"issues": "https://github.com/spacedmonkey/wp-rest-blocks/issues"
 	},
 	"require": {
-		"php": "^7.0 || ^8.0",
+		"php": "^7.4 || ^8.0",
 		"composer/installers": "^1.10",
-		"tburry/pquery": "^1.1"
+		"imangazaliev/didom": "^2.0"
 	},
 	"require-dev": {
+		"ergebnis/composer-normalize": "^2.48",
 		"phpcompatibility/phpcompatibility-wp": "^2.1",
+		"phpmd/phpmd": "^2.15",
+		"phpstan/extension-installer": "^1.4",
+		"phpstan/phpstan": "^2.1",
+		"phpstan/phpstan-deprecation-rules": "^2.0",
+		"phpstan/phpstan-strict-rules": "^2.0",
 		"sirbrillig/phpcs-variable-analysis": "^2.11",
+		"slevomat/coding-standard": "^8.22",
+		"swissspidy/phpstan-no-private": "^1.0",
+		"szepeviktor/phpstan-wordpress": "^2.0",
 		"wp-coding-standards/wpcs": "^3.0",
 		"yoast/wp-test-utils": "^1.2.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"WP_REST_Blocks\\": "src/"
+		}
 	},
 	"config": {
 		"allow-plugins": {
 			"composer/installers": true,
-			"dealerdirect/phpcodesniffer-composer-installer": true
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"ergebnis/composer-normalize": true,
+			"phpstan/extension-installer": true
 		},
 		"discard-changes": true,
 		"sort-packages": true
 	},
 	"scripts": {
-		"phpcbf": "phpcbf",
-		"phpcs": "phpcs",
+		"lint": "phpcs .",
+		"lint:fix": "phpcbf .",
+		"phpmd": "phpmd wp-rest-blocks.php,src text phpmd.xml.dist --color",
+		"phpstan": "phpstan analyse --memory-limit=2048M",
 		"test": "phpunit"
 	}
 }

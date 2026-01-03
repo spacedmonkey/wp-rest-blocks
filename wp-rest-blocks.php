@@ -7,23 +7,24 @@
  * Author URI:        https://www.spacedmonkey.com/
  * Text Domain:       wp-rest-blocks
  * Domain Path:       /languages
- * Version:           1.0.2
- * Requires at least: 5.5
- * Requires PHP:      7.0
+ * Version:           2.0.0
+ * Requires at least: 5.9
+ * Requires PHP:      7.4
  *
  * @package         WP_REST_Blocks
  */
 
 namespace WP_REST_Blocks;
 
-use WP_REST_Blocks\Posts;
-use WP_REST_Blocks\Widgets;
-
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
 }
 
-if ( ! class_exists( '\pQuery' ) ) {
+if ( ! class_exists( '\DiDom\Document' ) ) {
 	/**
 	 * Displays an admin notice about why the plugin is unable to load.
 	 *
@@ -47,9 +48,23 @@ if ( ! class_exists( '\pQuery' ) ) {
 	return;
 }
 
-require_once __DIR__ . '/src/data.php';
-require_once __DIR__ . '/src/posts.php';
-require_once __DIR__ . '/src/widgets.php';
 
-Posts\bootstrap();
-Widgets\bootstrap();
+/**
+ * Initialize the plugin.
+ *
+ * @return void
+ */
+function init_plugin() {
+	// Create shared Data instance.
+	$data = new Data();
+
+	// Inject Data dependency into Posts and Widgets.
+	$posts   = new Posts( $data );
+	$widgets = new Widgets( $data );
+
+	// Initialize components.
+	$posts->init();
+	$widgets->init();
+}
+
+add_action( 'plugins_loaded', __NAMESPACE__ . '\init_plugin' );

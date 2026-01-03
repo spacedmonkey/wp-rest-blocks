@@ -1,0 +1,37 @@
+name: Validate Workflows
+
+on:
+    push:
+        paths:
+            - '.github/workflows/**'
+            - '.github/actions/**'
+    pull_request:
+        paths:
+            - '.github/workflows/**'
+            - '.github/actions/**'
+
+# Cancel in-progress runs for the same workflow and branch/PR
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+
+jobs:
+    actionlint:
+        name: Lint GitHub Actions Workflows
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Download actionlint
+              id: get-actionlint
+              run: bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+              shell: bash
+
+            - name: Run actionlint
+              run: ${{ steps.get-actionlint.outputs.executable }} -color
+              shell: bash
+

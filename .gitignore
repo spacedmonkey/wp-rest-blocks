@@ -7,6 +7,10 @@ composer.lock
 node_modules/
 vendor/
 .idea/
+coverage-html/
 *.sql
 *.tar.gz
 *.zip
+.wp-env-home/
+.wp-env.override.json
+.phpunit.result.cache

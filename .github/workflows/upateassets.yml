@@ -3,12 +3,16 @@ on:
     push:
         branches:
             - master
+
+permissions:
+    contents: read
+
 jobs:
     master:
         name: Push to main
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@main
+            - uses: actions/checkout@v4
             - name: WordPress.org asset update
               uses: 10up/action-wordpress-plugin-asset-update@stable
               env:

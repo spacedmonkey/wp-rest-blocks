@@ -1,0 +1,59 @@
+name: 'Setup PHP with Composer'
+description: 'Setup PHP environment with Composer cache and dependencies'
+
+inputs:
+    php-version:
+        description: 'PHP version to use'
+        required: false
+        default: '7.4'
+    composer-args:
+        description: 'Additional arguments for composer install'
+        required: false
+        default: '--prefer-dist --no-progress --no-interaction'
+    tools:
+        description: 'Tools to install'
+        required: false
+        default: 'composer, cs2pr'
+    coverage:
+        description: 'Coverage driver'
+        required: false
+        default: 'none'
+    extensions:
+        description: 'PHP extensions to install'
+        required: false
+        default: ''
+
+outputs:
+    composer-cache-dir:
+        description: 'Composer cache directory'
+        value: ${{ steps.composer-cache.outputs.dir }}
+
+runs:
+    using: 'composite'
+    steps:
+        - name: Setup PHP
+          uses: shivammathur/setup-php@v2
+          with:
+              php-version: ${{ inputs.php-version }}
+              coverage: ${{ inputs.coverage }}
+              tools: ${{ inputs.tools }}
+              extensions: ${{ inputs.extensions }}
+
+        - name: Get Composer cache directory
+          id: composer-cache
+          shell: bash
+          run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+        - name: Setup Composer cache
+          uses: actions/cache@v4
+          with:
+              path: ${{ steps.composer-cache.outputs.dir }}
+              key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+              restore-keys: |
+                  ${{ runner.os }}-composer-
+                  ${{ runner.os }}-
+
+        - name: Install dependencies
+          shell: bash
+          run: composer install ${{ inputs.composer-args }}
+

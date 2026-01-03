@@ -1,0 +1,61 @@
+name: Reusable PHP Lint
+
+on:
+    workflow_call:
+        inputs:
+            php-version:
+                description: 'PHP version to use'
+                type: string
+                default: '7.4'
+            run-phpcs:
+                description: 'Run PHPCS checks'
+                type: boolean
+                default: true
+            run-phpstan:
+                description: 'Run PHPStan checks'
+                type: boolean
+                default: true
+            run-phpmd:
+                description: 'Run PHPMD checks'
+                type: boolean
+                default: true
+            run-composer-normalize:
+                description: 'Run composer normalize check'
+                type: boolean
+                default: true
+
+permissions:
+    contents: read
+    pull-requests: write
+
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup PHP with Composer
+              uses: ./.github/actions/setup-php-composer
+              with:
+                  php-version: ${{ inputs.php-version }}
+
+            - name: Validate composer.json
+              run: composer --no-interaction validate --no-check-all
+
+            - name: Normalize composer.json
+              if: ${{ inputs.run-composer-normalize }}
+              run: composer normalize --no-interaction --dry-run
+
+            - name: Detect coding standard violations (PHPCS)
+              if: ${{ inputs.run-phpcs }}
+              run: composer lint -- -q --report=checkstyle --severity=1 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 | cs2pr --graceful-warnings
+
+            - name: Detect PHPStan issues
+              if: ${{ inputs.run-phpstan }}
+              run: composer phpstan -- --error-format=checkstyle | cs2pr --graceful-warnings
+
+            - name: Detect PHP Mess Detector issues
+              if: ${{ inputs.run-phpmd }}
+              run: composer phpmd
+

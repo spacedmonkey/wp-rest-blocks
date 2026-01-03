@@ -2,10 +2,10 @@
 Contributors: spacedmonkey
 Donate link: https://github.com/sponsors/spacedmonkey
 Tags: blocks, gutenberg, api, wp-json, rest-api
-Requires at least: 5.5
-Tested up to: 6.5
-Requires PHP: 7.0.0
-Stable tag: 1.0.2
+Requires at least: 5.9
+Tested up to: 6.9
+Requires PHP: 7.4.0
+Stable tag: 2.0.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
@@ -53,6 +53,66 @@ For example output.
 * Requires PHP 5.6+.
 * Requires WordPress 5.5+.
 * Issues and Pull requests welcome on the GitHub repository: https://github.com/spacedmonkey/wp-rest-blocks
+
+## Development
+
+This plugin uses `@wordpress/env` for local development and testing.
+
+### Prerequisites
+
+- Node.js 20+ and npm
+- Docker Desktop (must be installed and running)
+
+### Setup
+
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   composer install
+   ```
+
+3. Start the WordPress environment:
+   ```bash
+   npm run env:start
+   ```
+
+   This will start a local WordPress instance at `http://localhost:8888` (admin: `http://localhost:8888/wp-admin` with username `admin` and password `password`)
+
+   **Note:** Docker must be running for this to work. The first time you run this, it will download WordPress and set up the database, which may take a few minutes.
+
+### Available Commands
+
+- `npm run env:start` - Start the WordPress environment
+- `npm run env:stop` - Stop the WordPress environment
+- `npm run env:reset` - Reset the environment (clean database)
+- `npm run env:destroy` - Destroy the environment completely
+- `npm run test:php` - Run PHPUnit tests
+- `npm run test:php:multisite` - Run PHPUnit tests in multisite mode
+- `npm run lint:php` - Run PHP CodeSniffer
+- `npm run lint:php:fix` - Fix PHP coding standards issues automatically
+
+### Running Tests
+
+After starting the environment with `npm run env:start`, you can run the tests:
+
+```bash
+npm run test:php
+```
+
+For multisite tests:
+
+```bash
+npm run test:php:multisite
+```
+
+### Accessing the Site
+
+- **Development site**: http://localhost:8888
+- **Admin dashboard**: http://localhost:8888/wp-admin (admin/password)
+- **Test site**: http://localhost:8889
+- **Test admin**: http://localhost:8889/wp-admin (admin/password)
+
 
 ## Installation
 

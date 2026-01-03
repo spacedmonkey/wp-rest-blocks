@@ -1,0 +1,234 @@
+<?php
+/**
+ * Data layer to process to block data.
+ *
+ * @package WP_REST_Blocks.
+ */
+
+declare(strict_types = 1);
+
+namespace WP_REST_Blocks;
+
+use DiDom\Element;
+use DiDom\Exceptions\InvalidSelectorException;
+use WP_Block;
+use DiDom\Document;
+
+/**
+ * Class Data
+ *
+ * Handles processing of block data.
+ *
+ * @package WP_REST_Blocks
+ */
+class Data {
+
+	/**
+	 * Get blocks from html string.
+	 *
+	 * @param string   $content Content to parse.
+	 * @param int|null $post_id Post int.
+	 *
+	 * @return array
+	 */
+	public function get_blocks( string $content, ?int $post_id = null ): array {
+		$blocks = parse_blocks( $content );
+
+		return $this->process_blocks( $blocks, $post_id );
+	}
+
+	/**
+	 * Process multiple blocks and filter out invalid ones.
+	 *
+	 * @param array    $blocks Array of blocks to process.
+	 * @param int|null $post_id Post ID.
+	 *
+	 * @return array Array of processed valid blocks.
+	 */
+	private function process_blocks( array $blocks, ?int $post_id = null ): array {
+		return array_filter(
+			array_map(
+				fn( $block ) => $this->handle_do_block( $block, $post_id ),
+				$blocks
+			),
+			static fn( $block_data ) => false !== $block_data
+		);
+	}
+
+
+	/**
+	 * Process a block, getting all extra fields.
+	 *
+	 * @param array    $block Block data.
+	 * @param int|null $post_id Post ID.
+	 *
+	 * @return array|false
+	 */
+	public function handle_do_block( array $block, ?int $post_id = null ) {
+		if ( ! isset( $block['blockName'] ) || '' === $block['blockName'] ) {
+			return false;
+		}
+
+		$block_object = new WP_Block( $block );
+
+		$block['rendered'] = $block_object->render();
+		$block['rendered'] = do_shortcode( $block['rendered'] );
+		$block['attrs']    = $this->get_block_attrs( $block_object, $block, $post_id );
+
+		if ( is_array( $block['innerContent'] ) && count( $block['innerContent'] ) > 0 ) {
+			$block['innerContent'] = array_values( array_filter( $block['innerContent'], 'is_string' ) );
+		}
+
+		if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) && count( $block['innerBlocks'] ) > 0 ) {
+			$block['innerBlocks'] = $this->process_blocks( $block['innerBlocks'], $post_id );
+		}
+
+		return $block;
+	}
+
+	/**
+	 * Retrieves block attributes.
+	 *
+	 * @param WP_Block $block_object The block object.
+	 * @param array    $block An associative array representing the block.
+	 * @param int|null $post_id Post ID associated with the block.
+	 *
+	 * @return array The processed block attributes.
+	 */
+	private function get_block_attrs( WP_Block $block_object, array $block, ?int $post_id = null ): array {
+		$attr = $block['attrs'] ?? [];
+		if ( null === $block_object->block_type ) {
+			return $attr;
+		}
+
+		$attributes = $block_object->block_type->attributes;
+		$supports   = $block_object->block_type->supports;
+		if ( null !== $supports && isset( $supports['anchor'] ) && $supports['anchor'] ) {
+			$attributes['anchor'] = [
+				'type'      => 'string',
+				'source'    => 'attribute',
+				'attribute' => 'id',
+				'selector'  => '*',
+				'default'   => '',
+			];
+		}
+
+		if ( null !== $attributes ) {
+			foreach ( $attributes as $key => $attribute ) {
+				if ( ! isset( $attr[ $key ] ) ) {
+					$attr[ $key ] = $this->get_attribute( $attribute, $block_object->inner_html, $post_id );
+				}
+			}
+		}
+
+		return $attr;
+	}
+
+	/**
+	 * Get attribute.
+	 *
+	 * @SuppressWarnings("PHPMD.ElseExpression")
+	 *
+	 * @param array    $attribute Attributes.
+	 * @param string   $html HTML string.
+	 * @param int|null $post_id Post Number. Default 0.
+	 *
+	 * @return mixed
+	 */
+	public function get_attribute( array $attribute, string $html, ?int $post_id = null ) {
+		$value = null;
+
+		if ( isset( $attribute['source'] ) ) {
+			// Return early for meta source - no Document needed.
+			if ( 'meta' === $attribute['source'] ) {
+				$value = $this->extract_value_from_meta( $attribute, $post_id );
+			} else {
+				// Extract value from HTML using Document.
+				$value = $this->extract_value_from_html( $attribute, $html, $post_id );
+			}
+		}
+
+		// Assign default value if value is null and a default exists.
+		if ( null === $value && isset( $attribute['default'] ) ) {
+			$value = $attribute['default'];
+		}
+
+		$allowed_types = [ 'array', 'object', 'string', 'number', 'integer', 'boolean', 'null' ];
+		// If attribute type is set and valid, sanitize value.
+		if ( isset( $attribute['type'] ) && in_array( $attribute['type'], $allowed_types, true ) ) {
+			$value = rest_sanitize_value_from_schema( $value, $attribute );
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Extract value from post meta.
+	 *
+	 * @param array    $attribute Attribute configuration.
+	 * @param int|null $post_id Post ID.
+	 * @return mixed|null Meta value or null if not found.
+	 */
+	private function extract_value_from_meta( array $attribute, ?int $post_id ) {
+		if ( $post_id > 0 && isset( $attribute['meta'] ) ) {
+			return get_post_meta( $post_id, $attribute['meta'], true );
+		}
+		return null;
+	}
+
+
+	/**
+	 * Extract value from HTML based on attribute source.
+	 *
+	 * @param array    $attribute Attributes.
+	 * @param string   $html HTML string.
+	 * @param int|null $post_id Post Number. Default 0.
+	 *
+	 * @return mixed
+	 */
+	private function extract_value_from_html( array $attribute, string $html, ?int $post_id = null ) {
+		$value = null;
+		try {
+			$dom = new Document( trim( $html ) );
+
+			$node = isset( $attribute['selector'] ) ? $dom->find( $attribute['selector'] ) : [ $dom->first( '*' ) ];
+		} catch ( InvalidSelectorException $e ) {
+			return null;
+		}
+
+		// Get first element from array for non-query sources.
+		$single_node = count( $node ) > 0 ? $node[0] : null;
+
+		switch ( $attribute['source'] ) {
+			case 'attribute':
+				$value = $single_node instanceof Element ? $single_node->getAttribute( $attribute['attribute'] ) : null;
+				break;
+			case 'html':
+			case 'rich-text':
+				$value = $single_node instanceof Element ? $single_node->innerHtml() : null;
+				break;
+			case 'text':
+				$value = $single_node instanceof Element ? $single_node->text() : null;
+				break;
+			case 'query':
+				if ( isset( $attribute['query'] ) && count( $node ) > 0 ) {
+					$counter = 0;
+					foreach ( $node as $v_node ) {
+						foreach ( $attribute['query'] as $key => $current_attribute ) {
+							if ( ! ( $v_node instanceof Element ) ) {
+								continue;
+							}
+							$current_value = $this->get_attribute( $current_attribute, $v_node->html(), $post_id );
+							if ( null !== $current_value ) {
+								$value[ $counter ][ $key ] = $current_value;
+							}
+						}
+						++$counter;
+					}
+				}
+				break;
+		}
+
+		return $value;
+	}
+}
