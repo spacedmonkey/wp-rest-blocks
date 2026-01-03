@@ -143,6 +143,12 @@ npm run test:php:multisite
 
 ## Changelog ##
 
+### 2.0.0 ###
+* Minimum PHP version increased from 7.0 to 7.4
+* WordPress minimum version updated from 5.5 to 5.9
+* Updated compatibility testing to PHP 8.0-8.4 (with 8.5 experimental support)
+* Complete rewrite of code, using objects and is heavily typed. 
+
 ### 1.0.2 ###
 * Fix issue with WordPress 6.5
 * Update coding standards to WP coding standards 3.1.0
