@@ -19,9 +19,24 @@ use DiDom\Document;
  *
  * Handles processing of block data.
  *
+ *
+ *
  * @package WP_REST_Blocks
  */
 class Data {
+
+	/**
+	 * Cache storage for processed block data.
+	 *
+	 * @var array{
+	 *      'get_blocks': array<string, array<int, mixed>>,
+	 *      'has_blocks': array<string, bool>
+	 * }
+	 */
+	protected array $cache = [
+		'get_blocks' => [],
+		'has_blocks' => [],
+	];
 
 	/**
 	 * Get blocks from html string.
@@ -32,9 +47,16 @@ class Data {
 	 * @return array
 	 */
 	public function get_blocks( string $content, ?int $post_id = null ): array {
+		$cache_key = $this->get_cache_key( $content );
+		if ( isset( $this->cache['get_blocks'][ $cache_key ] ) ) {
+			return $this->cache['get_blocks'][ $cache_key ];
+		}
 		$blocks = parse_blocks( $content );
 
-		return $this->process_blocks( $blocks, $post_id );
+		$value                                   = $this->process_blocks( $blocks, $post_id );
+		$this->cache['get_blocks'][ $cache_key ] = $value;
+
+		return $value;
 	}
 
 	/**
@@ -230,5 +252,35 @@ class Data {
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Generate a cache key based on the provided content.
+	 *
+	 * @param string $content The content used to generate the cache key.
+	 *
+	 * @return string The generated cache key as an MD5 hash.
+	 */
+	protected function get_cache_key( string $content ): string {
+		return md5( $content );
+	}
+
+	/**
+	 * Check if the content contains blocks.
+	 *
+	 * @param string $content The content to check for blocks.
+	 *
+	 * @return bool True if the content contains blocks, false otherwise.
+	 */
+	public function has_blocks( string $content ): bool {
+		$cache_key = $this->get_cache_key( $content );
+		if ( isset( $this->cache['has_blocks'][ $cache_key ] ) ) {
+			return $this->cache['has_blocks'][ $cache_key ];
+		}
+
+		$has_blocks                              = has_blocks( $content );
+		$this->cache['has_blocks'][ $cache_key ] = $has_blocks;
+
+		return $has_blocks;
 	}
 }

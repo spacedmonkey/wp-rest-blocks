@@ -73,7 +73,7 @@ class Widgets extends REST_Blocks {
 			return false;
 		}
 
-		return has_blocks( $instance['content'] );
+		return $this->data->has_blocks( $instance['content'] );
 	}
 
 	/**

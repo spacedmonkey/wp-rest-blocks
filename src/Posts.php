@@ -70,7 +70,7 @@ class Posts extends REST_Blocks {
 	 */
 	public function has_blocks( array $data_object ): bool {
 		if ( isset( $data_object['content']['raw'] ) ) {
-			return has_blocks( $data_object['content']['raw'] );
+			return $this->data->has_blocks( $data_object['content']['raw'] );
 		}
 		$id   = $this->get_post_id( $data_object );
 		$post = get_post( $id );
@@ -78,7 +78,7 @@ class Posts extends REST_Blocks {
 			return false;
 		}
 
-		return has_blocks( $post );
+		return $this->data->has_blocks( $post->post_content );
 	}
 
 	/**
