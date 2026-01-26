@@ -46,12 +46,14 @@ class Data {
 	 * @return array Array of processed valid blocks.
 	 */
 	private function process_blocks( array $blocks, ?int $post_id = null ): array {
-		return array_filter(
-			array_map(
-				fn( $block ) => $this->handle_do_block( $block, $post_id ),
-				$blocks
-			),
-			static fn( $block_data ) => false !== $block_data
+		return array_values(
+			array_filter(
+				array_map(
+					fn( $block ) => $this->handle_do_block( $block, $post_id ),
+					$blocks
+				),
+				static fn( $block_data ) => false !== $block_data
+			)
 		);
 	}
 
