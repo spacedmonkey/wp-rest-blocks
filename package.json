@@ -5,7 +5,7 @@
 	"author": "Jonathan Harris",
 	"devDependencies": {
 		"@wordpress/env": "^10.37.0",
-		"@wordpress/i18n": "^6.10.0",
+		"@wordpress/i18n": "^6.13.0",
 		"@wordpress/scripts": "^31.2.0"
 	},
 	"scripts": {
