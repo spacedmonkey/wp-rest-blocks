@@ -188,8 +188,14 @@ class Data {
 	 */
 	private function extract_value_from_html( array $attribute, string $html, ?int $post_id = null ) {
 		$value = null;
+		$html = trim( $html );
+
+		if ( empty( $html ) ) {
+			return null;
+		}
+			
 		try {
-			$dom = new Document( trim( $html ) );
+			$dom = new Document( $html );
 
 			$node = isset( $attribute['selector'] ) ? $dom->find( $attribute['selector'] ) : [ $dom->first( '*' ) ];
 		} catch ( InvalidSelectorException $e ) {
