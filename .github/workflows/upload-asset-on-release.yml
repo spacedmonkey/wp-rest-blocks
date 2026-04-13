@@ -52,7 +52,7 @@ jobs:
               run: zip -r ${{ steps.workflow.outputs.PACKAGE }}.zip .
 
             - name: Upload Release Asset
-              uses: softprops/action-gh-release@v2
+              uses: softprops/action-gh-release@v3
               with:
                   files: ${{ steps.workflow.outputs.DIST }}/${{ steps.workflow.outputs.PACKAGE }}.zip
                   fail_on_unmatched_files: true
